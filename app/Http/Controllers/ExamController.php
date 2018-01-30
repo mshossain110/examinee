@@ -6,6 +6,8 @@ use App\Exam;
 use Illuminate\Http\Request;
 use App\Http\Requests\ExamRequest;
 use App\Subject;
+use App\Question;
+use App\Topic;
 
 class ExamController extends Controller
 {
@@ -16,7 +18,7 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::with('subject')->paginate(15);
+        $exams = Exam::with( 'subjects', 'questions' )->paginate(15);
         return view("exam.index", [
             'exams' => $exams
         ]);
@@ -57,7 +59,7 @@ class ExamController extends Controller
      */
     public function show(Exam $exam)
     {
-        //
+        
     }
 
     /**

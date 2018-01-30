@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Question;
 use App\Subject;
 use App\Topic;
+use App\Exam;
 use App\Http\Requests\QuestionRequest as Request;
 use Log;
 class QuestionController extends Controller
@@ -27,9 +28,9 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        $subjects = Subject::all();
+        $exams = Exam::all();
         $topics = Topic::all();
-        return view("question.create", compact('subjects', 'topics'));
+        return view("question.create", compact('exams', 'topics'));
     }
 
     /**
@@ -41,7 +42,10 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         Log::debug($request->all());
-        Question::create( $request->all());
+        $eid = $request->eid;
+        $tid = $request->tid;
+        $question = Question::create( $request->all());
+        $question->exams()->attach( $eid, [ 'tid' => $tid ]);
         return redirect()->route("question.index");
     }
 

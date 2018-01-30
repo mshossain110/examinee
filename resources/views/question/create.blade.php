@@ -69,21 +69,17 @@
                             
                         </div>
 
-                        <div class="form-group form-row { { $errors->has('subject') ? ' has-error' : '' }}">
+                        <div class="form-group form-row">
                             
 
                             <div class="col">
-                                <label for="subject" class="control-label mr-2">Subject </label>
-                                <select id="subject" class="form-control" name="sid">
-                                    @foreach( $subjects as $subject )
-                                    <option value="{{ $subject->id }}">{{$subject->title}}</option>
+                                <label for="subject" class="control-label mr-2">Exam </label>
+                                <select id="subject" class="form-control" name="eid">
+                                    @foreach( $exams as $exam )
+                                    <option value="{{ $exam->id }}">{{$exam->title}}</option>
                                     @endforeach
                                 </select>
-                                @if ($errors->has('subject'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('subject') }}</strong>
-                                    </span>
-                                @endif
+                                
                             </div>
 
                             <div class="col">

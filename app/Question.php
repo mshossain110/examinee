@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Exam;
+use App\Subject;
+use App\Topic;
 
 class Question extends Model
 {
@@ -14,6 +17,13 @@ class Question extends Model
     protected $fillable = [
         'qtype', 'question', 'options', 'answer', 'hint', 'mark', 'nmark', 'explanation', 'defficulty' 
     ];
+    public function topics() {
+        return $this->belongsToMany( Topic::class, 'exam_question', 'qid', 'tid' );
+    }
+
+    public function exams() {
+        return $this->belongsToMany( Exam::class, 'exam_question', 'qid', 'eid' );
+    }
 
     public function setAnswerAttribute( $value ) {
     	$this->attributes['answer'] = json_encode( $value );
