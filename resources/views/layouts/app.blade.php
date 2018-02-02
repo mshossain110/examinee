@@ -5,7 +5,7 @@
     <!-- Main menu -->
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-info text-white">
         <!-- Branding Image -->
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
 
@@ -15,7 +15,7 @@
         </button>
         
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <div class="collapse navbar-collapse w-100" id="navbarTogglerDemo01">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/exam') }}">Exam</a>
@@ -55,10 +55,10 @@
 
     <div class="container-fluid">
         <div class="row">
-            <nav class="navbar navbar-dark bg-info sidebar text-white col-md-2 d-none d-md-block ">
+            <nav class="navbar navbar-dark bg-light sidebar text-white col-md-2 d-none d-md-block ">
                 <div class="sidebar-sticky">
 
-                    <ul class="navbar-nav flex-column pl-3">
+                    <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" href="#">
                               <span data-feather="home"></span>
