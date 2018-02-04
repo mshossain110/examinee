@@ -68,6 +68,10 @@ class ExamController extends Controller
         return view('exam.exam', compact('exam'));
     }
 
+    public function end( Request $request, Exam $exam )
+    {
+        return $request->all();
+    }
     /**
      * Show the form for editing the specified resource.
      *

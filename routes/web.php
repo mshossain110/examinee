@@ -22,4 +22,5 @@ Route::resource('exam', 'ExamController');
 Route::resource('subject', 'SubjectController');
 Route::resource('topic', 'TopicController');
 Route::resource('question', 'QuestionController');
-Route::get('exam/{exam}/start', 'ExamController@start');
+Route::get('exam/{exam}/start', 'ExamController@start')->name('exam.start');
+Route::post('exam/{exam}/end', 'ExamController@end' )->name('exam.end');
