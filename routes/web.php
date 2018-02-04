@@ -22,3 +22,4 @@ Route::resource('exam', 'ExamController');
 Route::resource('subject', 'SubjectController');
 Route::resource('topic', 'TopicController');
 Route::resource('question', 'QuestionController');
+Route::get('exam/{exam}/start', 'ExamController@start');

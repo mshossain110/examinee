@@ -47,7 +47,7 @@ class ExamController extends Controller
     {
         $sid = $request->input('sid');
         $exam = Exam::create( $request->all() );
-        $exam->subject()->attach($sid);
+        $exam->subjects()->attach($sid);
         return redirect()->route('exam.index');
     }
 
@@ -59,7 +59,13 @@ class ExamController extends Controller
      */
     public function show(Exam $exam)
     {
-        
+        return view('exam.show', compact('exam'));
+    }
+
+    public function start( Exam $exam )
+    {
+        $exam->load('questions');
+        return view('exam.exam', compact('exam'));
     }
 
     /**

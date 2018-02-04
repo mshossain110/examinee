@@ -57,7 +57,7 @@
                                             <input class="form-control" type="checkbox" name="answer[]" value="0">
                                         </td>
                                         <td>
-                                            <textarea class="form-control" name="options['0']"></textarea>
+                                            <textarea class="form-control" name="options[0]"></textarea>
                                         </td>
                                         <td>
                                             <button class="btn btn-danger remove"> remove</button>
