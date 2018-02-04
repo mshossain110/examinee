@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="row mt-5">
-    	<form class="form-horizontal" method="POST" action="{{ route('exam.end') }}" >
+    	<form class="form-horizontal" method="POST" action="{{ route('exam.end', [ 'id' => $exam->id ]) }}" >
     		{{ csrf_field() }}
 	        @foreach( $exam->questions as $question ) 
 	        <div class="col-12">
