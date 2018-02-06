@@ -66,26 +66,36 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ url('/subject') }}">
                                 <span data-feather="file"></span>
-                                Student
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="shopping-cart"></span>
                                 Subject
                             </a>
+                            <ul>
+                                <li class="nav-item"> 
+                                    <a class="nav-link" href="{{ url('/subject/create') }}">
+                                        <span data-feather="plus-circle"></span>
+                                       Add Subject
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="users"></span>
+                            <a class="nav-link" href="{{ url('/exam') }}">
+                                <span data-feather="clock"></span>
                                 Exam
                             </a>
+                            <ul>
+                                <li class="nav-item"> 
+                                    <a class="nav-link" href="{{ url('/exam/create') }}">
+                                        <span data-feather="plus-circle"></span>
+                                       Add Exam
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                              <span data-feather="bar-chart-2"></span>
+                              <span data-feather="award"></span>
                               Reports
                             </a>
                         </li>

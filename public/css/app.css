@@ -38,8 +38,21 @@
   font-weight: 500;
   color: #333;
 }
-.sidebar .nav-link.active {
+.sidebar .nav-link.active, .sidebar .nav-link:hover {
   color: #007bff;
+}
+
+.sidebar .nav-link:hover{
+  background: #eeeeee;
+}
+
+.sidebar .nav-item ul {
+  padding-left: 0;
+  display: none;
+}
+
+.sidebar .nav-item:hover ul {
+  display: block;
 }
 
 .sidebar .nav-link:hover .feather,
