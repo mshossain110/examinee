@@ -31,7 +31,7 @@
 
                             <div class="col">
                                 
-                        	<textarea id="description" name="description" cols="100" rows="8">{{ old('description') }}</textarea>
+                        	   <textarea id="description" name="description" cols="100" rows="8">{{ old('description') }}</textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>

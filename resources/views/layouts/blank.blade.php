@@ -1,4 +1,4 @@
-@include('layouts.header');
+@include('layouts.header')
 <body>
     <div id="app">
         @yield('content')

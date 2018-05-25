@@ -70,7 +70,7 @@ class ExamController extends Controller
 
     public function end( Request $request, Exam $exam )
     {
-        return $request->all();
+        dd($request->all());
     }
     /**
      * Show the form for editing the specified resource.

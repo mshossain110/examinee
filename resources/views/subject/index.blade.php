@@ -14,7 +14,7 @@
 				    <p class="mb-1">{{ $subject->description }}</p>
 				  </li>
 				  @endforeach
-				</div>
+			</div>
         </div>
     </div>
 </div>

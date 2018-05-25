@@ -8,7 +8,7 @@
                 <div class="card-header">Register</div>
 
                 <div class="card-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('register.store') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -66,8 +66,8 @@
 
                             <div class="col">
                                 <select class="form-control" id="registerAs" name="role">
-                                  <option value="teacher">Teacher</option>
-                                  <option value="student">Student</option>
+                                  <option value="{{App\User::TEACHER}}">Teacher</option>
+                                  <option value="{{App\User::STUDENT}}">Student</option>
                                 </select>
                             </div>
                         </div>

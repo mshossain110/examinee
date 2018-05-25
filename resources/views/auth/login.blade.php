@@ -3,12 +3,19 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center mt-5">
+
         <div class="col-md-5 align-self-center">
+            @if(Session::has('msg'))
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-ok"></span><em> 
+                    {!! session('msg') !!}</em>
+                </div>
+            @endif
             <div class="card panel-default">
                 <div class="card-header">Login</div>
 
                 <div class="card-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('login.store') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -54,10 +61,6 @@
                                 <button type="submit" class="btn btn-primary">
                                     Login
                                 </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
                             </div>
                         </div>
                     </form>
