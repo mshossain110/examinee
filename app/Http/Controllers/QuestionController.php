@@ -41,7 +41,6 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        Log::debug($request->all());
         $eid = $request->eid;
         $tid = $request->tid;
         $question = Question::create( $request->all());
@@ -68,9 +67,10 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        return view("question.edit", [
-            'question' => $question,
-        ]);
+        $exams = Exam::all();
+        $topics = Topic::all();
+        return view("question.edit", compact('exams', 'topics','question'));
+        
     }
 
     /**
@@ -82,7 +82,13 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        // dd($request->all());
+        $eid = $request->eid;
+        $tid = $request->tid;
+        $question->update( $request->all());
+        $question->exams()->detach( $eid, [ 'tid' => $tid ]);
+        $question->exams()->attach( $eid, [ 'tid' => $tid ]);
+        return redirect()->route("question.index");
     }
 
     /**
@@ -93,6 +99,8 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->exams()->detach();
+        $question->delete();
+        return redirect()->route('question.index');
     }
 }

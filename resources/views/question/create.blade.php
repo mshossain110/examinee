@@ -20,8 +20,7 @@
                                 <div class="btn-group" role="group" >
                                     <button type="button" class="btn btn-secondary active" data-title="0">Objective</button>
                                     <button type="button" class="btn btn-secondary" data-title="1">True/False</button>
-                                    <button type="button" class="btn btn-secondary" data-title="2">Fill Blank</button>
-                                    <button type="button" class="btn btn-secondary" data-title="3">Documentary</button>
+                                    
                                     <input type="hidden" name="qtype" value="0">
                                 </div>
                             </div>
@@ -149,7 +148,7 @@
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Create Exam
+                                    Create
                                 </button>
                             </div>
                         </div>

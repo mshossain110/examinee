@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.student')
 
 @section('content')
 <div class="container">
@@ -19,7 +19,7 @@
 	        @foreach( $exam->questions as $question ) 
 	        <div class="col-12">
 	        	<h5> {{ $question->question }}</h5>
-	        	@if( $question->qtype == 0)
+	        	{{-- @if( $question->qtype == 0) --}}
 	        		<div class="opptions_area">
 
 	        			@foreach( $question->options as $k  => $v)
@@ -29,7 +29,7 @@
 						</div>
 	        			@endforeach
 	        		</div>
-	        	@endif
+	        	{{-- @endif --}}
 	        </div>
 	        @endforeach
 	        <div class="form-group mt-5">

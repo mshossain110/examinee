@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exam;
-use Illuminate\Http\Request;
-use App\Http\Requests\ExamRequest;
+use App\Topic;
+use App\Result;
 use App\Subject;
 use App\Question;
-use App\Topic;
+use Illuminate\Http\Request;
+use App\Http\Requests\ExamRequest;
 
 class ExamController extends Controller
 {
@@ -47,6 +48,7 @@ class ExamController extends Controller
     {
         $sid = $request->input('sid');
         $exam = Exam::create( $request->all() );
+        $eid = $exam->id;
         $exam->subjects()->attach($sid);
         return redirect()->route('exam.index');
     }
@@ -59,7 +61,9 @@ class ExamController extends Controller
      */
     public function show(Exam $exam)
     {
-        return view('exam.show', compact('exam'));
+        
+        $totalMarks = $this->calculateTotalMark($exam->questions);
+        return view('exam.show', compact('exam', 'totalMarks'));
     }
 
     public function start( Exam $exam )
@@ -68,9 +72,14 @@ class ExamController extends Controller
         return view('exam.exam', compact('exam'));
     }
 
-    public function end( Request $request, Exam $exam )
+    public function end( Request $request, Exam $exam, Result $result )
     {
-        dd($request->all());
+        Result::create([
+            'sid' => auth()->user()->id,
+            'eid' => $exam->id,
+            'answer' => $request->answer,
+        ]);
+        return redirect()->route('student.home')->with('msg', 'Thanks for you exam');
     }
     /**
      * Show the form for editing the specified resource.
@@ -96,11 +105,13 @@ class ExamController extends Controller
      */
     public function update(ExamRequest $request, Exam $exam)
     {
+        // dd($request->all());
+
         $exam->title = $request->title;
         $exam->description = $request->description;
         $exam->save();
-        $exam->subject()->detach();
-        $exam->subject()->attach( $request->sid );
+        $exam->subjects()->detach();
+        $exam->subjects()->attach( $request->sid );
         return redirect()->route('exam.index');
     }
 
@@ -112,8 +123,18 @@ class ExamController extends Controller
      */
     public function destroy(Exam $exam)
     {
-        $exam->subject()->detach();
+        $exam->subjects()->detach();
         $exam->delete();
         return redirect()->route('exam.index');
     }
+
+    public function calculateTotalMark($marks)
+    {
+        $count = 0;
+        foreach ($marks as $mark) {
+            $count = $count + $mark->mark;
+        }
+        return $count;
+    }
+
 }

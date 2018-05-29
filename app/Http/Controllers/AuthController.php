@@ -79,20 +79,19 @@ class AuthController extends Controller
             $sessionValue = $request->session()->get('key');
             $sessionTime  = $request->session()->get('time');
 
-            if ($sessionValue >= 1) {
+            if ($sessionValue >= 2) {
                 if ($sessionTime == null) {
                     $request->session()->put('time', Carbon::now());    //put the current time to session
                 }
                 $timeDiff = Carbon::parse($sessionTime)->diffInSeconds(); //calculate time
-                if ($timeDiff >= 59) {
+                if ($timeDiff >= 15) {
                     if (auth()->attempt($auth, $remember)) {
                         if (auth()->user()->isTeacher()) {
                             return redirect()->route('home');
                         }
                         elseif (auth()->user()->isStudent()) {
-                            $request->session()->flush();
-                            dd("Under Contraction");
-                            // return redirect()->route('home');
+                            
+                            return redirect()->route('student.home');
                         }
                         else{
                             $request->session()->flush();
@@ -106,7 +105,7 @@ class AuthController extends Controller
                     }
                     
                 }else{
-                    $waitTime = 59 - $timeDiff;
+                    $waitTime = 15 - $timeDiff;
                     return back()->with('msg', 'you have to wait ' . $waitTime . ' sec')
                                 ->with('title', 'Login Error');
                 }
@@ -120,9 +119,7 @@ class AuthController extends Controller
                     return redirect()->route('home');
                 }
                 elseif (auth()->user()->isStudent()) {
-                    $request->session()->flush();
-                    dd("Under Contraction");
-                    // return redirect()->route('home');
+                    return redirect()->route('student.home');
                 }
                 else{
                     return redirect()->route('login');

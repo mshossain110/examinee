@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Result;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -38,5 +39,17 @@ class User extends Authenticatable
     public function isStudent()
     {
         return $this->role_id == User::STUDENT;
+    }
+
+    public static function username($id)
+    {
+        $name = User::findOrFail($id);
+        return $name->name; 
+    }
+
+    public static function useremail($id)
+    {
+        $email = User::findOrFail($id);
+        return $email->email;
     }
 }

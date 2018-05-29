@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth', 'teacher']], function(){
 });
 
 Route::group(['middleware' => ['auth', 'student']], function(){
-
+	Route::get('/dashboard', 'StudentController@index')->name('student.home');
 	Route::get('exam/{exam}/start', 'ExamController@start')->name('exam.start');
 	Route::post('exam/{exam}/end', 'ExamController@end' )->name('exam.end');
 });

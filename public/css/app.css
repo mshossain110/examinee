@@ -1,10 +1,4 @@
 /*icon*/
-.feather {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
-}
-
 /*
  * Sidebar
  */
@@ -66,6 +60,29 @@
 }
 
 .dropdown-menu{
-  left: -54%;
+  left: -100%;
   margin: .39rem 0 0;
+}
+.form-control:focus{
+  box-shadow: none;
+}
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
+  box-shadow: none;
+  background-color: #17A2B8;
+}
+.btn-primary.focus, .btn-primary:focus{
+  box-shadow: none;
+}
+.btn-secondary:not(:disabled):not(.disabled).active:focus, .btn-secondary:not(:disabled):not(.disabled):active:focus, .show>.btn-secondary.dropdown-toggle:focus{
+  box-shadow: none;
+}
+.btn-secondary.focus, .btn-secondary:focus{
+  box-shadow: none;
+}
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
+  background-color: #17A2B8;
+  border-color: #17A2B8;
+}
+.w-90{
+  width: 90% !important;
 }

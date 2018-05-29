@@ -31,7 +31,7 @@
 
                             <div class="col">
                                 
-                        	<textarea id="description" name="description" cols="100" rows="8">{{ $exam->description }}</textarea>
+                        	   <textarea id="description"  name="description" rows="8" class="form-control">{{ $exam->description }}</textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>
@@ -47,7 +47,9 @@
                                 
                             	<select id="subject" name="sid">
                                     @foreach( $subjects as $subject )
-                            		<option value="{{ $subject->id }}">{{$subject->title}}</option>
+                                        @foreach($exam->subjects as $examsub)
+                                		<option value="{{ $subject->id }}" @if($subject->id == $examsub->id) selected @endif>{{$subject->title}}</option>
+                                        @endforeach
                                     @endforeach
                             	</select>
                                 @if ($errors->has('subject'))
@@ -63,7 +65,7 @@
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Create Exam
+                                    Update
                                 </button>
                             </div>
                         </div>

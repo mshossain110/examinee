@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\User;
 use Closure;
 
 class StudentRole
@@ -16,7 +17,7 @@ class StudentRole
     public function handle($request, Closure $next)
     {
         if (!auth()->user()->isStudent()) {
-            return redirect()->route('login');
+            return redirect()->route('home');
         }
         return $next($request);
     }

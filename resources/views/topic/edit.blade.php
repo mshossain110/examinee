@@ -32,7 +32,7 @@
 
                             <div class="col">
                                 
-                            <textarea id="description" name="description" cols="100" rows="8">{{ $topic->description }}</textarea>
+                            <textarea id="description" name="description" class="form-control" rows="8">{{ $topic->description }}</textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>

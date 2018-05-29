@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use App\User;
 use Closure;
 
 class TeacherRole
@@ -16,7 +16,7 @@ class TeacherRole
     public function handle($request, Closure $next)
     {
         if (!auth()->user()->isTeacher()) {
-            return redirect()->route('login');
+            return redirect()->route('student.home');
         }
         return $next($request);
     }

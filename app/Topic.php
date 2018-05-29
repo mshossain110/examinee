@@ -17,10 +17,10 @@ class Topic extends Model
     ];
 
     public function question() {
-    	return $this->belongsToMany( Question::class, 'exams_questions', 'qid', 'tid' );
+    	return $this->belongsToMany( Question::class, 'exam_question', 'tid', 'qid' );
     }
 
     public function exam() {
-    	return $this->belongsToMany( Exam::class, 'exams_questions', 'eid', 'tid' );
+    	return $this->belongsToMany( Exam::class, 'exam_question', 'eid', 'tid' );
     }
 }

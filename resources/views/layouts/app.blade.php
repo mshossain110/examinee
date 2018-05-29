@@ -21,7 +21,13 @@
                     <a class="nav-link" href="{{ url('/exam') }}">Exam</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/subject') }}">Subject</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url('/topic') }}">Topic</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/question') }}">Question</a>
                 </li>
             </ul>
             <ul class="navbar-nav justify-content-end">
@@ -64,34 +70,6 @@
                               <span data-feather="home"></span>
                                 Dashboard <span class="sr-only">(current)</span>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/subject') }}">
-                                <span data-feather="file"></span>
-                                Subject
-                            </a>
-                            <ul>
-                                <li class="nav-item"> 
-                                    <a class="nav-link" href="{{ url('/subject/create') }}">
-                                        <span data-feather="plus-circle"></span>
-                                       Add Subject
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/exam') }}">
-                                <span data-feather="clock"></span>
-                                Exam
-                            </a>
-                            <ul>
-                                <li class="nav-item"> 
-                                    <a class="nav-link" href="{{ url('/exam/create') }}">
-                                        <span data-feather="plus-circle"></span>
-                                       Add Exam
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">

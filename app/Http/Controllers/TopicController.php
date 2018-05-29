@@ -90,6 +90,7 @@ class TopicController extends Controller
      */
     public function destroy(Topic $topic)
     {
+        // dd($topic);
         $topic->question()->detach();
         $topic->delete();
         return redirect()->route("topic.index");

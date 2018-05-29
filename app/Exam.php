@@ -2,8 +2,11 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\User;
+use App\Result;
 use App\Subject;
+use App\Question;
+use Illuminate\Database\Eloquent\Model;
 
 class Exam extends Model
 {
@@ -25,4 +28,10 @@ class Exam extends Model
     public function topics() {
         return $this->belongsToMany( Topic::class, 'exam_question', 'eid', 'tid' );
     }
+
+    public function examResults()
+    {
+        return $this->hasMany(Result::class, 'eid', 'id');
+    }
+
 }

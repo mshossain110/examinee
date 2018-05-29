@@ -2,20 +2,49 @@
 
 @section('content')
 <div class="container">
-    <div class="row mt-5">
+	<a href="{{route('question.create')}}" class="btn btn-primary">Create</a>
+    <div class="row">
+        <div class="col ">
+            <div class="list-group mt-5">
+            	@foreach ($questions as $question)
+				 <li class="list-group-item">
+				    <div class="d-flex w-100 justify-content-between">
+				    	<h5 class="mb-1">{{ $question->question }}</h5>
 
-	    	@foreach( $questions as $question )
-	        <div class="col-4">
-	            <div class="card">
-				  	<div class="card-body">
-				    	<h5 class="card-title">{{ $question }}</h5>
-				    	<a href="#" class="card-link">Card link</a>
-				    	<a href="#" class="card-link">Another link</a>
-				  </div>
-				</div>
-	        </div>
-	        @endforeach
-	    
+				      	<small>{{ $question->created_at }}</small>
+				    </div>
+				    <div class="d-flex w-100 justify-content-start">
+					    <p class="mb-1 w-90">
+					    	@foreach($question->options as $key => $value)
+				    			option {{ $key }}: {{$value}}<br>
+				    		@endforeach
+				    	</p>
+				    </div>
+				    <div class="d-flex w-100 justify-content-between">
+					    <p class="mb-1 w-90"> Correct Ans: 
+				    		@foreach($question->answer as $key => $value)
+				    			{{$value}}
+				    		@endforeach
+				    	</p>
+						<p>
+							<a href="{{route('question.edit',$question->id)}}" class="mr-2">
+								<i class="fas fa-pen-square"></i>
+							</a>
+							<a href="{{route('question.destroy',$question->id)}}" onclick="event.preventDefault();
+							    document.getElementById('delete-form').submit();">
+								<i class="fas fa-trash-alt" style="color: red"></i>
+							</a>
+				      	</p>
+				    </div>
+				    
+					<form id="delete-form" action="{{route('question.destroy',$question->id)}}" method="POST" style="display: none;">
+	  		        	{{ csrf_field() }}
+                    	<input name="_method" type="hidden" value="DELETE">
+	  		        </form>
+				  </li>
+				  @endforeach
+			</div>
+        </div>
     </div>
 </div>
 @endsection
