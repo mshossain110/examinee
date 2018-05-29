@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ExamQuestion extends Migration
+class CreateResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class ExamQuestion extends Migration
      */
     public function up()
     {
-        Schema::create('exam_question', function (Blueprint $table) {
-            $table->unsignedInteger('qid')->references('id')->on('questions')->onDelete('cascade');
+        Schema::create('results', function (Blueprint $table) {
+            $table->increments('id');
             $table->unsignedInteger('eid')->references('id')->on('exams')->onDelete('cascade');
-            $table->unsignedInteger('tid')->nullable()->references('id')->on('topics')->onDelete('cascade');
+            $table->text('answers')->nullable();
+            $table->double('point')->nullable();
+            $table->integer('numberOfQuestion')->nullable();
+            $table->integer('currectAnswer')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +31,6 @@ class ExamQuestion extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exams_questions');
+        Schema::dropIfExists('results');
     }
 }
