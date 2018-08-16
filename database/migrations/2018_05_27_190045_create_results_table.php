@@ -18,6 +18,9 @@ class CreateResultsTable extends Migration
             $table->integer('sid');
             $table->integer('eid');
             $table->string('answer');
+            $table->double('point')->nullable();
+            $table->integer('numberOfQuestion')->nullable();
+            $table->integer('currectAnswer')->nullable();
             $table->timestamps();
         });
     }

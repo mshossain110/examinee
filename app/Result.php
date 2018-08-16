@@ -2,16 +2,14 @@
 
 namespace App;
 
-<<<<<<< HEAD
 use App\Exam;
 use App\User;
-=======
->>>>>>> 9737d081d3c1b29f212f5586f72242614d1d33cf
+
+
 use Illuminate\Database\Eloquent\Model;
 
 class Result extends Model
 {
-<<<<<<< HEAD
 	protected $fillable = ['sid', 'eid','answer'];
 
 
@@ -52,7 +50,4 @@ class Result extends Model
     	}
     	return $count;
     }
-=======
-    //
->>>>>>> 9737d081d3c1b29f212f5586f72242614d1d33cf
 }
