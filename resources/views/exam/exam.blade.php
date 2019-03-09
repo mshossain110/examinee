@@ -14,9 +14,8 @@
         </div>
     </div>
     <div class="row mt-5">
-    	<form class="form-horizontal" method="POST" action="{{ route('result.store') }}" >
+    	<form class="form-horizontal" method="POST" action="{{ route('exam.end', [ 'id' => $exam->id ]) }}" >
     		{{ csrf_field() }}
-    		<input type="hidden" name="eid"  value="{{$exam->id}}" />
 	        @foreach( $exam->questions as $question ) 
 	        <div class="col-12">
 	        	<h5> {{ $question->question }}</h5>
@@ -25,7 +24,7 @@
 
 	        			@foreach( $question->options as $k  => $v)
 	        			<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="answer[{{ $question->id }}][]" value="{{ $k }}">
+							<input class="form-check-input" type="checkbox" name="answer[{{ $question->id }}]" value="{{ $k }}">
 							<label class="form-check-label">{{ $v }}</label>
 						</div>
 	        			@endforeach

@@ -19,7 +19,7 @@
                             <div class="col">
                                 <div class="btn-group" role="group" >
                                     <button type="button" class="btn btn-secondary active" data-title="0">Objective</button>
-                                    <button type="button" class="btn btn-secondary" data-title="1">True/False</button>
+                                    {{-- <button type="button" class="btn btn-secondary" data-title="1">True/False</button> --}}
                                     
                                     <input type="hidden" name="qtype" value="0">
                                 </div>
@@ -75,7 +75,7 @@
                                 <label for="subject" class="control-label mr-2">Exam </label>
                                 <select id="subject" class="form-control" name="eid">
                                     @foreach( $exams as $exam )
-                                    <option value="{{ $exam->id }}">{{$exam->title}}</option>
+                                    <option value="{{ $exam->id }}" @if($exam->id == $todo) selected @endif>{{$exam->title}}</option>
                                     @endforeach
                                 </select>
                                 
@@ -104,9 +104,10 @@
                                         <strong>{{ $errors->first('mark') }}</strong>
                                     </span>
                                 @endif
+                                <input type="hidden" class="form-control" name="nagetive_mark" value="0">
                             </div>
 
-                            <div class="col">
+                            {{-- <div class="col">
                                 <label for="nagetive_mark" class="control-label mr-2">Mark </label>
                                 <input type="number" class="form-control" name="nagetive_mark" value="0">
                                 @if ($errors->has('nmark'))
@@ -114,7 +115,7 @@
                                         <strong>{{ $errors->first('nmark') }}</strong>
                                     </span>
                                 @endif
-                            </div>
+                            </div> --}}
 
                             <div class="col">
                                 <label for="nagetive_mark" class="control-label mr-2">Defficulty </label>
@@ -128,7 +129,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="title" class="col-md-4 control-label">Answer Hint (Optional)</label>
 
                             <div class="col">
@@ -141,9 +142,9 @@
                             <div class="col">
                                 <textarea class="form-control" id="explanation" name="answer_explanation" >{{ old('question') }}</textarea>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        
+                        <input type="hidden" name="todo" value="{{$todo}}">
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">

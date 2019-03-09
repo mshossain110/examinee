@@ -59,27 +59,28 @@
         </div>
     </nav> <!-- Nav main menu -->
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="notify">
         <div class="row">
             <nav class="navbar navbar-dark bg-light sidebar text-white col-md-2 d-none d-md-block ">
                 <div class="sidebar-sticky">
 
-                    <ul class="nav flex-column">
+                    <ul class="nav flex-column" >
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">
+                            <a class="nav-link active" href="{{ route('home') }}">
                               <span data-feather="home"></span>
                                 Dashboard <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link" href="#">
                               <span data-feather="award"></span>
                               Reports
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
 
                 </div>
+                {{-- <examnotify></examnotify> --}}
             </nav>
 
             <!-- Display body -->
@@ -90,5 +91,6 @@
         </div> <!-- End row -->
     </div> <!-- Container-fluid -->
     @include('layouts.footer')
+    @yield('extra-js')
 </body>
 </html>

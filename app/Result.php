@@ -4,13 +4,11 @@ namespace App;
 
 use App\Exam;
 use App\User;
-
-
 use Illuminate\Database\Eloquent\Model;
 
 class Result extends Model
 {
-	protected $fillable = ['sid', 'eid','answer'];
+	protected $fillable = ['sid', 'eid','answer','obtain'];
 
 
 	public function resultExam()
@@ -34,20 +32,21 @@ class Result extends Model
     }
 
 
-    public static function calculateMark($id)
+    public static function calculateMark($answer)
     {
     	$count = 0;
-    	$result = Result::findOrFail($id);
-    	foreach ($result->answer as $resultKey => $resultValue) {
-    		$question = Question::where('id', $resultKey)->first();
-    		if (!empty($question)) {
-    			foreach ($question->answer as $key => $value) {
-    				if ($resultValue == $value) {
-    					$count = $count + $question->mark;
-    				}
-    			}
-    		}
-    	}
+        if (!empty($answer)) {
+            foreach ($answer as $resultKey => $resultValue) {
+                $question = Question::where('id', $resultKey)->first();
+                if (!empty($question)) {
+                    foreach ($question->answer as $key => $value) {
+                        if ($resultValue == $value) {
+                            $count = $count + $question->mark;
+                        }
+                    }
+                }
+            }
+        }
     	return $count;
     }
 }

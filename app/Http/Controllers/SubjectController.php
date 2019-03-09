@@ -14,7 +14,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::all();
+        $subjects = Subject::where('user_id', auth()->user()->id)->latest()->paginate(5);
         return view("subject.index", [
             'subjects' => $subjects
         ]);
@@ -38,7 +38,13 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $subject = Subject::create($request->all());
+        // dd($request->all());
+        $subject = Subject::create([
+            'user_id'           => auth()->user()->id,
+            'title'             => $request->title,
+            'description'       => $request->description,
+
+        ]);
         return redirect()->route('subject.index');
     }
 

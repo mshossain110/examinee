@@ -15,7 +15,7 @@ class Question extends Model
      * @var array
      */
     protected $fillable = [
-        'qtype', 'question', 'options', 'answer', 'hint', 'mark', 'nmark', 'explanation', 'defficulty' 
+        'user_id','qtype', 'question', 'options', 'answer', 'hint', 'mark', 'nmark', 'explanation', 'defficulty' 
     ];
     public function topics() {
         return $this->belongsToMany( Topic::class, 'exam_question', 'qid', 'tid' );

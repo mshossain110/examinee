@@ -17,7 +17,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = Question::get();
+        $questions = Question::where('user_id', auth()->user()->id)->latest()->paginate(4);
         return view("question.index", compact('questions'));
     }
 
@@ -26,11 +26,11 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create( $todo )
     {
         $exams = Exam::all();
         $topics = Topic::all();
-        return view("question.create", compact('exams', 'topics'));
+        return view("question.create", compact('exams', 'topics', 'todo' ));
     }
 
     /**
@@ -41,10 +41,24 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $eid = $request->eid;
         $tid = $request->tid;
-        $question = Question::create( $request->all());
+        $question = Question::create([ 
+            'user_id'       => auth()->user()->id,
+            'qtype'         => $request->qtype,
+            'question'      => $request->question,
+            'options'       => $request->options,
+            'answer'        => $request->answer,
+            'hint'          => $request->hint,
+            'mark'          => $request->mark,
+            'explanation'   => $request->explanation,
+            'defficulty'    => $request->defficulty,
+        ]);
         $question->exams()->attach( $eid, [ 'tid' => $tid ]);
+        if ($request->todo != 0) {
+            return redirect()->route('exam.show', $request->todo);
+        }
         return redirect()->route("question.index");
     }
 
@@ -65,11 +79,12 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function edit(Question $question)
+    public function edit(Question $question, $todo)
     {
         $exams = Exam::all();
         $topics = Topic::all();
-        return view("question.edit", compact('exams', 'topics','question'));
+
+        return view("question.edit", compact('exams', 'topics','question', 'todo'));
         
     }
 
@@ -88,6 +103,9 @@ class QuestionController extends Controller
         $question->update( $request->all());
         $question->exams()->detach( $eid, [ 'tid' => $tid ]);
         $question->exams()->attach( $eid, [ 'tid' => $tid ]);
+        if ($request->todo != 0) {
+            return redirect()->route('exam.show', $request->todo);
+        }
         return redirect()->route("question.index");
     }
 
@@ -101,6 +119,6 @@ class QuestionController extends Controller
     {
         $question->exams()->detach();
         $question->delete();
-        return redirect()->route('question.index');
+        return $question->id;
     }
 }

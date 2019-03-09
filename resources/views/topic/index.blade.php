@@ -19,13 +19,13 @@
 			    			<a href="{{route('topic.edit',$topic->id)}}" class="mr-2">
 			    				<i class="fas fa-pen-square"></i>
 			    			</a>
-			    			<a href="{{route('topic.destroy',$topic->id)}}" onclick="event.preventDefault();
-			    			    document.getElementById('delete-form').submit();">
+			    			<a href="javascript:void(0)" onclick="event.preventDefault();
+			    			    document.getElementById('delete-form{{$topic->id}}').submit();">
 			    				<i class="fas fa-trash-alt" style="color: red"></i>
 			    			</a>
 			          	</p>
 			        </div>
-			        <form id="delete-form" action="{{route('topic.destroy',$topic->id)}}" method="POST" style="display: none;">
+			        <form id="delete-form{{$topic->id}}" action="{{route('topic.destroy',$topic->id)}}" method="POST" style="display: none;">
 	  		        	{{ csrf_field() }}
                     	<input name="_method" type="hidden" value="DELETE">
 	  		        </form>

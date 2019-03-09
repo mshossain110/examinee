@@ -52,6 +52,9 @@
                                     <label>
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                                     </label>
+                                    <label class="float-right">
+                                        <a href="{{ route('register') }}" style="color: #ffc107">register now</a> 
+                                    </label>
                                 </div>
                             </div>
                         </div>

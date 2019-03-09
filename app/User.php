@@ -52,4 +52,9 @@ class User extends Authenticatable
         $email = User::findOrFail($id);
         return $email->email;
     }
+
+    public function userResults()
+    {
+        return $this->hasMany(Result::class, 'sid');
+    }
 }

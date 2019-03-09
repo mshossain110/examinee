@@ -47,9 +47,9 @@
                                 
                             	<select id="subject" name="sid">
                                     @foreach( $subjects as $subject )
-                                        @foreach($exam->subjects as $examsub)
-                                		<option value="{{ $subject->id }}" @if($subject->id == $examsub->id) selected @endif>{{$subject->title}}</option>
-                                        @endforeach
+                                        {{-- @foreach($exam->subjects as $examsub) --}}
+                                		<option value="{{ $subject->id }}" >{{$subject->title}}</option>
+                                        {{-- @endforeach --}}
                                     @endforeach
                             	</select>
                                 @if ($errors->has('subject'))

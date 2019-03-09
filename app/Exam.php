@@ -16,7 +16,7 @@ class Exam extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description',
+        'user_id','title', 'description',
     ];
 
     public function subjects() {
@@ -34,4 +34,17 @@ class Exam extends Model
         return $this->hasMany(Result::class, 'eid', 'id');
     }
 
+    public function examUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public static function calculateTotalMark($marks)
+    {
+        $count = 0;
+        foreach ($marks as $mark) {
+            $count = $count + $mark->mark;
+        }
+        return $count;
+    }
 }

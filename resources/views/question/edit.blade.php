@@ -149,7 +149,7 @@
                             </div>
                         </div>
 
-                        
+                        <input type="hidden" name="todo" value="{{$todo}}">
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">

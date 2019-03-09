@@ -8,6 +8,7 @@ use App\Result;
 use App\Subject;
 use App\Question;
 use Illuminate\Http\Request;
+use App\Events\ExamWasCreated;
 use App\Http\Requests\ExamRequest;
 
 class ExamController extends Controller
@@ -17,9 +18,18 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $exams = Exam::with( 'subjects', 'questions' )->paginate(15);
+        if ($request->ajax()) {
+            $exams = Exam::with( 'subjects', 'questions' )->where([
+                ['user_id', auth()->user()->id],
+                ['title', 'like', '%' . $request->search . '%']
+            ])->get();
+            return view("exam.ajax.index", [
+                'exams' => $exams
+            ]);
+        }
+        $exams = Exam::with( 'subjects', 'questions' )->where('user_id', auth()->user()->id)->paginate(6);
         return view("exam.index", [
             'exams' => $exams
         ]);
@@ -32,7 +42,7 @@ class ExamController extends Controller
      */
     public function create()
     {
-        $subjects = Subject::all();
+        $subjects = Subject::where('user_id', auth()->user()->id)->get();
         return view("exam.create", [
             'subjects' => $subjects
         ]);
@@ -46,10 +56,19 @@ class ExamController extends Controller
      */
     public function store(ExamRequest $request)
     {
+        // dd(auth()->user()->id);
         $sid = $request->input('sid');
-        $exam = Exam::create( $request->all() );
+        $exam = Exam::create([
+            'user_id'       => auth()->user()->id,
+            'title'         => $request->title,
+            'description'   => $request->description
+        ]);
         $eid = $exam->id;
         $exam->subjects()->attach($sid);
+
+        // broadcast event
+        // broadcast(new ExamWasCreated($exam))->toOthers();
+
         return redirect()->route('exam.index');
     }
 
@@ -59,11 +78,32 @@ class ExamController extends Controller
      * @param  \App\Exam  $exam
      * @return \Illuminate\Http\Response
      */
-    public function show(Exam $exam)
+    public function show(Request $request, Exam $exam)
     {
+        $max = $exam->examResults->pluck('obtain')->max();
+        $avg = $exam->examResults->pluck('obtain')->avg();
+        $min = $exam->examResults->pluck('obtain')->min();
         
+        $result = [];
+        $result[0] = $exam->examResults->where('obtain', round($min))->count();
+        $result[1] = $exam->examResults->where('obtain', round($avg))->count();
+        $result[2] = $exam->examResults->where('obtain', round($max))->count();
+
+        $dataset = implode(',',$result);
         $totalMarks = $this->calculateTotalMark($exam->questions);
-        return view('exam.show', compact('exam', 'totalMarks'));
+
+        $questions = $exam->questions()->latest()->paginate(2, ['*'], 'questions');
+        
+        // if has ajax request
+        if ($request->ajax()) {
+            if ($request->has('questions')) {
+                
+                return view('exam.ajax.questions',['questions' => $questions, 'exam' => $exam]);
+            }
+            return back();
+        }
+
+        return view('exam.show', compact('exam','results', 'questions', 'totalMarks','dataset','min','max', 'avg'));
     }
 
     public function start( Exam $exam )
@@ -74,12 +114,18 @@ class ExamController extends Controller
 
     public function end( Request $request, Exam $exam, Result $result )
     {
-        Result::create([
-            'sid' => auth()->user()->id,
-            'eid' => $exam->id,
+        
+        $totalMarks = $this->calculateTotalMark($exam->questions);
+        $earnMarks = Result::calculateMark($request->answer);
+
+        $result = Result::create([
+            'sid'    => auth()->user()->id,
+            'eid'    => $exam->id,
             'answer' => $request->answer,
+            'obtain' => $earnMarks,
         ]);
-        return redirect()->route('student.home')->with('msg', 'Thanks for you exam');
+
+        return redirect()->route('student.home')->with('msg', 'Thanks for you exam <br> You got ' .$earnMarks .' out of '.$totalMarks .' marks');
     }
     /**
      * Show the form for editing the specified resource.
@@ -123,6 +169,7 @@ class ExamController extends Controller
      */
     public function destroy(Exam $exam)
     {
+        // dd($exam);
         $exam->subjects()->detach();
         $exam->delete();
         return redirect()->route('exam.index');

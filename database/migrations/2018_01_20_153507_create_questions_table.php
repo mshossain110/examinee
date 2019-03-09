@@ -15,6 +15,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned();
             $table->tinyInteger( 'qtype' )->default( 0 )->comment( '0: Objective; 1: True/False;');
             $table->string("question");
             $table->string("options")->nullable();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exam;
+use App\Result;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -12,9 +13,14 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $exams = Exam::all();
+        $exams = Exam::paginate(6);
+
+        if ($request->ajax()) {
+            $exams = Exam::where('title', 'like', '%' . $request->search . '%')->get();
+            return view('student.ajax',compact('exams'));
+        }
         return view('student.exam-question',compact('exams'));
     }
 
@@ -82,5 +88,12 @@ class StudentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function ResultShow(Result $result)
+    {
+        $results = $result->where('sid', auth()->user()->id)->latest()->get();
+        return view('student.result',compact('results'));
     }
 }
