@@ -37,8 +37,8 @@
 
 ## Screen Shorts
 ---
-![Dashboard, ](https://github.com/mshossain110/LaravelDrive/blob/develop/doc/screenshort/dashboard.png)
+![Dashboard, ](https://github.com/mshossain110/examinee/blob/develop/doc/screenshort/dashboard.png)
 
-![Exam](https://github.com/mshossain110/LaravelDrive/blob/develop/doc/screenshort/exam.png)
+![Exam](https://github.com/mshossain110/examinee/blob/develop/doc/screenshort/exam.png)
 
-![Question Form](https://github.com/mshossain110/LaravelDrive/blob/develop/doc/screenshort/question.png)
+![Question Form](https://github.com/mshossain110/examinee/blob/develop/doc/screenshort/question.png)
