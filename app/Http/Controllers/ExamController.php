@@ -103,7 +103,7 @@ class ExamController extends Controller
             return back();
         }
 
-        return view('exam.show', compact('exam','results', 'questions', 'totalMarks','dataset','min','max', 'avg'));
+        return view('exam.show', compact('exam','result', 'questions', 'totalMarks','dataset','min','max', 'avg'));
     }
 
     public function start( Exam $exam )
