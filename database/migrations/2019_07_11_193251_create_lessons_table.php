@@ -15,12 +15,12 @@ class CreateLessonsTable extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->integer('course_id')->unsigned()->nullable();
+                $table->integer('course_id')->unsigned();
                 $table->string('title')->nullable();
                 $table->string('slug')->nullable();
                 $table->string('thumbnail')->nullable();
                 $table->tinyInteger('type')->default(1);
-                $table->json('options')->nullable();
+                $table->json('object')->nullable();
                 $table->text('short_text')->nullable();
                 $table->text('full_text')->nullable();
                 $table->integer('position')->nullable()->unsigned();
@@ -29,6 +29,9 @@ class CreateLessonsTable extends Migration
                 
                 $table->timestamps();
                 $table->softDeletes();
+
+                $table->integer('created_by')->unsigned();
+                $table->integer('updated_by')->unsigned();
                 
                 $table->index(['deleted_at']);
                 $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');

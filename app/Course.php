@@ -11,7 +11,7 @@ class Course extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'slug', 'description', 'price', 'course_image', 'start_date', 'status', 'created_by'];
+    protected $fillable = ['title', 'slug', 'description', 'price', 'course_image', 'start_date', 'status', 'created_by', 'updated_by'];
     
 
     /**
