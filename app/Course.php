@@ -55,12 +55,12 @@ class Course extends Model
     
     public function teachers()
     {
-        return $this->belongsToMany(User::class, 'course_user');
+        return $this->belongsToMany(User::class, 'course_teachers');
     }
 
     public function students()
     {
-        return $this->belongsToMany(User::class, 'course_student')->withTimestamps()->withPivot(['rating']);
+        return $this->belongsToMany(User::class, 'course_students')->withTimestamps()->withPivot(['rating', 'progress']);
     }
 
     public function lessons()

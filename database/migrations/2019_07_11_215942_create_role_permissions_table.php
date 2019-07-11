@@ -18,8 +18,6 @@ class CreateRolePermissionsTable extends Migration
             $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
             $table->bigInteger('role_id')->unsigned()->nullable();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 
         });
     }
