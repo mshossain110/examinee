@@ -23,6 +23,8 @@ Route::group(['middleware' => 'guest'], function(){
 
 	Route::post('/register/store', 'AuthController@register')->name('register.store');
 
+	Route::get('course/{slug}', ['uses' => 'CoursesController@show', 'as' => 'courses.show']);
+
 });
 
 

@@ -14,9 +14,9 @@ class CreateCourseStudentsTable extends Migration
     public function up()
     {
         Schema::create('course_students', function (Blueprint $table) {
-            $table->integer('course_id')->unsigned()->nullable();
+            $table->bigInteger('course_id')->unsigned();
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('rating')->unsigned()->default(0);
             $table->integer('progress')->unsigned()->default(0);

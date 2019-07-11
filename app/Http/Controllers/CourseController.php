@@ -46,7 +46,10 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        $course->load('publishedLessons')->firstOrFail();
+        $purchased_course = \Auth::check() && $course->students()->where('user_id', \Auth::id())->count() > 0;
+
+        return view('course.show', compact('course', 'purchased_course'));
     }
 
     /**

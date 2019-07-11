@@ -14,9 +14,9 @@ class CreateResultsTable extends Migration
     public function up()
     {
         Schema::create('results', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('sid');
-            $table->integer('eid');
+            $table->bigIncrements('id');
+            $table->bigInteger('sid');
+            $table->bigInteger('eid');
             $table->string('answer');
             $table->float('obtain');
             $table->timestamps();

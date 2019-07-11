@@ -14,8 +14,8 @@ class ExamSubject extends Migration
     public function up()
     {
         Schema::create('exam_subject', function( Blueprint $table ){
-            $table->integer('eid')->references('id')->on('exams')->onDelete('cascade');
-            $table->integer('sid')->references('id')->on('subjects')->onDelete('cascade');
+            $table->bigInteger('eid')->references('id')->on('exams')->onDelete('cascade');
+            $table->bigInteger('sid')->references('id')->on('subjects')->onDelete('cascade');
 
         });
     }

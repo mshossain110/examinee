@@ -14,10 +14,11 @@ class CreateLessonStudentTable extends Migration
     public function up()
     {
         Schema::create('lesson_student', function (Blueprint $table) {
-            $table->integer('lesson_id')->unsigned()->nullable();
+            $table->bigInteger('lesson_id')->unsigned();
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('status')->unsigned()->default(0);
             $table->timestamps();
         });
     }

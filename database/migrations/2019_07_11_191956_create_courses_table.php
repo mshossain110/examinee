@@ -23,9 +23,9 @@ class CreateCoursesTable extends Migration
             $table->date('start_date')->nullable();
             
             $table->tinyInteger('status')->default(0);
-            
-            $table->integer('created_by')->unsigned();
-            $table->integer('updated_by')->unsigned();
+
+            $table->bigInteger('created_by')->unsigned();
+            $table->bigInteger('updated_by')->unsigned();
             
             $table->timestamps();
             $table->softDeletes();

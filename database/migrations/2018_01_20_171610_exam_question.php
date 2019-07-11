@@ -14,9 +14,9 @@ class ExamQuestion extends Migration
     public function up()
     {
         Schema::create('exam_question', function (Blueprint $table) {
-            $table->integer('qid')->references('id')->on('questions')->onDelete('cascade');
-            $table->integer('eid')->references('id')->on('exams')->onDelete('cascade');
-            $table->integer('tid')->nullable()->references('id')->on('topics')->onDelete('cascade');
+            $table->bigInteger('qid')->references('id')->on('questions')->onDelete('cascade');
+            $table->bigInteger('eid')->references('id')->on('exams')->onDelete('cascade');
+            $table->bigInteger('tid')->nullable()->references('id')->on('topics')->onDelete('cascade');
         });
     }
 
