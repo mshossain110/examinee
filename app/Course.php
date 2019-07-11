@@ -70,7 +70,7 @@ class Course extends Model
 
     public function publishedLessons()
     {
-        return $this->hasMany(Lesson::class)->orderBy('position')->where('published', 1);
+        return $this->hasMany(Lesson::class)->orderBy('position')->where('status', 1);
     }
 
     public function scopeOfTeacher($query)
