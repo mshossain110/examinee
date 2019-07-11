@@ -21,7 +21,7 @@ class CreateCoursesTable extends Migration
             $table->decimal('price', 15, 2)->nullable();
             $table->string('course_image')->nullable();
             $table->date('start_date')->nullable();
-            $table->tinyInteger('published')->nullable()->default(0);
+            $table->tinyInteger('status')->nullable()->default(0);
 
             $table->integer('created_by')->unsigned();
             
