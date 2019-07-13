@@ -16,5 +16,5 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.bootstrap4.min.css') }}">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @yield('extra-css')
+    @stack('head')
 </head>
