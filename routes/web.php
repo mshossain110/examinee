@@ -47,7 +47,8 @@ Route::group(['middleware' => ['auth', 'teacher']], function(){
 	Route::get('question/{question}/edit/{todo}', 'QuestionController@edit')->name('question.edit');
 	Route::put('question/{question}', 'QuestionController@update')->name('question.update');
 	Route::delete('question/{question}', 'QuestionController@destroy')->name('question.destroy');
-	Route::resource('courses', 'Admin\CoursesController');
+
+	// Route::resource('courses', 'Admin\CoursesController');
 });
 
 Route::group(['middleware' => ['auth', 'student']], function(){

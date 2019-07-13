@@ -36,12 +36,9 @@ class CoursesController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('course_create')) {
-            return abort(401);
-        }
-        $teachers = \App\User::whereHas('role', function ($q) { $q->where('role_id', 2); } )->get()->pluck('name', 'id');
-
-        return view('admin.courses.create', compact('teachers'));
+        // dd("kjdhfk");
+        $teachers = [];// \App\User::whereHas('role', function ($q) { $q->where('id', 2); } )->get()->pluck('name', 'id');
+        return view('courses.create', compact('teachers'));
     }
 
     /**
@@ -52,15 +49,13 @@ class CoursesController extends Controller
      */
     public function store(StoreCoursesRequest $request)
     {
-        if (! Gate::allows('course_create')) {
-            return abort(401);
-        }
+        
         $request = $this->saveFiles($request);
         $course = Course::create($request->all());
         $teachers = \Auth::user()->isAdmin() ? array_filter((array)$request->input('teachers')) : [\Auth::user()->id];
         $course->teachers()->sync($teachers);
 
-        return redirect()->route('admin.courses.index');
+        return redirect()->route('courses.index');
     }
 
 
@@ -72,9 +67,7 @@ class CoursesController extends Controller
      */
     public function edit($id)
     {
-        if (! Gate::allows('course_edit')) {
-            return abort(401);
-        }
+        
         $teachers = \App\User::whereHas('role', function ($q) { $q->where('role_id', 2); } )->get()->pluck('name', 'id');
 
         $course = Course::findOrFail($id);
@@ -91,9 +84,7 @@ class CoursesController extends Controller
      */
     public function update(UpdateCoursesRequest $request, $id)
     {
-        if (! Gate::allows('course_edit')) {
-            return abort(401);
-        }
+        
         $request = $this->saveFiles($request);
         $course = Course::findOrFail($id);
         $course->update($request->all());
@@ -112,9 +103,7 @@ class CoursesController extends Controller
      */
     public function show($id)
     {
-        if (! Gate::allows('course_view')) {
-            return abort(401);
-        }
+        
         $teachers = \App\User::get()->pluck('name', 'id');$lessons = \App\Lesson::where('course_id', $id)->get();$tests = \App\Test::where('course_id', $id)->get();
 
         $course = Course::findOrFail($id);
@@ -131,9 +120,7 @@ class CoursesController extends Controller
      */
     public function destroy($id)
     {
-        if (! Gate::allows('course_delete')) {
-            return abort(401);
-        }
+        
         $course = Course::findOrFail($id);
         $course->delete();
 
@@ -147,9 +134,7 @@ class CoursesController extends Controller
      */
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('course_delete')) {
-            return abort(401);
-        }
+        
         if ($request->input('ids')) {
             $entries = Course::whereIn('id', $request->input('ids'))->get();
 
@@ -168,9 +153,7 @@ class CoursesController extends Controller
      */
     public function restore($id)
     {
-        if (! Gate::allows('course_delete')) {
-            return abort(401);
-        }
+        
         $course = Course::onlyTrashed()->findOrFail($id);
         $course->restore();
 
@@ -185,9 +168,6 @@ class CoursesController extends Controller
      */
     public function perma_del($id)
     {
-        if (! Gate::allows('course_delete')) {
-            return abort(401);
-        }
         $course = Course::onlyTrashed()->findOrFail($id);
         $course->forceDelete();
 
