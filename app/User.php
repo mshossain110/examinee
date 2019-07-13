@@ -27,19 +27,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-
-    const TEACHER = 1;
-    const STUDENT = 2;
-
-    public function isTeacher()
-    {
-        return $this->role_id == User::TEACHER;
-    } 
-
-    public function isStudent()
-    {
-        return $this->role_id == User::STUDENT;
-    }
+    const ADMIN = 1;
+    const TEACHER = 2;
+    const STUDENT = 3;
 
     public static function username($id)
     {
@@ -65,7 +55,17 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role()->where('role_id', 1)->first();
+        return $this->role()->where('role_id', self::ADMIN)->first();
+    }
+
+    public function isTeacher () 
+    {
+        return $this->role()->where('role_id', self::TEACHER)->first();
+    }
+
+    public function isStudent () 
+    {
+        return $this->role()->where('role_id', self::STUDENT)->first();
     }
 
 

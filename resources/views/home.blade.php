@@ -1,11 +1,13 @@
 @extends('layouts.app')
-@section('extra-css')
+@push('heade')
     <style type="text/css">
         #example_wrapper .col-md-6{
             max-width: 100%;
         }
     </style>
-@endsection
+@endpush
+
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -69,7 +71,7 @@
 
 </div>
 @endsection
-@section('extra-js')
+@push('footer')
 
     <script type="text/javascript">
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -108,4 +110,4 @@
         // console.log('data:'+ ' {{$data}}');
         // console.log('labels:'+ ' {{$labels}}');
     </script>
-@endsection
+@endpush
