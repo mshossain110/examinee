@@ -11,28 +11,16 @@
 |
 */
 
+Auth::routes();
+
 Route::group(['middleware' => 'guest'], function(){
 	Route::get('/', function () {
 	    return view('welcome');
 	});
-	Route::get('/login', 'AuthController@index')->name('login');
-
-	Route::post('/login/store', 'AuthController@store')->name('login.store');
-
-	Route::get('/register', 'AuthController@registerView')->name('register');
-
-	Route::post('/register/store', 'AuthController@register')->name('register.store');
 
 	Route::get('course/{slug}', ['uses' => 'CoursesController@show', 'as' => 'courses.show']);
 
 });
-
-
-Route::group(['middleware' => 'auth'], function(){
-	Route::post('/logout', 'AuthController@logout')->name('logout');
-});
-
-
 
 Route::group(['middleware' => ['auth', 'teacher']], function(){
 	Route::get('/home', 'HomeController@index')->name('home');
