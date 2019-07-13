@@ -15,6 +15,16 @@ use Spatie\Permission\Models\Role;
 |
 */
 
+
 $factory->define(App\User::class, function (Faker $faker) {
-    
+    return [
+        'firstname'      => $faker->firstName ,
+        'lastname'       => $faker->lastName,
+        'avatar'         => 'http://lorempixel.com/80/60/',
+        'name'           => $faker->unique()->userName,
+        'email'          => $faker->unique()->safeEmail,
+        'password'       => '$2y$10$l4MghrLnKXTRUDlR07XQeesKHRIaAe7WzDf90g751BEf70AwnJ5m.',// password
+        'remember_token' => str_random(10),
+        'ip'             => $faker->ipv6,
+    ];
 });

@@ -46,6 +46,17 @@ return [
             'provider' => 'users',
         ],
     ],
+    /**
+     * Here is some default permission to controll application
+     */
+    'permissions' => [
+        'super' => [
+            'administrator'
+        ],
+        'guests' => [
+
+        ]
+    ],
 
     /*
     |--------------------------------------------------------------------------
