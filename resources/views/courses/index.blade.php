@@ -2,13 +2,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.courses.title')</h3>
-    @can('course_create')
+    <h3 class="page-title">@lang('My Courcse')</h3>
+
     <p>
         <a href="{{ route('courses.create') }}" class="btn btn-success">@lang('Add New')</a>
         
     </p>
-    @endcan
+
 
     <p>
         <ul class="list-inline">

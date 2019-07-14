@@ -6,7 +6,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            @lang('global.app_create')
+            @lang('Create Course')
         </div>
         
         <div class="panel-body">
@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    {!! Form::submit(trans('global.app_save'), ['class' => 'btn btn-danger']) !!}
+    {!! Form::submit(trans('Save Course'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 @stop
 

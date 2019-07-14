@@ -25,6 +25,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/question') }}">Question</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/courses') }}">coursed</a>
+                </li>
             </ul>
             <ul class="navbar-nav justify-content-end">
                 

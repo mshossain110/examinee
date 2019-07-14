@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCoursesRequest;
 use App\Http\Requests\Admin\UpdateCoursesRequest;
+use App\User;
 
 class CoursesController extends Controller
 {
@@ -36,8 +37,7 @@ class CoursesController extends Controller
      */
     public function create()
     {
-        // dd("kjdhfk");
-        $teachers = [];// \App\User::whereHas('role', function ($q) { $q->where('id', 2); } )->get()->pluck('name', 'id');
+        $teachers = User::whereHas('role', function ($q) { $q->where('id', User::TEACHER); } )->get()->pluck('name', 'id');
         return view('courses.create', compact('teachers'));
     }
 
@@ -72,7 +72,7 @@ class CoursesController extends Controller
 
         $course = Course::findOrFail($id);
 
-        return view('admin.courses.edit', compact('course', 'teachers'));
+        return view('courses.edit', compact('course', 'teachers'));
     }
 
     /**
