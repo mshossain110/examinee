@@ -55,13 +55,13 @@
                                </tr>
                            </thead>
                            <tbody>
-                               @foreach($getStudent as $student)
+                               @foreach($students as $student)
                                    <tr>
                                            <td>{{ $student->id }}</td>
                                            <td>{{ $student->name }}</td>
                                    </tr>
                                @endforeach
-                           </tbody>
+                           </tbody> 
                    </table>
 
                 </div>
@@ -78,9 +78,9 @@
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: [{{$labels}}],
+                labels: [1, 2, 3, 4],
                 datasets: [{
-                    data: [{{$data}}],
+                    data: [100, 200, 120, 120],
                     backgroundColor: 'rgb(255, 99, 132)',
                     label: 'SD',
                 }],
@@ -107,7 +107,6 @@
                 }
             },
         });
-        // console.log('data:'+ ' {{$data}}');
-        // console.log('labels:'+ ' {{$labels}}');
+        
     </script>
 @endpush
