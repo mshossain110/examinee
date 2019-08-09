@@ -1,21 +1,12 @@
 
-/**
- * First, we will load all of this project's Javascript utilities and other
- * dependencies. Then, we will be ready to develop a robust and powerful
- * application frontend using useful Laravel and JavaScript libraries.
- */
 
-require('./bootstrap');
-window.Vue = require('vue');
+// Event bus
+window.EventBus = new Vue()
 
-import VueResource from 'vue-resource';
-
-Vue.use(VueResource);
-
-
-// vue components
-Vue.component('examnotify', require('./components/ExamNotify.vue'));
-
+// eslint-disable-next-line no-unused-vars
 const app = new Vue({
-	el: '#notify'
-});
+    el: '#app'
+})
+
+// eslint-disable-next-line no-console
+console.log('%c Warning! %c If you are not developer, this may be dangerous for you account.', 'background: yellow; color: black; font-size: 24px; font-weight: bold;', 'background: red; color: white; font-size: 24px;')
