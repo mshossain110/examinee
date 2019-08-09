@@ -22,29 +22,27 @@ function publicPath (dir = '') {
 }
 
 mix.webpackConfig({
-   resolve: {
-       extensions: ['.js', '.vue', '.json', '.scss'],
-       alias: {
-           'vue$': 'vue/dist/vue.esm.js',
-           'node_modules': './node_modules',
-           '@c': assetsPath('components'),
-           '@src': assetsPath('')
-       }
-   }
+    resolve: {
+        extensions: ['.js', '.vue', '.json', '.scss'],
+        alias: {
+            vue$: 'vue/dist/vue.esm.js',
+            node_modules: './node_modules',
+            '@c': assetsPath('components'),
+            '@src': assetsPath('')
+        }
+    }
 })
 
 mix.copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', publicPath('fonts/fontawesome'))
 mix.copy('node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js', publicPath('js/lib/jquery.fancybox.min.js'))
 mix.copy('node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css', publicPath('css/lib/jquery.fancybox.min.css'))
 
-mix.js(assetsPath('app.js'), publicPath('js')).eslint()
-mix.js(assetsPath('bootstrap.js'), publicPath('js')).eslint()
+mix.js(assetsPath('js/app.js'), publicPath('js')).eslint()
+mix.js(assetsPath('js/bootstrap.js'), publicPath('js')).eslint()
 mix.extract(['vue', 'jquery', 'popper.js', 'bootstrap', 'axios', 'lodash', 'moment'])
-
 
 mix.sass(assetsPath('sass/app.scss'), publicPath('css'))
 
-
 if (mix.inProduction()) {
-   mix.version()
+    mix.version()
 }

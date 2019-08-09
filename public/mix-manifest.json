@@ -1,4 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/bootstrap.js": "/js/bootstrap.js",
+    "/js/manifest.js": "/js/manifest.js",
+    "/js/vendor.js": "/js/vendor.js",
+    "/js/lib/jquery.fancybox.min.js": "/js/lib/jquery.fancybox.min.js",
+    "/css/lib/jquery.fancybox.min.css": "/css/lib/jquery.fancybox.min.css",
     "/css/app.css": "/css/app.css"
 }
