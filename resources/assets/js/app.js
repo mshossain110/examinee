@@ -1,5 +1,3 @@
-
-
 // Event bus
 window.EventBus = new Vue()
 

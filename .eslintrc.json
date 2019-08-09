@@ -1,0 +1,43 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "parserOptions": {
+        "parser": "babel-eslint",
+        "sourceType": "module"
+    },
+    "extends": [
+        "standard",
+        "plugin:vue/recommended"
+    ],
+    "globals": {
+        "axios": true,
+        "Vue": true,
+        "EventBus": true,
+        "$": true,
+        "jQuery": true,
+        "_": true,
+        "moment": true,
+        "Popper": true,
+        "Examinee": true,
+        "Echo": true
+    },
+    "rules": {
+        "indent": ["warn", 4],
+        "vue/html-indent": ["warn", 4],
+        "no-console": "warn",
+        "no-const-assign": "warn",
+        "no-this-before-super": "warn",
+        "no-undef": "warn",
+        "no-unreachable": "warn",
+        "no-unused-vars": "warn",
+        "constructor-super": "warn",
+        "valid-typeof": "warn",
+        "vue/component-name-in-template-casing": ["error", "PascalCase", {
+            "registeredComponentsOnly": false,
+            "ignores": []
+          }]
+    }
+}
