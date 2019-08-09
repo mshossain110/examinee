@@ -1,4 +1,6 @@
-let mix = require('laravel-mix');
+const mix = require('laravel-mix')
+const path = require('path')
+require('laravel-mix-eslint-config')
 
 /*
  |--------------------------------------------------------------------------
@@ -11,5 +13,38 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+function assetsPath (dir = '') {
+    return path.join(__dirname, './resources/assets/', dir)
+}
+
+function publicPath (dir = '') {
+    return path.join(__dirname, './public/', dir)
+}
+
+mix.webpackConfig({
+   resolve: {
+       extensions: ['.js', '.vue', '.json', '.scss'],
+       alias: {
+           'vue$': 'vue/dist/vue.esm.js',
+           'node_modules': './node_modules',
+           '@c': assetsPath('components'),
+           '@src': assetsPath('')
+       }
+   }
+})
+
+mix.copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', publicPath('fonts/fontawesome'))
+mix.copy('node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.js', publicPath('js/lib/jquery.fancybox.min.js'))
+mix.copy('node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css', publicPath('css/lib/jquery.fancybox.min.css'))
+
+mix.js(assetsPath('app.js'), publicPath('js')).eslint()
+mix.js(assetsPath('bootstrap.js'), publicPath('js')).eslint()
+mix.extract(['vue', 'jquery', 'popper.js', 'bootstrap', 'axios', 'lodash', 'moment'])
+
+
+mix.sass(assetsPath('sass/app.scss'), publicPath('css'))
+
+
+if (mix.inProduction()) {
+   mix.version()
+}

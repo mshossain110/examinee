@@ -8,8 +8,3 @@
     <!-- Scripts -->
 {{-- <script src="{{URL::asset('js/app.js') }}"></script> --}}
 <script src="{{URL::asset('js/custom.js') }}"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-	    $('#example').DataTable();
-	} );
-</script>
