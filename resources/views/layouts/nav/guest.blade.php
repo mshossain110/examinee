@@ -1,7 +1,7 @@
 <!-- Main menu -->
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-info text-white">
         <!-- Branding Image -->
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ url('/') }}">
+        <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
 
@@ -9,21 +9,32 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        
         
 
-        <div class="collapse navbar-collapse w-100" id="navbarTogglerDemo01">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <div class="collapse navbar-collapse d-flex justify-content-between">
+            <form class="form-inline flex-nowrap input-group-lg col-6">
+                <div class="input-group w-100">
+                    <input type="text" class="form-control" placeholder="Search courses" aria-label="Search" aria-describedby="search">
+                    <div class="input-group-prepend">
+                        <button class="input-group-text" id="search"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">Home</a>
+                    <a class="nav-link" href="{{url('/')}}"> <i class="fas fa-home"></i> Home</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav justify-content-end">
-            
-                <li class="nav-item" >
-                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)"> <i class="fas fa-th"></i> Courses</a>
                 </li>
                 <li class="nav-item" >
-                    <a class="nav-link" href="{{ route('register') }}">Register</a>
+                    <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Login</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" href="{{ route('register') }}"><i class="fas fa-user-plus"></i>Register</a>
                 </li>
                 
             </ul>
