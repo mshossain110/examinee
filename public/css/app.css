@@ -19762,3 +19762,8 @@ fieldset[disabled] .multiselect {
   }
 }
 
+.navbar-nav li.nav-item {
+  display: flex;
+  align-items: center;
+}
+

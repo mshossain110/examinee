@@ -20,6 +20,9 @@
         "phpunit/phpunit": "^7.0"
     },
     "autoload": {
+        "files": [
+			"app/Helpers/Functions/core.php"
+		],
         "classmap": [
             "database/seeds",
             "database/factories"
