@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 
-class HomeController extends Controller
+class LearningController extends Controller
 {
 
 
@@ -14,12 +14,8 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function __invoke(Request $request)
+    public function myCourses(Request $request)
     {   
-        if (Auth::check()) {
-            return view('home');
-        }
-
-        return view('guest');
+        return view('learning.index');
     }
 }

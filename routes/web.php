@@ -13,17 +13,16 @@
 
 Auth::routes();
 
+Route::get('/', 'HomeController')->name('home');
+
 Route::group(['middleware' => 'guest'], function(){
-	Route::get('/', function () {
-	    return view('welcome');
-	});
-
 	Route::get('course/{slug}', ['uses' => 'CoursesController@show', 'as' => 'courses.show']);
-
 });
 
 Route::group(['middleware' => ['auth']], function(){
-	Route::get('/home', 'HomeController@index')->name('home');
+
+	Route::get("/learning/my-courses", "LearningController@myCourses");
+
 	Route::resource('exam', 'ExamController');
 	Route::resource('subject', 'SubjectController');
 	Route::resource('topic', 'TopicController');
@@ -45,4 +44,3 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('exam/{exam}/end', 'ExamController@end' )->name('exam.end');
 	Route::get('student/exam/results', 'StudentController@ResultSHow' )->name('results');
 });
-

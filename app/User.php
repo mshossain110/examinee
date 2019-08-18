@@ -31,16 +31,9 @@ class User extends Authenticatable
     const TEACHER = 2;
     const STUDENT = 3;
 
-    public static function username($id)
+    public function getFullNameAttribute()
     {
-        $name = User::findOrFail($id);
-        return $name->name; 
-    }
-
-    public static function useremail($id)
-    {
-        $email = User::findOrFail($id);
-        return $email->email;
+        return "$this->firstname $this->lastname";
     }
 
     public function userResults()

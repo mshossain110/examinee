@@ -13,14 +13,11 @@
                 @endif
             @show
 
-            <div class="container-fluid" id="notify">
-                <div class="row">
-                    <!-- Display body -->
-                    <main role="main" class="col">
-                        @yield('content')
-                    </main>
-                </div> <!-- End row -->
-            </div> <!-- Container-fluid -->
+            
+            <!-- Display body -->
+            <main role="main" class="mian" >
+                @yield('content')
+            </main>
         </div>
     </div>
     
