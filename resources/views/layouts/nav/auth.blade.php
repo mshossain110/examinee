@@ -32,10 +32,10 @@
                     <a class="nav-link" href="javascript:void(0)"> <i class="fas fa-th"></i> Courses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Scholar</a>
+                    <a class="nav-link" href="{{route('instructor.courses')}}">Scholar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Student</a>
+                    <a class="nav-link" href="{{route('learning.courses')}}">Student</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">

@@ -21,7 +21,8 @@ Route::group(['middleware' => 'guest'], function(){
 
 Route::group(['middleware' => ['auth']], function(){
 
-	Route::get("/learning/my-courses", "LearningController@myCourses");
+	Route::get("/learning/my-courses", "LearningController@myCourses")->name("learning.courses");
+	Route::get("/instructor/courses", "InstructorController@courses")->name("instructor.courses");
 
 	Route::resource('exam', 'ExamController');
 	Route::resource('subject', 'SubjectController');
