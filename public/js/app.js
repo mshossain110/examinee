@@ -128,13 +128,127 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    course: {
+      type: Object,
+      "default": function _default() {
+        return {
+          title: '',
+          subtitle: '',
+          description: '',
+          thumbnail: '',
+          features: '',
+          requirements: '',
+          start_date: '',
+          certified: 1,
+          slug: '',
+          price: 0,
+          status: 1
+        };
+      }
+    }
+  },
   data: function data() {
-    return {};
+    return {
+      slugReadonly: true
+    };
   },
   computed: {},
   created: function created() {},
-  methods: {}
+  methods: {
+    submit: function submit() {
+      var params = this.course;
+      axios.post('/api/course', params).then(function (response) {});
+    },
+    titleInput: function titleInput(text) {
+      this.course.title = text;
+
+      if (this.slugReadonly) {
+        this.course.slug = this.slugify(this.course.title);
+      }
+    },
+    slugInput: function slugInput(text) {
+      if (this.slugReadonly) return;
+      this.course.slug = text;
+    },
+    slugify: function slugify(string) {
+      var a = 'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;';
+      var b = 'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------';
+      var p = new RegExp(a.split('').join('|'), 'g');
+      return string.toString().toLowerCase().replace(/\s+/g, '-') // Replace spaces with -
+      .replace(p, function (c) {
+        return b.charAt(a.indexOf(c));
+      }) // Replace special characters
+      .replace(/&/g, '-and-') // Replace & with 'and'
+      .replace(/[^\w-]+/g, '') // Remove all non-word characters
+      .replace(/--+/g, '-') // Replace multiple - with single -
+      .replace(/^-+/, '') // Trim - from start of text
+      .replace(/-+$/, ''); // Trim - from end of text
+    }
+  }
 });
 
 /***/ }),
@@ -154,17 +268,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "new-course mb-5" }, [
-      _c("div", { staticClass: "card p-3" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("form", { attrs: { action: "" } }, [
+  return _c("div", { staticClass: "new-course mb-5" }, [
+    _c("div", { staticClass: "card p-3" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "form",
+          {
+            attrs: { action: "" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.submit($event)
+              }
+            }
+          },
+          [
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "title" } }, [_vm._v("Title*")]),
               _vm._v(" "),
@@ -175,6 +293,12 @@ var staticRenderFns = [
                   type: "text",
                   "aria-describedby": "emailHelp",
                   placeholder: "Course Title"
+                },
+                domProps: { value: _vm.course.title },
+                on: {
+                  input: function($event) {
+                    return _vm.titleInput($event.target.value)
+                  }
                 }
               })
             ]),
@@ -182,15 +306,40 @@ var staticRenderFns = [
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "slug" } }, [_vm._v("Slug")]),
               _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  id: "slug",
-                  type: "text",
-                  "aria-describedby": "slugHelp",
-                  placeholder: "Course slug"
-                }
-              }),
+              _c("div", { staticClass: "input-group mb-3" }, [
+                _c("div", { staticClass: "input-group-prepend" }, [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "input-group-text",
+                      attrs: { id: "slugEdit" },
+                      on: {
+                        click: function($event) {
+                          _vm.slugReadonly = false
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "far fa-edit" })]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "form-control",
+                  attrs: {
+                    id: "slug",
+                    type: "text",
+                    "aria-describedby": "slugEdit",
+                    placeholder: "Course slug",
+                    readonly: _vm.slugReadonly
+                  },
+                  domProps: { value: _vm.course.slug },
+                  on: {
+                    input: function($event) {
+                      return _vm.slugInput($event.target.value)
+                    }
+                  }
+                })
+              ]),
               _vm._v(" "),
               _c(
                 "small",
@@ -203,78 +352,145 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "slug" } }, [_vm._v("Description")]),
+              _c("label", { attrs: { for: "description" } }, [
+                _vm._v("Description")
+              ]),
               _vm._v(" "),
               _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.course.description,
+                    expression: "course.description"
+                  }
+                ],
                 staticClass: "form-control ",
                 attrs: {
                   id: "description",
                   placeholder: "",
                   name: "description"
+                },
+                domProps: { value: _vm.course.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.course, "description", $event.target.value)
+                  }
                 }
               })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "features" } }, [_vm._v("Features")]),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.course.features,
+                    expression: "course.features"
+                  }
+                ],
+                staticClass: "form-control ",
+                attrs: { id: "features", placeholder: "", name: "features" },
+                domProps: { value: _vm.course.features },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.course, "features", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "small",
+                {
+                  staticClass: "form-text text-muted",
+                  attrs: { id: "features" }
+                },
+                [_vm._v("Separate by New Line")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "requirements" } }, [
+                _vm._v("Pre Requirements")
+              ]),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.course.requirements,
+                    expression: "course.requirements"
+                  }
+                ],
+                staticClass: "form-control ",
+                attrs: {
+                  id: "requirements",
+                  placeholder: "",
+                  name: "requirements"
+                },
+                domProps: { value: _vm.course.requirements },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.course, "requirements", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "small",
+                {
+                  staticClass: "form-text text-muted",
+                  attrs: { id: "requirements" }
+                },
+                [_vm._v("Separate by New Line")]
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "price" } }, [_vm._v("Price")]),
               _vm._v(" "),
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.course.price,
+                    expression: "course.price"
+                  }
+                ],
                 staticClass: "form-control",
                 attrs: {
                   id: "price",
                   type: "number",
                   "aria-describedby": "priceHelp",
                   placeholder: "Course Price"
+                },
+                domProps: { value: _vm.course.price },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.course, "price", $event.target.value)
+                  }
                 }
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "control-label",
-                  attrs: { for: "course_image" }
-                },
-                [_vm._v("Course image")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                staticStyle: { "margin-top": "4px" },
-                attrs: {
-                  id: "course_image",
-                  name: "course_image",
-                  type: "file"
-                }
-              }),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  name: "course_image_max_size",
-                  type: "hidden",
-                  value: "8"
-                }
-              }),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  name: "course_image_max_width",
-                  type: "hidden",
-                  value: "4000"
-                }
-              }),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  name: "course_image_max_height",
-                  type: "hidden",
-                  value: "4000"
-                }
-              }),
-              _vm._v(" "),
-              _c("p", { staticClass: "help-block" })
-            ]),
+            _vm._m(0),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c(
@@ -284,12 +500,29 @@ var staticRenderFns = [
               ),
               _vm._v(" "),
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.course.start_date,
+                    expression: "course.start_date"
+                  }
+                ],
                 staticClass: "form-control date",
                 attrs: {
                   id: "start_date",
                   placeholder: "",
                   name: "start_date",
                   type: "date"
+                },
+                domProps: { value: _vm.course.start_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.course, "start_date", $event.target.value)
+                  }
                 }
               }),
               _vm._v(" "),
@@ -298,36 +531,158 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("div", { staticClass: "form-group form-check" }, [
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.course.certified,
+                    expression: "course.certified"
+                  }
+                ],
                 staticClass: "form-check-input",
-                attrs: {
-                  id: "published",
-                  name: "published",
-                  type: "checkbox",
-                  value: "0"
+                attrs: { id: "status", name: "status", type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.course.certified)
+                    ? _vm._i(_vm.course.certified, null) > -1
+                    : _vm.course.certified
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.course.certified,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.course, "certified", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.course,
+                            "certified",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.course, "certified", $$c)
+                    }
+                  }
                 }
               }),
               _vm._v(" "),
               _c(
                 "label",
-                { staticClass: "control-label", attrs: { for: "published" } },
+                { staticClass: "control-label", attrs: { for: "status" } },
+                [_vm._v("Certified Course")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group form-check" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.course.status,
+                    expression: "course.status"
+                  }
+                ],
+                staticClass: "form-check-input",
+                attrs: { id: "status", name: "status", type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.course.status)
+                    ? _vm._i(_vm.course.status, null) > -1
+                    : _vm.course.status
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.course.status,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.course, "status", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.course,
+                            "status",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.course, "status", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                { staticClass: "control-label", attrs: { for: "status" } },
                 [_vm._v("Published")]
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "button",
-                { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-                [
-                  _vm._v(
-                    "\n                        Create\n                    "
-                  )
-                ]
-              )
-            ])
-          ])
-        ])
+            _vm._m(1)
+          ]
+        )
       ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "label",
+        { staticClass: "control-label", attrs: { for: "course_image" } },
+        [_vm._v("Course image")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        staticStyle: { "margin-top": "4px" },
+        attrs: { id: "course_image", name: "course_image", type: "file" }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { name: "course_image_max_size", type: "hidden", value: "8" }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { name: "course_image_max_width", type: "hidden", value: "4000" }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: {
+          name: "course_image_max_height",
+          type: "hidden",
+          value: "4000"
+        }
+      }),
+      _vm._v(" "),
+      _c("p", { staticClass: "help-block" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("\n                        Create\n                    ")]
+      )
     ])
   }
 ]

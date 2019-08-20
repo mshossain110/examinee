@@ -16,12 +16,17 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
+            $table->string('subtitle');
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
+            $table->text('features')->nullable();
+            $table->text('requirements')->nullable();
             $table->decimal('price', 15, 2)->nullable();
-            $table->string('course_image')->nullable();
+            $table->number('discount')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->date('start_date')->nullable();
             
+            $table->tinyInteger('certified')->default(1);
             $table->tinyInteger('status')->default(0);
 
             $table->bigInteger('created_by')->unsigned();
