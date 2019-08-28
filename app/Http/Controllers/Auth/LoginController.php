@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Cookie;
 
 class LoginController extends Controller
 {
@@ -36,4 +38,59 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        if (session('link')) {
+            $myPath = session('link');
+            $loginPath = url('/login');
+            $previous = url()->previous();
+
+            if ($previous = $loginPath) {
+                session(['link' => $myPath]);
+            } else {
+                session(['link' => $previous]);
+            }
+        } else {
+            session(['link' => url()->previous()]);
+        }
+
+        return view('auth.login');
+    }
+
+    protected function redirectTo()
+    {
+        if (session('link')) {
+            return session('link');
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed                    $user
+     *
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+
+        
+        $token = $user->createToken('Tasqers Personal Access Client')->accessToken;
+        Cookie::queue(Cookie::make('access_token', $token, 24 * 60));
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'redirectTo' => $this->redirectPath(), 'token' => $token]);
+        }
+
+        return redirect($this->redirectPath())->with('token', $token);
+    }
+
 }

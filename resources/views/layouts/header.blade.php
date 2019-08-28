@@ -16,5 +16,14 @@
 
     <link rel="stylesheet" href="{{ asset('css/lib/jquery.fancybox.min.css') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script>
+        @if ( isset($token ))
+            window.localStorage['auth_token'] = '{{ $token }}'
+        @endif
+
+        @if (Session::has('token'))
+            window.localStorage['auth_token'] = '{{ Session::get("token") }}'
+        @endif
+    </script>
     @stack('head')
 </head>
