@@ -62,5 +62,9 @@ class User extends Authenticatable
         return $this->role()->where('role_id', self::STUDENT)->first();
     }
 
+    public function instructs()
+    {
+        return $this->belongsToMany(Course::class, 'course_teachers');
+    }
 
 }

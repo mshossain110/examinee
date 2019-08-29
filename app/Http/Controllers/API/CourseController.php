@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class CourseController extends Controller
 {
@@ -13,9 +14,14 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = $request->user();
+        $courses = $user->instructs();
+
+        $collection = JsonResource::collection($courses);
+
+        return $collection->response();
     }
 
     /**
@@ -26,7 +32,15 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $request->user();
+        $data = $request->all();
+        $data['created_by'] = $user->id;
+        $data['updated_by'] = $user->id;
+        $course = $user->instructs()->create($data);
+
+        $resource = New JsonResource($course);
+
+        return $resource;
     }
 
     /**
@@ -37,7 +51,9 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        $resource = New JsonResource($course);
+
+        return $resource;
     }
 
     /**
@@ -49,7 +65,14 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $user = $request->user();
+        $data = $request->all();
+        $data['updated_by'] = $user->id;
+        $course = $course->update($data);
+
+        $resource = New JsonResource($course);
+
+        return $resource;
     }
 
     /**
@@ -60,6 +83,9 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $course->lessons()->delete();
+        $resource->delete();
+
+        return response(['Course delete successfully']);
     }
 }
