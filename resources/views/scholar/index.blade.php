@@ -53,58 +53,7 @@
                 <new-course></new-course>
             </div>
         </div>
-        <div class="row">
-            <div class="col col-3">
-                <div class="card mb-3">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Course Title</h5>
-                        <p class="card-text">Some quick example text to build on the Course Title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-3">
-                <div class="card mb-3">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Course Title</h5>
-                        <p class="card-text">Some quick example text to build on the Course Title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-3">
-                <div class="card mb-3">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Course Title</h5>
-                        <p class="card-text">Some quick example text to build on the Course Title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-3">
-                <div class="card mb-3">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Course Title</h5>
-                        <p class="card-text">Some quick example text to build on the Course Title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col col-3">
-                <div class="card mb-3">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Course Title</h5>
-                        <p class="card-text">Some quick example text to build on the Course Title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <instructor-courses></instructor-courses>
     </div>
 </section>
 @endsection

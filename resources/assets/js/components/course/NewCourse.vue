@@ -46,6 +46,19 @@
                             class="form-text text-muted"
                         >Try To Create SEO Frindly URL</small>
                     </div>
+
+                    <div class="form-group">
+                        <label for="subtitle">Subtitle *</label>
+                        <input
+                            id="subtitle"
+                            v-model="course.subtitle"
+                            type="subtitle"
+                            class="form-control"
+                            aria-describedby="subtitle"
+                            placeholder="Course Subtitle"
+                        >
+                    </div>
+
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea

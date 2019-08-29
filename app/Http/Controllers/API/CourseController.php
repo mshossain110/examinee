@@ -17,7 +17,7 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $courses = $user->instructs();
+        $courses = $user->instructs;
 
         $collection = JsonResource::collection($courses);
 

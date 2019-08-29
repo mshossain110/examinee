@@ -2,6 +2,7 @@
 window.EventBus = new Vue()
 
 Vue.component('NewCourse', require('./components/course/NewCourse.vue').default)
+Vue.component('InstructorCourses', require('./components/course/InstructorCourses.vue').default)
 // eslint-disable-next-line no-unused-vars
 const app = new Vue({
     el: '#app'
