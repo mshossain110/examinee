@@ -17,6 +17,8 @@
 @import "node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
 @import "node_modules/vue-multiselect/dist/vue-multiselect.min";
 
+@import 'partials/dropzone.scss';
+
 .navbar-nav li.nav-item {
     display: flex;
     align-items: center;

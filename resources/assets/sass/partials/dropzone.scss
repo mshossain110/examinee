@@ -1,0 +1,112 @@
+// For dropzone
+.vue-dropzone {
+    border: 3px dashed #ddd;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.vue-dropzone .dz-default {
+    padding: 7px 0.5rem;
+    text-align: center;
+    font-size: 12px;
+}
+.vue-dropzone .dz-preview .dz-image {
+    width: 50px;
+}
+.vue-dropzone .dz-preview .dz-details {
+    color: #3a3a3a;
+    background-color: inherit;
+    transition: none;
+    text-align: left;
+    float: left;
+    margin-left: 15px;
+    font-size: 12px;
+    padding: 0;
+    flex-grow: 1;
+    margin-right: 15px;
+}
+.vue-dropzone .dz-preview .dz-error-message {
+    display: none;
+}
+.vue-dropzone .dz-preview .dz-success-mark,
+.vue-dropzone .dz-preview .dz-error-mark {
+    display: none;
+}
+.vue-dropzone .dz-preview .dz-remove {
+    position: relative;
+    z-index: 0;
+    color: #fff;
+    margin-left: 0;
+    padding: 0px 5px;
+    top: 0;
+    bottom: 0;
+    border: 1px solid #1abc9c;
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0;
+    opacity: 9;
+    background: #1abc9c;
+    float: right;
+    border-radius: 2px;
+}
+.vue-dropzone .dz-preview {
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    float: left;
+    width: 100%;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    position: relative;
+    top: 10px;
+}
+.vue-dropzone .dz-preview .dz-details .dz-filename span {
+    border: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 150px;
+    white-space: nowrap;
+    display: block;
+}
+
+.grid-view {
+    .vue-dropzone {
+        display: flex;
+        flex-wrap: nowrap;
+        border: none;
+        .dz-preview {
+            position: relative;
+            width: 60px;
+            margin-right: 5px;
+            .dz-image{
+                width: 60px;
+            }
+            .dz-details {
+                display: none;
+            }
+            .dz-remove {
+                display: none;
+                &.btn-icon {
+                    width: 16px;
+                    height: 16px;
+                    top: -3px;
+                    background: #f90f0f;
+                    color: #f9f9f9;
+                    border: none;
+                    right: -5px;
+                    text-align: center;
+                    padding: 0px 0px;
+                    border-radius: 50%;
+                    font-size: 16px;
+                    z-index: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: absolute;
+                }
+            }
+        }
+    }
+}

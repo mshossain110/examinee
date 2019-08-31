@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Event bus
 import Dropzone from './components/common/dropzone'
 const VueRouter = require('vue-router').default
