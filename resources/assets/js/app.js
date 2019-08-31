@@ -1,11 +1,21 @@
 // Event bus
+const VueRouter = require('vue-router').default
+
 window.EventBus = new Vue()
 
-Vue.component('NewCourse', require('./components/course/NewCourse.vue').default)
-Vue.component('InstructorCourses', require('./components/course/InstructorCourses.vue').default)
+Vue.component('PageScholar', require('./components/course/PageScholar.vue').default)
 // eslint-disable-next-line no-unused-vars
+Vue.use(VueRouter)
+const router = new VueRouter({
+    mode: 'history',
+    scrollBehavior () {
+        return { x: 0, y: 0 }
+    }
+})
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router
 })
 
 // eslint-disable-next-line no-console

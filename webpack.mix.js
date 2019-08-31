@@ -39,7 +39,7 @@ mix.copy('node_modules/@fancyapps/fancybox/dist/jquery.fancybox.min.css', public
 
 mix.js(assetsPath('js/app.js'), publicPath('js')).eslint()
 mix.js(assetsPath('js/bootstrap.js'), publicPath('js')).eslint()
-mix.extract(['vue', 'jquery', 'popper.js', 'bootstrap', 'axios', 'lodash', 'moment'])
+mix.extract(['vue', 'vue-router', 'jquery', 'popper.js', 'bootstrap', 'axios', 'lodash', 'moment'])
 
 mix.sass(assetsPath('sass/app.scss'), publicPath('css'))
 
