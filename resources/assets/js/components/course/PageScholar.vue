@@ -5,22 +5,33 @@
                 <div class="page-title text-center">
                     <h3>Instructor Courses</h3>
                     <nav class="nav text-light justify-content-center">
-                        <a
-                            class="nav-link active"
-                            href=""
-                        >Courses</a>
-                        <a
+                        <RouterLink
                             class="nav-link"
-                            href="#"
-                        >Exams</a>
-                        <a
+                            :to="{name: 'course'}"
+                        >
+                            Courses
+                        </RouterLink>
+
+                        <RouterLink
                             class="nav-link"
-                            href="#"
-                        >My Studentes</a>
-                        <a
+                            :to="{name: 'exam'}"
+                        >
+                            Exams
+                        </RouterLink>
+
+                        <RouterLink
                             class="nav-link"
-                            href="#"
-                        >Discussion</a>
+                            :to="{name: 'my-students'}"
+                        >
+                            My Studentes
+                        </RouterLink>
+
+                        <RouterLink
+                            class="nav-link"
+                            :to="{name: 'discussion'}"
+                        >
+                            Discussion
+                        </RouterLink>
                     </nav>
                 </div>
             </div>

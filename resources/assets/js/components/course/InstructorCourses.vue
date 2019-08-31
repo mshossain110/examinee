@@ -5,25 +5,23 @@
             :key="course.id"
             class="col col-3"
         >
-            <div class="card mb-3">
-                <img
-                    src=""
-                    class="card-img-top"
-                    alt=""
-                >
-                <div class="card-body">
-                    <h5 class="card-title">
-                        {{ course.title }}
-                    </h5>
-                    <p class="card-text">
-                        {{ course.subtitle }}
-                    </p>
-                    <a
-                        href="#"
-                        class="btn btn-primary"
-                    >More</a>
+            <RouterLink :to="{name: 'course-single', params: { course : course.slug }}">
+                <div class="card mb-3">
+                    <img
+                        src=""
+                        class="card-img-top"
+                        alt=""
+                    >
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {{ course.title }}
+                        </h5>
+                        <p class="card-text">
+                            {{ course.subtitle }}
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </RouterLink>
         </div>
     </div>
 </template>
