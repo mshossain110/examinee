@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Repositories\FileRepository;
@@ -11,7 +11,6 @@ use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-use App\Jobs\UploadToCloud;
 use App\File;
 use Auth;
 use DB;
@@ -88,7 +87,6 @@ class FileController extends ApiController
 
                 // $this->file->storePublicUpload($fileEntry, $save->getFile());
                 $this->file->moveFile($fileEntry, $save->getFile());
-                UploadToCloud::dispatch($fileEntry)->delay(now()->addMinutes(10)); // fire resize event and uplad to cloud
                 return $this->respondWithItem($fileEntry, FileResource::class);
             }
 
