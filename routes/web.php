@@ -24,6 +24,9 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get("/learning/my-courses", "LearningController@myCourses")->name("learning.courses");
 	Route::get("/instructor/courses/{any?}", "InstructorController@courses")->name("instructor.courses")->where('any', '.*');
 
+	Route::post('/download', 'DownloadController@download');
+    Route::get('/uploads/{id}/{any?}', 'UploadController')->where('any', '.*');
+
 	Route::resource('exam', 'ExamController');
 	Route::resource('subject', 'SubjectController');
 	Route::resource('topic', 'TopicController');
