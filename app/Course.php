@@ -6,14 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\Fileable;
 
 class Course extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Fileable;
 
-    protected $fillable = ['title', 'slug', 'description', 'price', 'course_image', 'start_date', 'status', 'created_by', 'updated_by'];
+    protected $fillable = ['title', 'slug', 'description', 'price', 'thumbnail', 'start_date', 'status', 'certified', 'created_by', 'updated_by'];
     
-
+    protected $with = [
+        'thumbnail'
+    ];
     /**
      * Set attribute to money format
      * @param $input
@@ -21,36 +24,6 @@ class Course extends Model
     public function setPriceAttribute($input)
     {
         $this->attributes['price'] = $input ? $input : null;
-    }
-
-    /**
-     * Set attribute to date format
-     * @param $input
-     */
-    public function setStartDateAttribute($input)
-    {
-        if ($input != null && $input != '') {
-            $this->attributes['start_date'] = Carbon::createFromFormat(config('app.date_format'), $input)->format('Y-m-d');
-        } else {
-            $this->attributes['start_date'] = null;
-        }
-    }
-
-    /**
-     * Get attribute from date format
-     * @param $input
-     *
-     * @return string
-     */
-    public function getStartDateAttribute($input)
-    {
-        $zeroDate = str_replace(['Y', 'm', 'd'], ['0000', '00', '00'], config('app.date_format'));
-
-        if ($input != $zeroDate && $input != null) {
-            return Carbon::createFromFormat('Y-m-d', $input)->format(config('app.date_format'));
-        } else {
-            return '';
-        }
     }
     
     public function teachers()
@@ -86,5 +59,9 @@ class Course extends Model
     public function getRatingAttribute()
     {
         return number_format(\DB::table('course_student')->where('course_id', $this->attributes['id'])->average('rating'), 2);
+    }
+
+    public function thumbnail() {
+        return $this->belongsTo(File::class, 'thumbnail');
     }
 }

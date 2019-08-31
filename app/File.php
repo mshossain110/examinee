@@ -5,13 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\FileObserver;
-use App\Traits\HandlesPaths;
-use App\Traits\HashesId;
 use App\Jobs\ResizedImage;
+use Storage;
 
 class File extends Model
 {
-    use HandlesPaths, HashesId, SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -71,6 +70,117 @@ class File extends Model
     public function parent()
     {
         return $this->belongsTo(static::class, 'folder_id');
+    }
+
+    public function updatePublicPaths($driver = null)
+    {
+        if ($this->driver !== $driver) {
+            $this->driver = $driver;
+        }
+
+        if ($this->permissions['public']) {
+            $this->public_path = Storage::disk($this->driver)->url($this->getStoragePath());
+        } else {
+            $this->public_path = Storage::disk('local')->url($this->getStoragePath());
+        }
+        $this->save();
+    }
+
+    /**
+     * @param string $oldPath
+     * @param string $newPath
+     * @param null   $entryIds
+     */
+    public function updatePaths($oldPath, $newPath, $entryIds = null)
+    {
+        $oldPath = $this->encodePath($oldPath);
+        $newPath = $this->encodePath($newPath);
+
+        $query = $this->newQuery();
+
+        if ($entryIds) {
+            $query->whereIn('id', $entryIds);
+        }
+
+        $query->where('path', 'LIKE', "$oldPath%")
+            ->update(['path' => DB::raw("REPLACE(path, '$oldPath', '$newPath')")]);
+    }
+
+    /**
+     * Get all children of current entry.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function findChildren()
+    {
+        if (!$this->exists) {
+            return collect();
+        }
+
+        return $this->where('path', 'like', $this->attributes['path'].'%')->get();
+    }
+
+    /**
+     * Generate full path for current entry, based on its parent.
+     */
+    public function generatePath()
+    {
+        if (!$this->exists) {
+            return;
+        }
+
+        $this->path = $this->id;
+
+        if ($this->parent) {
+            $parent = $this->find($this->parent_id);
+            $this->path = "{$parent->path}/$this->path";
+        }
+
+        $this->save();
+    }
+
+    private function encodePath($path)
+    {
+        $parts = explode('/', (string) $path);
+
+        $parts = array_filter($parts);
+
+        $parts = array_map(function ($part) {
+            return $this->encodePathId($part);
+        }, $parts);
+
+        return implode('/', $parts);
+    }
+
+    private function encodePathId($id)
+    {
+        return base_convert($id, 10, 36);
+    }
+
+    private function decodePathId($id)
+    {
+        return base_convert($id, 36, 10);
+    }
+
+    public function getHashAttribute()
+    {
+        return trim(base64_encode(str_pad($this->getOriginal('id').'|', 10, 'padding')), '=');
+    }
+
+    public function scopeWhereHash(Builder $query, $value)
+    {
+        $id = $this->decodeHash($value);
+
+        return $query->where('id', $id);
+    }
+
+    public function decodeHash($hash)
+    {
+        if ((int) $hash !== 0) {
+            return $hash;
+        }
+
+        return (int) explode('|', base64_decode($hash))[0];
     }
 
     /**

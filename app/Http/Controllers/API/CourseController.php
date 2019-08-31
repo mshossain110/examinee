@@ -33,10 +33,14 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-        $data = $request->all();
+        $data = $request->only(['title', 'slug', 'description', 'price', 'thumbnail', 'start_date', 'status', 'certified']);
         $data['created_by'] = $user->id;
         $data['updated_by'] = $user->id;
         $course = $user->instructs()->create($data);
+
+        if ($request->has('files')) {
+            $course->files()->attach($request->get('files'));
+        }
 
         $resource = New JsonResource($course);
 

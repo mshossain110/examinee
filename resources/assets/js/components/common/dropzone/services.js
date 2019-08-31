@@ -8,8 +8,8 @@ export default {
 
         return new Promise((resolve, reject) => {
             var fd = new FormData()
-            let request = new XMLHttpRequest()
-            let signingURL = (typeof config.signingURL === 'function') ? config.signingURL(file) : config.signingURL
+            const request = new XMLHttpRequest()
+            const signingURL = (typeof config.signingURL === 'function') ? config.signingURL(file) : config.signingURL
             request.open('POST', signingURL)
             request.onload = function () {
                 if (request.status === 200) {
@@ -49,15 +49,15 @@ export default {
         file.s3Url = response.postEndpoint
     },
     sendS3Handler (response, file) {
-        let fd = new FormData()
-        let signature = response.signature
+        const fd = new FormData()
+        const signature = response.signature
 
         Object.keys(signature).forEach(function (key) {
             fd.append(key, signature[key])
         })
         fd.append('file', file)
         return new Promise((resolve, reject) => {
-            let request = new XMLHttpRequest()
+            const request = new XMLHttpRequest()
             request.open('POST', response.postEndpoint)
             request.onload = function () {
                 var s3Error
@@ -65,8 +65,8 @@ export default {
                     s3Error = (new window.DOMParser()).parseFromString(request.response, 'text/xml')
                     var successMsg = s3Error.firstChild.children[0].innerHTML
                     resolve({
-                        'success': true,
-                        'message': successMsg
+                        success: true,
+                        message: successMsg
                     })
                 } else {
                     s3Error = (new window.DOMParser()).parseFromString(request.response, 'text/xml')
@@ -74,8 +74,8 @@ export default {
                     // eslint-disable-next-line prefer-promise-reject-errors
                     reject(
                         {
-                            'success': false,
-                            'message': errMsg + '. Request is marked as resolved when returns as status 201'
+                            success: false,
+                            message: errMsg + '. Request is marked as resolved when returns as status 201'
                         }
                     )
                 }
@@ -86,8 +86,8 @@ export default {
                 var errMsg = s3Error.firstChild.children[1].innerHTML
                 // eslint-disable-next-line prefer-promise-reject-errors
                 reject({
-                    'success': false,
-                    'message': errMsg
+                    success: false,
+                    message: errMsg
                 })
             }
             request.send(fd)

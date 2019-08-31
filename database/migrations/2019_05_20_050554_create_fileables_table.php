@@ -16,16 +16,10 @@ class CreateFileablesTable extends Migration
         Schema::create('fileables', function (Blueprint $table) {
             $table->bigInteger('file_id')->unsigned();
             $table->morphs('fileable');
-            $table->bigInteger('project_id')->unsigned()->nullable();
 
             $table->foreign('file_id')
                 ->references('id')
                 ->on('files')
-                ->onDelete('cascade');
-
-            $table->foreign('project_id')
-                ->references('id')
-                ->on('projects')
                 ->onDelete('cascade');
         });
     }

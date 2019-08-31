@@ -116,7 +116,7 @@ export default {
         this.dropzone.on('addedfile', function (file) {
             let isDuplicate = false // eslint-disable-line no-unused-vars
 
-            let _removeLink = Dropzone.createElement('<a class="dz-remove btn-icon" href="javascript:undefined;" data-dz-remove><i class="fas fa-times" ></i></a>')
+            const _removeLink = Dropzone.createElement('<a class="dz-remove btn-icon" href="javascript:undefined;" data-dz-remove><i class="fas fa-times" ></i></a>')
             file.previewElement.appendChild(_removeLink)
 
             if (vm.duplicateCheck) {
@@ -185,7 +185,7 @@ export default {
         this.dropzone.on('sending', function (file, xhr, formData) {
             if (vm.isS3) {
                 if (vm.isS3OverridesServerPropagation) {
-                    let signature = file.s3Signature
+                    const signature = file.s3Signature
                     Object.keys(signature).forEach(function (key) {
                         formData.append(key, signature[key])
                     })
@@ -317,7 +317,7 @@ export default {
             this.dropzone.removeAllFiles(bool)
         },
         processQueue: function () {
-            let dropzoneEle = this.dropzone
+            const dropzoneEle = this.dropzone
             if (this.isS3 && !this.wasQueueAutoProcess) {
                 this.getQueuedFiles().forEach((file) => {
                     this.getSignedAndUploadToS3(file)

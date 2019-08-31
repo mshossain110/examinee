@@ -8,7 +8,8 @@
             <RouterLink :to="{name: 'course-single', params: { course : course.slug }}">
                 <div class="card mb-3">
                     <img
-                        src=""
+                        v-if="course.thumbnail"
+                        :src="course.thumbnail.public_path"
                         class="card-img-top"
                         alt=""
                     >

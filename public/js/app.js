@@ -490,6 +490,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     dropzoneOptions: function dropzoneOptions() {
+      var bearer = window.localStorage['auth_token'];
       return {
         url: '/api/file',
         method: 'POST',
@@ -497,7 +498,8 @@ __webpack_require__.r(__webpack_exports__);
         parallelUploads: 1,
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+          'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
+          Authorization: 'Bearer ' + bearer
         },
         chunking: true,
         forceChunking: true,
@@ -561,7 +563,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     success: function success(file) {
       var response = JSON.parse(file.xhr.response);
-      this.fileResponse.push(response.data);
+      this.fileResponse.push(response);
       this.$emit('input', this.fileResponse);
     },
     chunksUploaded: function chunksUploaded(file, done) {
@@ -760,6 +762,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -1007,13 +1010,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     course: {
@@ -1037,14 +1033,45 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      slugReadonly: true
+      slugReadonly: true,
+      attachments: [],
+      thumbanile: []
     };
   },
   computed: {},
   created: function created() {},
   methods: {
     submit: function submit() {
+      this.saving = true;
+
+      if (this.attachments.length) {
+        this.uploadAndSave();
+      } else {
+        this.storeCourse();
+      }
+    },
+    uploadAndSave: function uploadAndSave() {
+      var _this = this;
+
+      this.$refs.protfilioUploader.processQueue().then(function (files) {
+        _this.storeCourse();
+      });
+    },
+    storeCourse: function storeCourse() {
       var params = this.course;
+
+      if (this.attachments.length) {
+        params.files = this.attachments.map(function (a) {
+          return a.id;
+        });
+      }
+
+      if (this.thumbanile) {
+        params.thumbnail = this.thumbanile.map(function (a) {
+          return a.id;
+        })[0];
+      }
+
       axios.post('/api/course', params).then(function (response) {});
     },
     titleInput: function titleInput(text) {
@@ -7650,10 +7677,12 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "card mb-3" }, [
-                _c("img", {
-                  staticClass: "card-img-top",
-                  attrs: { src: "", alt: "" }
-                }),
+                course.thumbnail
+                  ? _c("img", {
+                      staticClass: "card-img-top",
+                      attrs: { src: course.thumbnail.public_path, alt: "" }
+                    })
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("h5", { staticClass: "card-title" }, [
@@ -7959,7 +7988,36 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "div",
+              { staticClass: "form-group" },
+              [
+                _c(
+                  "label",
+                  {
+                    staticClass: "control-label",
+                    attrs: { for: "course_image" }
+                  },
+                  [_vm._v("Feature image")]
+                ),
+                _vm._v(" "),
+                _c("FileUploader", {
+                  attrs: {
+                    "upload-multiple": false,
+                    "auto-process-queue": "",
+                    "accepted-files": "image/*"
+                  },
+                  model: {
+                    value: _vm.thumbanile,
+                    callback: function($$v) {
+                      _vm.thumbanile = $$v
+                    },
+                    expression: "thumbanile"
+                  }
+                })
+              ],
+              1
+            ),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c(
@@ -8098,7 +8156,34 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _c(
+              "div",
+              { staticClass: "form-group" },
+              [
+                _c(
+                  "label",
+                  {
+                    staticClass: "control-label",
+                    attrs: { for: "course_image" }
+                  },
+                  [_vm._v("Course Files")]
+                ),
+                _vm._v(" "),
+                _c("FileUploader", {
+                  ref: "courseUploader",
+                  model: {
+                    value: _vm.attachments,
+                    callback: function($$v) {
+                      _vm.attachments = $$v
+                    },
+                    expression: "attachments"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._m(0)
           ]
         )
       ])
@@ -8106,42 +8191,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c(
-        "label",
-        { staticClass: "control-label", attrs: { for: "course_image" } },
-        [_vm._v("Course image")]
-      ),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        staticStyle: { "margin-top": "4px" },
-        attrs: { id: "course_image", name: "course_image", type: "file" }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { name: "course_image_max_size", type: "hidden", value: "8" }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { name: "course_image_max_width", type: "hidden", value: "4000" }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: {
-          name: "course_image_max_height",
-          type: "hidden",
-          value: "4000"
-        }
-      }),
-      _vm._v(" "),
-      _c("p", { staticClass: "help-block" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -8786,16 +8835,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           s3Error = new window.DOMParser().parseFromString(request.response, 'text/xml');
           var successMsg = s3Error.firstChild.children[0].innerHTML;
           resolve({
-            'success': true,
-            'message': successMsg
+            success: true,
+            message: successMsg
           });
         } else {
           s3Error = new window.DOMParser().parseFromString(request.response, 'text/xml');
           var errMsg = s3Error.firstChild.children[0].innerHTML; // eslint-disable-next-line prefer-promise-reject-errors
 
           reject({
-            'success': false,
-            'message': errMsg + '. Request is marked as resolved when returns as status 201'
+            success: false,
+            message: errMsg + '. Request is marked as resolved when returns as status 201'
           });
         }
       };
@@ -8807,8 +8856,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var errMsg = s3Error.firstChild.children[1].innerHTML; // eslint-disable-next-line prefer-promise-reject-errors
 
         reject({
-          'success': false,
-          'message': errMsg
+          success: false,
+          message: errMsg
         });
       };
 

@@ -112,30 +112,13 @@
                         <label
                             for="course_image"
                             class="control-label"
-                        >Course image</label>
-                        <input
-                            id="course_image"
-                            name="course_image"
-                            type="file"
-                            class="form-control"
-                            style="margin-top: 4px;"
-                        >
-                        <input
-                            name="course_image_max_size"
-                            type="hidden"
-                            value="8"
-                        >
-                        <input
-                            name="course_image_max_width"
-                            type="hidden"
-                            value="4000"
-                        >
-                        <input
-                            name="course_image_max_height"
-                            type="hidden"
-                            value="4000"
-                        >
-                        <p class="help-block" />
+                        >Feature image</label>
+                        <FileUploader
+                            v-model="thumbanile"
+                            :upload-multiple="false"
+                            auto-process-queue
+                            accepted-files="image/*"
+                        />
                     </div>
                     <div class="form-group">
                         <label
@@ -179,6 +162,16 @@
                         >Published</label>
                     </div>
                     <div class="form-group">
+                        <label
+                            for="course_image"
+                            class="control-label"
+                        >Course Files</label>
+                        <FileUploader
+                            ref="courseUploader"
+                            v-model="attachments"
+                        />
+                    </div>
+                    <div class="form-group">
                         <button
                             type="submit"
                             class="btn btn-primary"
@@ -217,7 +210,9 @@ export default {
     },
     data () {
         return {
-            slugReadonly: true
+            slugReadonly: true,
+            attachments: [],
+            thumbanile: []
         }
     },
     computed: {
@@ -228,7 +223,29 @@ export default {
     },
     methods: {
         submit () {
+            this.saving = true
+            if (this.attachments.length) {
+                this.uploadAndSave()
+            } else {
+                this.storeCourse()
+            }
+        },
+        uploadAndSave () {
+            this.$refs.protfilioUploader.processQueue()
+                .then(files => {
+                    this.storeCourse()
+                })
+        },
+        storeCourse () {
             var params = this.course
+            if (this.attachments.length) {
+                params.files = this.attachments.map(a => a.id)
+            }
+
+            if (this.thumbanile) {
+                params.thumbnail = this.thumbanile.map(a => a.id)[0]
+            }
+
             axios.post('/api/course', params)
                 .then(response => {
 

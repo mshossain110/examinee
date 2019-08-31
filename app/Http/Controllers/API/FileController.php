@@ -4,18 +4,17 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Repositories\FileRepository;
-use App\Http\Resources\FileResource;
-use App\Http\Requests\FileRequest;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use App\Http\Controllers\Controller;
 use App\File;
 use Auth;
 use DB;
 
-class FileController extends ApiController
+class FileController extends Controller
 {
     protected $file;
 
@@ -38,7 +37,7 @@ class FileController extends ApiController
                     ->where('created_by', Auth::id())
                     ->paginate($per_page);
 
-        return $this->respondWithPaginator($files, new FileTransformer());
+        return $files;
     }
 
     public function show($id)
@@ -52,7 +51,7 @@ class FileController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\UserRequest $request
+     * @param \App\Http\Requests\Request $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -87,7 +86,7 @@ class FileController extends ApiController
 
                 // $this->file->storePublicUpload($fileEntry, $save->getFile());
                 $this->file->moveFile($fileEntry, $save->getFile());
-                return $this->respondWithItem($fileEntry, FileResource::class);
+                return $fileEntry;
             }
 
             // we are in chunk mode, lets send the current progress
@@ -114,13 +113,13 @@ class FileController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(FileRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $validated = $request->validated();
         $data = $request->only(['name', 'description']);
         $file = $this->file->update($id, $data);
 
-        return $this->respondWithItem($file, new FileTransformer());
+        return $file;
     }
 
     /**
@@ -134,7 +133,7 @@ class FileController extends ApiController
     {
         $this->file->destroy($id);
 
-        return $this->respondWithMessage('file deleted successfully.');
+        return response()->json(['file deleted successfully.']);
     }
 
     /**
@@ -149,7 +148,7 @@ class FileController extends ApiController
         $ids = $request->get('ids');
         $this->file->deleteMultiple($ids);
 
-        return $this->respondWithMessage('file deleted successfully.');
+        return response()->json(['file deleted successfully.']);
     }
 
     protected function getFilePermissions(Request $request)

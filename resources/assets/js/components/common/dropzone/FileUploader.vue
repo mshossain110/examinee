@@ -52,6 +52,7 @@ export default {
     },
     computed: {
         dropzoneOptions () {
+            const bearer = window.localStorage['auth_token']
             return {
                 url: '/api/file',
                 method: 'POST',
@@ -59,7 +60,8 @@ export default {
                 parallelUploads: 1,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+                    'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
+                    Authorization: 'Bearer ' + bearer
                 },
                 chunking: true,
                 forceChunking: true,
@@ -115,8 +117,8 @@ export default {
             }
         },
         success (file) {
-            let response = JSON.parse(file.xhr.response)
-            this.fileResponse.push(response.data)
+            const response = JSON.parse(file.xhr.response)
+            this.fileResponse.push(response)
             this.$emit('input', this.fileResponse)
         },
         chunksUploaded (file, done) {
@@ -133,7 +135,7 @@ export default {
             formData.append('sizes', this.sizes)
         },
         removed (file) {
-            let i = this.fileList.findIndex(f => f.upload.uuid === file.upload.uuid)
+            const i = this.fileList.findIndex(f => f.upload.uuid === file.upload.uuid)
             this.fileList.splice(i, 1)
             this.$emit('input', this.fileList)
         },
