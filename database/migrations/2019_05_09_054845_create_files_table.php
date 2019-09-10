@@ -18,7 +18,7 @@ class CreateFilesTable extends Migration
 
 			$table->string('name')->index();
             $table->string('description', 150)->nullable();
-            $table->string('path', 255)->nullable()->index();
+            $table->string('path')->nullable()->index();
             $table->string('type', 20)->nullable()->index();
             $table->string('public_path', 255)->nullable();
             $table->string('extension', 10)->nullable();
