@@ -30,7 +30,7 @@
                             class="nav-link"
                             :to="{name: 'discussion'}"
                         >
-                            Discussion
+                            Discussions
                         </RouterLink>
                     </nav>
                 </div>
