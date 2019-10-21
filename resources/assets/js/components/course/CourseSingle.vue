@@ -18,7 +18,7 @@
                                     class="nav-link"
                                     :to="{name: 'coures-lessons'}"
                                 >
-                                    Lesson
+                                    Lessons
                                 </RouterLink>
                             </li>
                             <li class="list-group-item">
@@ -26,7 +26,7 @@
                                     class="nav-link"
                                     :to="{name: 'coures-exams'}"
                                 >
-                                    Exam
+                                    Exams
                                 </RouterLink>
                             </li>
                             <li class="list-group-item">
@@ -34,7 +34,7 @@
                                     class="nav-link"
                                     :to="{name: 'coures-students'}"
                                 >
-                                    Student
+                                    Students
                                 </RouterLink>
                             </li>
                             <li class="list-group-item">
@@ -42,7 +42,7 @@
                                     class="nav-link"
                                     :to="{name: 'coures-discuss'}"
                                 >
-                                    Discuss
+                                    Discussions
                                 </RouterLink>
                             </li>
                         </ul>
