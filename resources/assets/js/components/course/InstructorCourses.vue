@@ -5,7 +5,7 @@
             :key="course.id"
             class="col col-3"
         >
-            <RouterLink :to="{name: 'course-single', params: { course : course.slug }}">
+            <RouterLink :to="{name: 'course-single', params: { course : course.id }}">
                 <div class="card mb-3">
                     <img
                         v-if="course.thumbnail"
