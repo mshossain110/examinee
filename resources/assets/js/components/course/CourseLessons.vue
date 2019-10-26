@@ -101,6 +101,14 @@
                     >Create Lessons</a>
                 </div>
             </div>
+            <div
+                v-if="create"
+                class="row mt-5"
+            >
+                <div class="col">
+                    <NewLesson />
+                </div>
+            </div>
             <div class="row mt-5">
                 <div class="col">
                     <table class="table">
@@ -152,3 +160,16 @@
         </div>
     </div>
 </template>
+<script>
+import NewLesson from './NewLesson'
+export default {
+    components: {
+        NewLesson
+    },
+    data () {
+        return {
+            create: false
+        }
+    }
+}
+</script>
