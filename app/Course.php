@@ -12,7 +12,18 @@ class Course extends Model
 {
     use SoftDeletes, Fileable;
 
-    protected $fillable = ['title', 'slug', 'description', 'price', 'thumbnail', 'start_date', 'status', 'certified', 'created_by', 'updated_by'];
+    protected $fillable = [
+        'title',
+        'slug',
+        'description',
+        'price',
+        'thumbnail',
+        'start_date',
+        'status',
+        'certified',
+        'created_by',
+        'updated_by'
+    ];
     
     protected $with = [
         'thumbnail'

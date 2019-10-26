@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Lesson;
 use App\Course;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class LessonController extends Controller
 {
@@ -17,6 +18,7 @@ class LessonController extends Controller
     public function index(Request $request)
     {
         $courseId = $request->get('course_id');
+        $course = Course::find($courseId);
         $lessons = Lesson::where('course_id', $courseId)->orderBy('position')->get();
 
         $resource = JsonResource::collection($lessons);
@@ -33,10 +35,14 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
+        $user = $request->user();
         $courseId = $request->get('course_id');
         $course = Course::find($courseId);
 
-        $lesson = $course->lessons()->create($request->all());
+        $data = $request->all();
+        $data['created_by'] = $user->id;
+        $data['updated_by'] = $user->id;
+        $lesson = $course->lessons()->create($data);
 
         $resource = new JsonResource($lesson);
 

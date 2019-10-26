@@ -176,6 +176,7 @@ export default {
     methods: {
         submit () {
             var params = this.lesson
+            params.course_id = this.$route.params.course
             axios.post('/api/lessons', params)
                 .then(response => {
 
