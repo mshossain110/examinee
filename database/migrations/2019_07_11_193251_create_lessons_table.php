@@ -19,13 +19,12 @@ class CreateLessonsTable extends Migration
                 $table->string('title')->nullable();
                 $table->string('slug')->nullable();
                 $table->string('thumbnail')->nullable();
-                $table->tinyInteger('type')->default(1);
+                $table->unsignedTinyInteger('type')->default(1)->comment("1=>text, 2=> video, 3=>audio, 4=> pdf ");
                 $table->json('object')->nullable();
                 $table->text('short_text')->nullable();
                 $table->text('full_text')->nullable();
-                $table->integer('position')->nullable()->unsigned();
-                $table->tinyInteger('free_lesson')->nullable()->default(0);
-                $table->tinyInteger('status')->nullable()->default(0);
+                $table->unsignedTinyInteger('position')->default(1);;
+                $table->unsignedTinyInteger('status')->default(0)->comment("1=>public, 2=>hidden, 3=>subscriber, 4=>archived ");
                 
                 $table->timestamps();
                 $table->softDeletes();

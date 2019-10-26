@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Lesson;
+use App\Course;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class LessonController extends Controller
 {
@@ -12,19 +14,15 @@ class LessonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $courseId = $request->get('course_id');
+        $lessons = Lesson::where('course_id', $courseId)->orderBy('position')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $resource = JsonResource::collection($lessons);
+
+        return $resource;
+
     }
 
     /**
@@ -35,7 +33,14 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $courseId = $request->get('course_id');
+        $course = Course::find($courseId);
+
+        $lesson = $course->lessons()->create($request->all());
+
+        $resource = new JsonResource($lesson);
+
+        return $resource;
     }
 
     /**
@@ -44,20 +49,11 @@ class LessonController extends Controller
      * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function show(Lesson $lesson)
+    public function show(Request $request,  Lesson $lesson)
     {
-        //
-    }
+        $resource = new JsonResource($lesson);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Lesson  $lesson
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Lesson $lesson)
-    {
-        //
+        return $resource;
     }
 
     /**
@@ -69,7 +65,11 @@ class LessonController extends Controller
      */
     public function update(Request $request, Lesson $lesson)
     {
-        //
+        $lesson->update($request->all());
+        
+        $resource = new JsonResource($lesson);
+
+        return $resource;
     }
 
     /**
@@ -80,6 +80,8 @@ class LessonController extends Controller
      */
     public function destroy(Lesson $lesson)
     {
-        //
+        $lesson->delete();
+
+        return response()->json(['Lesson Delete successfully.']);
     }
 }

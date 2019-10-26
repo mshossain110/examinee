@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function(){
 
     Route::apiResource('course', 'CourseController');
+    Route::apiResource('lessons', 'LessonController');
     Route::post('/file', 'FileController@store');
 });
