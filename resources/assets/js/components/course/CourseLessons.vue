@@ -109,52 +109,32 @@
                     <NewLesson />
                 </div>
             </div>
-            <div class="row mt-5">
+        </div>
+        <div class="lessons-list">
+            <div
+                v-for="l in lessons"
+                :key="l.id"
+                class="row mt-3"
+            >
+                <div class="col-2">
+                    <img
+                        src="https://getbrainybox.com/wp-content/uploads/2016/08/montessori-lesson-plan-1024x685.jpg"
+                        alt=""
+                        width="150"
+                        height="80"
+                    >
+                </div>
                 <div class="col">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">
-                                    #
-                                </th>
-                                <th scope="col">
-                                    First
-                                </th>
-                                <th scope="col">
-                                    Last
-                                </th>
-                                <th scope="col">
-                                    Handle
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    1
-                                </th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    2
-                                </th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    3
-                                </th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h1>{{ l.title }}</h1>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6>views 1,243,067</h6>
+                        </div>
+                        <div>
+                            <i class="far fa-trash-alt" />
+                            <i class="far fa-edit" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,7 +148,22 @@ export default {
     },
     data () {
         return {
-            create: false
+            create: false,
+            lessons: []
+        }
+    },
+    created () {
+        this.getLessons()
+    },
+    methods: {
+        getLessons () {
+            const params = {
+                course_id: this.$route.params.course
+            }
+            axios.get(`/api/lessons`, { params: params })
+                .then(res => {
+                    this.lessons = res.data.data
+                })
         }
     }
 }
