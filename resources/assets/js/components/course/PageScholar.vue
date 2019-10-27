@@ -14,7 +14,7 @@
 
                         <RouterLink
                             class="nav-link"
-                            :to="{name: 'exam'}"
+                            :to="{name: 'exams'}"
                         >
                             Exams
                         </RouterLink>
