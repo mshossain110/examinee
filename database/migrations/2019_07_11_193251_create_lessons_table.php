@@ -23,7 +23,7 @@ class CreateLessonsTable extends Migration
                 $table->json('object')->nullable();
                 $table->text('short_text')->nullable();
                 $table->text('full_text')->nullable();
-                $table->unsignedTinyInteger('position')->default(1);;
+                $table->unsignedTinyInteger('position')->default(1);
                 $table->unsignedTinyInteger('status')->default(0)->comment("1=>public, 2=>hidden, 3=>subscriber, 4=>archived ");
                 
                 $table->timestamps();

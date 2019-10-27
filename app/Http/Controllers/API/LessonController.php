@@ -18,8 +18,8 @@ class LessonController extends Controller
     public function index(Request $request)
     {
         $courseId = $request->get('course_id');
-        $course = Course::find($courseId);
-        $lessons = Lesson::where('course_id', $courseId)->orderBy('position')->get();
+        // $course = Course::find($courseId);
+        $lessons = Lesson::with('topics')->where('course_id', $courseId)->orderBy('position')->get();
 
         $resource = JsonResource::collection($lessons);
 
@@ -37,12 +37,17 @@ class LessonController extends Controller
     {
         $user = $request->user();
         $courseId = $request->get('course_id');
+        $topics = $request->get('topics');
         $course = Course::find($courseId);
 
         $data = $request->all();
         $data['created_by'] = $user->id;
         $data['updated_by'] = $user->id;
         $lesson = $course->lessons()->create($data);
+
+        if ($topics) {
+            $lesson->topics()->attach($topics);
+        }
 
         $resource = new JsonResource($lesson);
 

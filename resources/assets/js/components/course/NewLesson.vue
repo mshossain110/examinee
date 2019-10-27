@@ -79,6 +79,52 @@
                         />
                     </div>
                     <div class="form-group">
+                        <Multiselect
+                            id="ajax"
+                            v-model="selectTopics"
+                            label="title"
+                            track-by="id"
+                            placeholder="Type to search Topic"
+                            open-direction="bottom"
+                            :options="topics"
+                            :multiple="true"
+                            :searchable="true"
+                            :loading="isLoading"
+                            :internal-search="false"
+                            :clear-on-select="true"
+                            :close-on-select="false"
+                            :max-height="600"
+                            :show-no-results="true"
+                            :taggable="true"
+                            :hide-selected="true"
+                            @tag="createTopic"
+                            @search-change="loadTopics"
+                        >
+                            <template
+                                slot="tag"
+                                slot-scope="{ option, remove }"
+                            >
+                                <span class="custom__tag"><span>{{ option.title }}</span><span
+                                    class="custom__remove"
+                                    @click="remove(option)"
+                                >x</span></span>
+                            </template>
+
+                            <template
+                                slot="clear"
+                                slot-scope="props"
+                            >
+                                <div
+                                    v-if="selectTopics.length"
+                                    class="multiselect__clear"
+                                    @mousedown.prevent.stop="clearAll(props.search)"
+                                />
+                            </template>
+
+                            <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+                        </Multiselect>
+                    </div>
+                    <div class="form-group">
                         <label for="lessonStatus">Lesson Status</label>
                         <select
                             v-model="lesson.status"
@@ -145,8 +191,12 @@
     </div>
 </template>
 <script>
+import Multiselect from 'vue-multiselect'
 
 export default {
+    components: {
+        Multiselect
+    },
     props: {
         lesson: {
             type: Object,
@@ -157,7 +207,6 @@ export default {
                     short_text: '',
                     full_text: '',
                     thumbnail: '',
-                    position: '',
                     type: '1',
                     object: '',
                     status: '1',
@@ -170,16 +219,21 @@ export default {
     data () {
         return {
             slugReadonly: true,
-            thumbnail: []
+            thumbnail: [],
+            topics: [],
+            selectTopics: [],
+            isLoading: false,
+            topicTimeout: null
         }
     },
     methods: {
         submit () {
             var params = this.lesson
             params.course_id = this.$route.params.course
+            params.topics = this.selectTopics.map(t => t.id)
             axios.post('/api/lessons', params)
                 .then(response => {
-
+                    this.$emit('new-lesson', response.data.data)
                 })
         },
         titleInput (text) {
@@ -205,6 +259,38 @@ export default {
                 .replace(/--+/g, '-') // Replace multiple - with single -
                 .replace(/^-+/, '') // Trim - from start of text
                 .replace(/-+$/, '') // Trim - from end of text
+        },
+        loadTopics (search) {
+            const params = {
+                s: search
+            }
+
+            if (this.topicTimeout) {
+                clearInterval(this.topicTimeout)
+            }
+
+            this.isLoading = true
+
+            this.topicTimeout = setTimeout(() => {
+                axios.get(`/api/topics`, { params })
+                    .then(res => {
+                        this.topics = res.data.data
+                        this.isLoading = false
+                    })
+            }, 300)
+        },
+        clearAll () {
+            this.selectTopics = []
+        },
+        createTopic (searchQuery, id) {
+            const params = {
+                title: searchQuery
+            }
+
+            axios.post(`/api/topics`, params)
+                .then(res => {
+                    this.selectTopics.push(res.data.data)
+                })
         }
 
     }

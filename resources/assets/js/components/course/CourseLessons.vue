@@ -106,7 +106,7 @@
                 class="row mt-5"
             >
                 <div class="col">
-                    <NewLesson />
+                    <NewLesson @new-lesson="newLesson" />
                 </div>
             </div>
         </div>
@@ -164,6 +164,10 @@ export default {
                 .then(res => {
                     this.lessons = res.data.data
                 })
+        },
+        newLesson (lesson) {
+            this.lessons.push(lesson)
+            this.create = false
         }
     }
 }

@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Topicable;
 use Auth;
 
 class Lesson extends Model
 {
+    use Topicable;
+    
     protected $fillable = [
         'title', 
         'slug', 

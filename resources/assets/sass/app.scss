@@ -21,3 +21,25 @@
 .nav.text-light a.nav-link {
     color: #f8f9fa !important
 }
+
+.multiselect {
+    .custom__tag {
+        background: #1fa1b8;
+        padding: 3px 8px 3px 5px;
+        color: #fff;
+        position: relative;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 9px;
+    }
+    
+    .custom__remove {
+        position: absolute;
+        background: red;
+        border-radius: 50%;
+        padding: 1px 5px;
+        color: #fff;
+        top: -7px;
+        font-size: 10px;
+    }
+}

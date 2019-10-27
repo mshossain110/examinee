@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 use App\Topic;
-use App\Http\Requests\TopicRequest as Request;
+use App\Http\Requests\TopicRequest;
 
 class TopicController extends Controller
 {
@@ -14,9 +15,17 @@ class TopicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $topics = Topic::all();
+        $search = $request->get('s');
+
+        $topics = Topic::query();
+
+        if($search) {
+            $topics = $topics->where('title', 'like', "%$search%");
+        }
+
+        $topics = $topics->get();
         
         $resource = JsonResource::collection($topics);
 
@@ -31,7 +40,7 @@ class TopicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TopicRequest $request)
     {
         $topic = Topic::create( $request->all() );
         
@@ -62,7 +71,7 @@ class TopicController extends Controller
      * @param  \App\Topic  $topic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Topic $topic)
+    public function update(TopicRequest $request, Topic $topic)
     {
         $topic->title = $request->title;
         $topic->description = $request->description;
@@ -84,6 +93,6 @@ class TopicController extends Controller
         $topic->question()->detach();
         $topic->delete();
 
-        return response()->json(['success' => true, 'message' => 'Topic has deleted success fully.'])
+        return response()->json(['success' => true, 'message' => 'Topic has deleted success fully.']);
     }
 }

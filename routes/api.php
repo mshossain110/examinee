@@ -20,5 +20,6 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function(){
 
     Route::apiResource('course', 'CourseController');
     Route::apiResource('lessons', 'LessonController');
+    Route::apiResource('topics', 'TopicController');
     Route::post('/file', 'FileController@store');
 });
