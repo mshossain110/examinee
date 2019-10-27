@@ -6,6 +6,7 @@ const VueRouter = require('vue-router').default
 window.EventBus = new Vue()
 
 Vue.component('PageScholar', require('./components/course/PageScholar.vue').default)
+Vue.component('PageStudent', require('./components/students/PageStudent.vue').default)
 
 Vue.use(Dropzone)
 // eslint-disable-next-line no-unused-vars
