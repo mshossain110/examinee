@@ -14,8 +14,8 @@ class CourseSeed extends Seeder
      */
     public function run()
     {
-        factory(Course::class, 5)->create()->each(function ($course) {
-            $course->teachers()->sync([1]);
+        factory(Course::class, 15)->create()->each(function ($course) {
+            $course->teachers()->sync(rand(1, 10));
             $course->lessons()->saveMany(factory(Lesson::class, 10)->create(['course_id' => $course->id]));
         });
     }
