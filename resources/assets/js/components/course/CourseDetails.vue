@@ -44,9 +44,11 @@ export default {
     },
     methods: {
         getCourse () {
-            axios.get(`/api/course/${this.$route.params.course}`)
+            axios.get(`/api/course/${this.$route.params.id}`)
                 .then(res => {
                     this.course = res.data.data
+                    console.log(res.data.data)
+                    this.$store.commit('Course/setCourse', res.data.data)
                 })
         }
     }

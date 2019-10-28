@@ -37,7 +37,7 @@
             </div>
         </section>
         <div>
-            <div class="container">
+            <div class="container-fluid">
                 <RouterView />
             </div>
         </div>
@@ -46,6 +46,7 @@
 
 <script>
 import router from './routers'
+import store from './store'
 export default {
     data () {
         return {
@@ -57,6 +58,8 @@ export default {
     },
     created () {
         this.$router.addRoutes(router)
+        this.$store.registerModule('Course', store)
+        console.log(this)
     },
     methods: {
 

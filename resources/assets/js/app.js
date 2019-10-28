@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 // Event bus
 import Dropzone from './components/common/dropzone'
+import Vuex from 'vuex'
+
 const VueRouter = require('vue-router').default
 
 window.EventBus = new Vue()
@@ -8,6 +10,11 @@ window.EventBus = new Vue()
 Vue.component('PageScholar', require('./components/course/PageScholar.vue').default)
 
 Vue.use(Dropzone)
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+    strict: process.env.NODE_ENV !== 'production'
+})
 // eslint-disable-next-line no-unused-vars
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -19,7 +26,8 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store
 })
 
 // eslint-disable-next-line no-console

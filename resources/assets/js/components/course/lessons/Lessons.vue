@@ -1,5 +1,5 @@
 <template>
-    <div class="col-10 mt-2">
+    <div class="">
         <div class="page-title mb-5">
             <h1>Course Lessons</h1>
             <div class="breadcums-aria">
@@ -158,7 +158,7 @@ export default {
     methods: {
         getLessons () {
             const params = {
-                course_id: this.$route.params.course
+                course_id: this.$route.params.id
             }
             axios.get(`/api/lessons`, { params: params })
                 .then(res => {

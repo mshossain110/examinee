@@ -4,7 +4,7 @@ import PageStudent from './PageMyStudent.vue'
 import Discussions from './PageDiscussion.vue'
 import CourseSingle from './CourseSingle.vue'
 import CourseDetails from './CourseDetails.vue'
-import CourseLessons from './CourseLessons.vue'
+import CourseLessons from './lessons/Lessons.vue'
 export default [
     {
         path: '/instructor/courses',

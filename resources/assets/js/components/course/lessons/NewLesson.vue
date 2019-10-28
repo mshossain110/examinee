@@ -229,7 +229,7 @@ export default {
     methods: {
         submit () {
             var params = this.lesson
-            params.course_id = this.$route.params.course
+            params.course_id = this.$route.params.id
             params.topics = this.selectTopics.map(t => t.id)
             axios.post('/api/lessons', params)
                 .then(response => {
