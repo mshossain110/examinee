@@ -80,111 +80,52 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col col-3">
-                    <div class="card mb-3">
-                        <img
-                            src=""
-                            class="card-img-top"
-                            alt=""
-                        >
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Course Title
-                            </h5>
-                            <p class="card-text">
-                                Some quick example text to build on the Course Title and make up the bulk of the card's content.
-                            </p>
-                            <a
-                                href="#"
-                                class="btn btn-primary"
-                            >Start Learning</a>
+            <div class="row StudentCourse">
+                <div
+                    v-for="i in 12"
+                    :key="i"
+                    class="col col-3"
+                >
+                    <a href="">
+                        <div class="card mb-3">
+                            <div class="card_img">
+
+                                <i class="fas fa-play-circle" />
+                                <img
+                                    src="https://tricksinfo.net/wp-content/uploads/2019/07/533430_ce1e_3-750x405.jpg"
+                                    class="card-img-top"
+                                    alt=""
+                                >
+
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo dignissimos facilis dolor excepturi, iusto aliquid quisquam obcaecati assumenda, laboriosam ratione, perferendis beatae.
+                                </h5>
+                                <p class="card-text">
+                                    Some quick example text to build on the Course Title and make up the bulk of the card's content.
+                                </p>
+                                <div
+                                    class="progress my-2"
+                                    style="height: 3px;"
+                                >
+                                    <div
+                                        class="progress-bar"
+                                        role="progressbar"
+                                        style="width: 45%;"
+                                        aria-valuenow="45"
+                                        aria-valuemin="0"
+                                        aria-valuemax="100"
+                                    />
+                                </div>
+                                <a
+                                    href="#"
+                                    class="btn btn-primary btn-sm text-white"
+                                >Start Learning</a>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col col-3">
-                    <div class="card mb-3">
-                        <img
-                            src=""
-                            class="card-img-top"
-                            alt=""
-                        >
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Course Title
-                            </h5>
-                            <p class="card-text">
-                                Some quick example text to build on the Course Title and make up the bulk of the card's content.
-                            </p>
-                            <a
-                                href="#"
-                                class="btn btn-primary"
-                            >Start Learning</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-3">
-                    <div class="card mb-3">
-                        <img
-                            src=""
-                            class="card-img-top"
-                            alt=""
-                        >
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Course Title
-                            </h5>
-                            <p class="card-text">
-                                Some quick example text to build on the Course Title and make up the bulk of the card's content.
-                            </p>
-                            <a
-                                href="#"
-                                class="btn btn-primary"
-                            >Start Learning</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-3">
-                    <div class="card mb-3">
-                        <img
-                            src=""
-                            class="card-img-top"
-                            alt=""
-                        >
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Course Title
-                            </h5>
-                            <p class="card-text">
-                                Some quick example text to build on the Course Title and make up the bulk of the card's content.
-                            </p>
-                            <a
-                                href="#"
-                                class="btn btn-primary"
-                            >Start Learning</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-3">
-                    <div class="card mb-3">
-                        <img
-                            src=""
-                            class="card-img-top"
-                            alt=""
-                        >
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Course Title
-                            </h5>
-                            <p class="card-text">
-                                Some quick example text to build on the Course Title and make up the bulk of the card's content.
-                            </p>
-                            <a
-                                href="#"
-                                class="btn btn-primary"
-                            >Start Learning</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
