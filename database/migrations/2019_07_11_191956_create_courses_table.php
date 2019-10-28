@@ -23,7 +23,7 @@ class CreateCoursesTable extends Migration
             $table->text('requirements')->nullable();
             $table->decimal('price', 15, 2)->nullable();
             $table->integer('discount')->nullable();
-            $table->integer('thumbnail')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->date('start_date')->nullable();
             
             $table->tinyInteger('certified')->default(1);

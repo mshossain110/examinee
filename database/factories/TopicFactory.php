@@ -12,16 +12,10 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Course::class, function (Faker\Generator $faker) {
-    $name = $faker->name;
+$factory->define(App\Topic::class, function (Faker\Generator $faker) {
+    $name = ['Web Design', 'Laravel', 'Vuejs', 'Javascript', 'Java', 'Angular', 'Mobile Application', 'C#', 'C++', 'Web Application'];
     return [
-        'title' => $name,
-        'slug' => str_slug($name),
-        'description' => $faker->text(),
-        'price' => $faker->randomFloat(2, 0, 199),
-        'thumbnail' => $faker->imageUrl($width = 640, $height = 480),
-        'status' => 1,
-        'created_by' => rand(1, 5),
-        'updated_by' => rand(1, 5),
+        'title' => $name[rand(0, 9)],
+        'description' => $faker->paragraph(),
     ];
 });
