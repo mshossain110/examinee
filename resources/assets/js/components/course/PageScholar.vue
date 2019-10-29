@@ -59,7 +59,6 @@ export default {
     created () {
         this.$router.addRoutes(router)
         this.$store.registerModule('Course', store)
-        console.log(this)
     },
     methods: {
 

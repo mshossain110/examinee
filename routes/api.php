@@ -17,7 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function(){
-
+    Route::get('courses/my-courses', 'MyCourseController@index');
+    Route::get('courses/my-courses/{id}', 'MyCourseController@show');
     Route::apiResource('course', 'CourseController');
     Route::apiResource('lessons', 'LessonController');
     Route::apiResource('topics', 'TopicController');
