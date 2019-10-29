@@ -6,7 +6,6 @@ export default
     },
     mutations: {
         setCourse (state, payload) {
-            console.log('fkj')
             state.course = payload
         }
     }

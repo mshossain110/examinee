@@ -1,5 +1,5 @@
 <template>
-    <div class="page page-coures">
+    <div class="container-fluid page-coures">
         <div class="row">
             <div class="col-2 mt-3">
                 <div
@@ -60,13 +60,20 @@ export default {
         }
     },
     computed: {
-
+        course () {
+            return this.$store.state.Course.course
+        }
     },
     created () {
-
+        this.getCourse()
     },
     methods: {
-
+        getCourse () {
+            axios.get(`/api/course/${this.$route.params.id}`)
+                .then(res => {
+                    this.$store.commit('Course/setCourse', res.data.data)
+                })
+        }
     }
 }
 </script>

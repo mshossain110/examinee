@@ -37,9 +37,7 @@
             </div>
         </section>
         <div>
-            <div class="container-fluid">
-                <RouterView />
-            </div>
+            <RouterView />
         </div>
     </div>
 </template>

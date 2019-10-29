@@ -39,25 +39,23 @@ export default [
             {
                 path: ':id',
                 name: 'course-single',
+                redirect: { name: 'coures-details' },
                 component: CourseSingle,
                 children: [
                     {
-                        path: 'details',
+                        path: '/',
                         name: 'coures-details',
-                        component: CourseDetails,
-                        props: true
+                        component: CourseDetails
                     },
                     {
                         path: 'lessons',
                         name: 'coures-lessons',
-                        component: CourseLessons,
-                        props: true
+                        component: CourseLessons
                     },
                     {
                         path: 'exams',
                         name: 'course-exams',
-                        component: PageExams,
-                        props: true
+                        component: PageExams
                     },
                     {
                         path: 'students',
