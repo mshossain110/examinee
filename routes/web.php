@@ -21,7 +21,7 @@ Route::group(['middleware' => 'guest'], function(){
 
 Route::group(['middleware' => ['auth']], function(){
 
-	Route::get("/learning/my-courses", "LearningController@myCourses")->name("learning.courses");
+	Route::get("/learning/my-courses/{any?}", "LearningController@myCourses")->name("learning.courses")->where('any', '.*');
 	Route::get("/instructor/courses/{any?}", "InstructorController@courses")->name("instructor.courses")->where('any', '.*');
 
 	Route::post('/download', 'DownloadController@download');
