@@ -94,32 +94,59 @@
                 <NewCourse />
             </div>
         </div>
-        <InstructorCourses />
+        <div class="row course-list">
+            <div
+                v-for="course in courses"
+                :key="course.id"
+                class="col col-3"
+            >
+                <Course
+                    :course="course"
+                    class="is-link"
+                    buttonable
+                    button="Start Edit"
+                    @click.native.prevent="linkToSingle(course)"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import NewCourse from './NewCourse'
-import InstructorCourses from './InstructorCourses'
-
+import Course from '@c/common/Course'
 export default {
     components: {
         NewCourse,
-        InstructorCourses
+        Course
     },
     data () {
         return {
-            create: false
+            create: false,
+            courses: []
         }
     },
     computed: {
 
     },
     created () {
-
+        this.getCourses()
     },
     methods: {
-
+        getCourses () {
+            axios.get('/api/course')
+                .then(res => {
+                    this.courses = res.data.data
+                })
+        },
+        linkToSingle (course) {
+            this.$router.push({
+                name: 'course-single',
+                params: {
+                    id: course.id
+                }
+            })
+        }
     }
 }
 </script>

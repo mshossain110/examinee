@@ -86,14 +86,21 @@
                     :key="course.id"
                     class="col col-3"
                 >
-                    <Course :course="course" />
+                    <Course
+                        :course="course"
+                        class="is-link"
+                        progress
+                        buttonable
+                        @click.native.prevent="clickOnCourse(course)"
+                    />
                 </div>
             </div>
         </div>
     </section>
 </template>
 <script>
-import Course from './Course'
+
+import Course from '@c/common/Course'
 export default {
     components: {
         Course
@@ -112,6 +119,14 @@ export default {
                 .then(res => {
                     this.courses = res.data.data
                 })
+        },
+        clickOnCourse (course) {
+            this.$router.push({
+                name: 'singelcourse',
+                params: {
+                    course: course.slug
+                }
+            })
         }
     }
 }

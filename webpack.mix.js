@@ -27,8 +27,8 @@ mix.webpackConfig({
         alias: {
             vue$: 'vue/dist/vue.esm.js',
             node_modules: './node_modules',
-            '@c': assetsPath('components'),
-            '@src': assetsPath('')
+            '@c': assetsPath('js/components'),
+            '@src': assetsPath('js')
         }
     }
 })

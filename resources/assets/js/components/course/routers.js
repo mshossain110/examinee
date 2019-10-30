@@ -1,4 +1,4 @@
-import Course from './Course.vue'
+import Courses from './Courses.vue'
 import PageExams from './PageExams.vue'
 import PageStudent from './PageMyStudent.vue'
 import Discussions from './PageDiscussion.vue'
@@ -8,7 +8,7 @@ import CourseLessons from './lessons/Lessons.vue'
 export default [
     {
         path: '/instructor/courses',
-        redirect: { name: 'course' },
+        redirect: { name: 'courses' },
         component: {
             render (c) {
                 return c('router-view')
@@ -17,8 +17,8 @@ export default [
         children: [
             {
                 path: '/',
-                name: 'course',
-                component: Course
+                name: 'courses',
+                component: Courses
             },
 
             {

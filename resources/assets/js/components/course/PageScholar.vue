@@ -7,7 +7,7 @@
                     <nav class="nav text-light justify-content-center">
                         <RouterLink
                             class="nav-link"
-                            :to="{name: 'course'}"
+                            :to="{name: 'courses'}"
                         >
                             Courses
                         </RouterLink>
