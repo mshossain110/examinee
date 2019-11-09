@@ -28,6 +28,38 @@ class Course extends Model
     protected $with = [
         'thumbnail'
     ];
+
+    protected $appends = [
+        'permalink',
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Booting
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS Variables
+    |--------------------------------------------------------------------------
+    */
+
+     /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+    public function getRatingAttribute()
+    {
+        return number_format(\DB::table('course_student')->where('course_id', $this->attributes['id'])->average('rating'), 2);
+    }
+
+    public function getPermalinkAttribute()
+    {
+        return route('courses.show', ['slug' => $this->attributes['slug']]);
+    }
     /**
      * Set attribute to money format
      * @param $input
@@ -36,7 +68,26 @@ class Course extends Model
     {
         $this->attributes['price'] = $input ? $input : null;
     }
-    
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+    public function scopeOfTeacher($query)
+    {
+        if (!Auth::user()->isAdmin()) {
+            return $query->whereHas('teachers', function($q) {
+                $q->where('user_id', Auth::user()->id);
+            });
+        }
+        return $query;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
     public function teachers()
     {
         return $this->belongsToMany(User::class, 'course_teachers');
@@ -57,22 +108,14 @@ class Course extends Model
         return $this->hasMany(Lesson::class)->orderBy('position')->where('status', 1);
     }
 
-    public function scopeOfTeacher($query)
-    {
-        if (!Auth::user()->isAdmin()) {
-            return $query->whereHas('teachers', function($q) {
-                $q->where('user_id', Auth::user()->id);
-            });
-        }
-        return $query;
-    }
-
-    public function getRatingAttribute()
-    {
-        return number_format(\DB::table('course_student')->where('course_id', $this->attributes['id'])->average('rating'), 2);
-    }
+    
 
     public function thumbnail() {
         return $this->belongsTo(File::class, 'thumbnail');
     }
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-9 mt-2">
+        <div class="col-9 cdetails mt-2">
             <div class="page-title mb-5">
                 <h1>Details of the course</h1>
                 <div class="breadcums-aria">
@@ -37,27 +37,33 @@
             >
                 <NewCourse :course="course" />
             </div>
-            <div class="title">
+            <div
+                v-if="course.title"
+                class="title"
+            >
                 <h4>Title</h4>
                 <h3>{{ course.title }}</h3>
             </div>
-            <div>
+            <div v-if="course.subtitle">
                 <h4>Sub Title</h4>
                 <p>{{ course.subtitle }}</p>
             </div>
-            <div>
-                <h4>Slug</h4>
-                <p>{{ course.slug }}</p>
+            <div v-if="course.slug">
+                <h4>Public Link</h4>
+                <a
+                    :href="course.permalink"
+                    target="_blank"
+                >{{ course.permalink }}</a>
             </div>
-            <div>
+            <div v-if="course.description">
                 <h4>Description</h4>
                 <p>{{ course.description }}</p>
             </div>
-            <div>
+            <div v-if="course.features">
                 <h4>Features</h4>
                 <p>{{ course.features }}</p>
             </div>
-            <div>
+            <div v-if="course.requirements">
                 <h4>Requirements</h4>
                 <p>{{ course.requirements }}</p>
             </div>
@@ -122,6 +128,15 @@ export default {
 </script>
 
 <style lang="scss">
+
+    .cdetails h4 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        border-bottom: 1px solid #ddd;
+        font-weight: 400;
+        padding: 0 5px;
+    }
     .course-overview {
         background-color: #eae4cf;
         .list-group-item {
