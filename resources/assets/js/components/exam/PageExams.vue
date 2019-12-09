@@ -1,11 +1,15 @@
 <template>
     <div class="page">
-        Exam page
+        <NewExam />
     </div>
 </template>
 
 <script>
+import NewExam from './NewExam'
 export default {
+    components: {
+        NewExam
+    },
     data () {
         return {
 

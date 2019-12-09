@@ -1,5 +1,5 @@
 import Courses from './Courses.vue'
-import PageExams from './PageExams.vue'
+import PageExams from './../exam/PageExams.vue'
 import PageStudent from './PageMyStudent.vue'
 import Discussions from './PageDiscussion.vue'
 import CourseSingle from './CourseSingle.vue'
