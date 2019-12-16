@@ -13,6 +13,7 @@
 @import "node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
 @import "node_modules/vue-multiselect/dist/vue-multiselect.min";
 @import 'partials/dropzone.scss';
+
 .navbar-nav li.nav-item {
     display: flex;
     align-items: center;
@@ -115,6 +116,49 @@
             border-radius: 50%;
         }
     
+    }
+}
+
+.course_head{
+    
+        background-color: #b4e2f5;
+        
+        padding-bottom: 25px;
+    
+    .course_text h5{
+        
+        font-size: 30px;
+        color: #563d7c;
+        
+
+    }
+    .course_logo img{
+        width: 243px;
+        height: 275px;
+        border-radius: 100%;
+    }
+    .course_logo h5{
+        padding-left: 45px;
+    }
+
+}
+
+.lesson_part{
+    .back{
+        background-color: #f4f4f5;
+        padding: 10px;
+    }
+    .lessons{
+        .card-icon i {
+            background-color: #e4e4e8;
+            padding: 7px;
+            border-radius: inherit;
+
+        }
+            
+            
+       
+       
     }
 }
     
