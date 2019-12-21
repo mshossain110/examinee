@@ -35,15 +35,15 @@ class ExamController extends Controller
      */
     public function store(ExamRequest $request)
     {
-        // dd(auth()->user()->id);
-        $sid = $request->input('sid');
+        $user = $request->user();
+        $subject_id = $request->input('subject_id');
         $exam = Exam::create([
-            'user_id'       => auth()->user()->id,
+            'examiner'       => $user->id,
             'title'         => $request->title,
             'description'   => $request->description
         ]);
-        $eid = $exam->id;
-        $exam->subjects()->attach($sid);
+
+        $exam->subjects()->attach($subject_id);
 
         $resource = New JsonResource($exam);
 
@@ -67,7 +67,7 @@ class ExamController extends Controller
         $exam->description = $request->description;
         $exam->save();
         $exam->subjects()->detach();
-        $exam->subjects()->attach( $request->sid );
+        $exam->subjects()->attach( $request->subject_id );
         $resource = New JsonResource($exam);
 
         return $resource;
@@ -83,10 +83,8 @@ class ExamController extends Controller
     {
         // dd($exam);
         $exam->subjects()->detach();
+        $exam->questions()->delete();
         $exam->delete();
         return response()->json(['success' => true, 'message'=> 'Exam Deleted successfully.']);
     }
-
-
-
 }
