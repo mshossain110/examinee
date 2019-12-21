@@ -15,4 +15,20 @@ class Topic extends Model
     protected $fillable = [
         'title', 'description',
     ];
+
+    /**
+     * Get all of the courses that are assigned this tag.
+     */
+    public function courses()
+    {
+        return $this->morphedByMany(Course::class, 'topicable');
+    }
+
+    /**
+     * Get all of the exams that are assigned this tag.
+     */
+    public function exams()
+    {
+        return $this->morphedByMany(Exam::class, 'topicable');
+    }
 }

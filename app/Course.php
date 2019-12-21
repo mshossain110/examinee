@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\Fileable;
+use DB;
+use App\Exam;
 
 class Course extends Model
 {
@@ -53,7 +54,7 @@ class Course extends Model
     */
     public function getRatingAttribute()
     {
-        return number_format(\DB::table('course_student')->where('course_id', $this->attributes['id'])->average('rating'), 2);
+        return number_format(DB::table('course_student')->where('course_id', $this->attributes['id'])->average('rating'), 2);
     }
 
     public function getPermalinkAttribute()
@@ -106,6 +107,18 @@ class Course extends Model
     public function publishedLessons()
     {
         return $this->hasMany(Lesson::class)->orderBy('position')->where('status', 1);
+    }
+
+    public function exams() {
+    	return $this->belongsToMany(Exam::class, 'course_exam', 'course_id', 'exam_id');
+    }
+
+    public function topics() {
+        return $this->morphToMany( Topic::class, 'topicable' );
+    }
+
+    public function subjects() {
+    	return $this->morphToMany( Subject::class, 'subjectable' );
     }
 
     
