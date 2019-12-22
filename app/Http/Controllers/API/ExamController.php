@@ -18,8 +18,19 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $courseId = $request->get('course_id');
 
-        $exams = Exam::with( 'subjects')->where('user_id', $user->id)->paginate();
+        $exams = Exam::with(['subjects','questions']);
+
+        if ($courseId) {
+            $exams = $exams->whereHas('courses', function ($q) use ($courseId) {
+                $q->where('course_id', $courseId);
+            });
+        } else {
+            $exams = $exams->where('examiner', $user->id);
+        }
+        
+        $exams = $exams->get();
         
         $resource = JsonResource::collection($exams);
 
@@ -45,7 +56,7 @@ class ExamController extends Controller
 
         $exam->subjects()->attach($subject_id);
 
-        $resource = New JsonResource($exam);
+        $resource = new JsonResource($exam);
 
         return $resource;
     }
@@ -67,8 +78,8 @@ class ExamController extends Controller
         $exam->description = $request->description;
         $exam->save();
         $exam->subjects()->detach();
-        $exam->subjects()->attach( $request->subject_id );
-        $resource = New JsonResource($exam);
+        $exam->subjects()->attach($request->subject_id);
+        $resource = new JsonResource($exam);
 
         return $resource;
     }

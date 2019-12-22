@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Routing\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,7 +11,7 @@ use Illuminate\Routing\Route;
 |
 */
 
-Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function(){
+Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
     Route::get('courses/my-courses', 'MyCourseController@index');
     Route::get('courses/my-courses/{id}', 'MyCourseController@show');
     Route::apiResource('course', 'CourseController');

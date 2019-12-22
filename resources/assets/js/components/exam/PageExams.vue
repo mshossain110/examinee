@@ -27,6 +27,12 @@
                 </div>
             </div>
         </div>
+
+        <Exams
+            v-if="exams.length"
+            :exams="exams"
+        />
+
         <NewExam />
         <NewQuestion />
     </div>
@@ -35,24 +41,34 @@
 <script>
 import NewExam from './NewExam'
 import NewQuestion from './NewQuestion'
+import Exams from './Exams'
 export default {
     components: {
         NewExam,
-        NewQuestion
+        NewQuestion,
+        Exams
     },
     data () {
         return {
-
+            exams: []
         }
     },
     computed: {
 
     },
     created () {
-
+        this.getExams()
     },
     methods: {
-
+        getExams () {
+            const params = {
+                course_id: this.$route.params.id
+            }
+            axios.get('/api/exams', { params: params })
+                .then(res => {
+                    this.exams = res.data.data
+                })
+        }
     }
 }
 </script>
