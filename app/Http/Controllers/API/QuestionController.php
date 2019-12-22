@@ -4,11 +4,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Question;
-use App\Subject;
-use App\Topic;
 use App\Exam;
 use App\Http\Requests\QuestionRequest as Request;
-use Log;
+
 class QuestionController extends Controller
 {
     /**
@@ -19,7 +17,7 @@ class QuestionController extends Controller
     public function index(Request $request)
     {
         $examId = $request->get('exam_id');
-        $questions = Exam::find($examId)->questions()->paginate();
+        $questions = Exam::find($examId)->questions;
         
         $resource = JsonResource::collection($questions);
 
@@ -36,11 +34,11 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $eid = $request->eid;
-        $tid = $request->tid;
-        $question = Question::create([ 
-            'user_id'       => auth()->user()->id,
+        $user= $request->user();
+        $eid = $request->get('exam_id');;
+        $question = Question::create([
+            'exam_id'       => $eid,
+            'examinee'      => $user->id,
             'qtype'         => $request->qtype,
             'question'      => $request->question,
             'options'       => $request->options,
@@ -50,7 +48,6 @@ class QuestionController extends Controller
             'explanation'   => $request->explanation,
             'defficulty'    => $request->defficulty,
         ]);
-        $question->exams()->attach( $eid, [ 'tid' => $tid ]);
        
         $resource = New JsonResource($question);
 
@@ -81,12 +78,7 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        // dd($request->all());
-        $eid = $request->eid;
-        $tid = $request->tid;
-        $question->update( $request->all());
-        $question->exams()->detach( $eid, [ 'tid' => $tid ]);
-        $question->exams()->attach( $eid, [ 'tid' => $tid ]);
+        $question->update( $request->all() );
         
         $resource = New JsonResource($question);
 
@@ -101,7 +93,6 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        $question->exams()->detach();
         $question->delete();
         return response()->json(['success' => true, 'message'=> 'Question has deleted']);
     }

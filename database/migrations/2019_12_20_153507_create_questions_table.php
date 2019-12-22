@@ -15,18 +15,23 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('created_by')->unsigned();
             $table->tinyInteger( 'qtype' )->default( 0 )->comment( '0: Objective; 1: True/False;');
             $table->string("question");
-            $table->string("options")->nullable();
+            $table->json("options")->nullable();
             $table->string("answer");
             $table->string("hint")->nullable();
             $table->integer("mark")->default(1);
             $table->integer("nmark")->default(0);
             $table->string("explanation")->nullable();
             $table->integer("defficulty")->default(1);
-            $table->integer("parent")->nullable();
+            $table->bigInteger('exam_id')->unsigned()->index();
+
             $table->timestamps();
+            $table->softDeletes()->index();
+
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
         });
     }
 

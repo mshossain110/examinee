@@ -1,9 +1,8 @@
 <template>
-    <div class="page">
-        Exam page
+    <div class="">
+        fgfgdfd
     </div>
 </template>
-
 <script>
 export default {
     data () {
@@ -11,13 +10,7 @@ export default {
 
         }
     },
-    computed: {
-
-    },
     created () {
-
-    },
-    methods: {
 
     }
 }

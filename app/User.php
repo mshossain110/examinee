@@ -37,9 +37,9 @@ class User extends Authenticatable
         return "$this->firstname $this->lastname";
     }
 
-    public function userResults()
+    public function results()
     {
-        return $this->hasMany(Result::class, 'sid');
+        return $this->hasMany(Result::class, 'examinee');
     }
 
     public function role()
@@ -50,16 +50,6 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->role()->where('role_id', self::ADMIN)->first();
-    }
-
-    public function isTeacher () 
-    {
-        return $this->role()->where('role_id', self::TEACHER)->first();
-    }
-
-    public function isStudent () 
-    {
-        return $this->role()->where('role_id', self::STUDENT)->first();
     }
 
     public function instructs()
