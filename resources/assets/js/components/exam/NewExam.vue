@@ -1,8 +1,8 @@
 <template>
     <div class="newexam">
         <form
-            class="form-horizontal"
-            method="POST"
+            class="form-horizontal border bg-light p-5"
+            @submit.prevent="submit"
         >
             <div class="form-group">
                 <label
@@ -32,7 +32,7 @@
                 <div class="col">
                     <textarea
                         id="description"
-                        v-model="exam.descriptoon"
+                        v-model="exam.description"
                         name="description"
                         class="form-control"
                         rows="8"
@@ -46,7 +46,7 @@
                         type="submit"
                         class="btn btn-primary"
                     >
-                        Create Exam
+                        {{ exam.id ? 'Update Exam': 'Create Exam' }}
                     </button>
                 </div>
             </div>
@@ -79,7 +79,26 @@ export default {
 
     },
     methods: {
+        submit () {
+            const params = {
+                title: this.exam.title,
+                description: this.exam.description
+            }
 
+            if (!this.exam.id) {
+                axios.post(`/api/exams`, params)
+                    .then(res => {
+                        this.$emit('new-exam', res.data.data)
+                        this.exam.title = ''
+                        this.exam.description = ''
+                    })
+            } else {
+                axios.put(`/api/exams/${this.exam.id}`, params)
+                    .then(res => {
+                        this.$emit('edit-exam', res.data.data)
+                    })
+            }
+        }
     }
 }
 </script>

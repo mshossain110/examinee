@@ -21,10 +21,17 @@
                     <button
                         type="button"
                         class="btn btn-primary"
+                        @click.prevent="newExam = !newExam"
                     >
                         Create Exam
                     </button>
                 </div>
+            </div>
+            <div
+                v-if="newExam"
+                class="card-body"
+            >
+                <NewExam />
             </div>
         </div>
 
@@ -32,25 +39,21 @@
             v-if="exams.length"
             :exams="exams"
         />
-
-        <NewExam />
-        <NewQuestion />
     </div>
 </template>
 
 <script>
 import NewExam from './NewExam'
-import NewQuestion from './NewQuestion'
 import Exams from './Exams'
 export default {
     components: {
         NewExam,
-        NewQuestion,
         Exams
     },
     data () {
         return {
-            exams: []
+            exams: [],
+            newExam: false
         }
     },
     computed: {

@@ -1,6 +1,9 @@
 <template>
     <div class="newquestion">
-        <form class="form-horizontal">
+        <form class="form-horizontal border bg-light p-5">
+            <div class="heading">
+                <h3>New Question</h3>
+            </div>
             <div
                 id="qtype"
                 class="form-group"
@@ -213,6 +216,10 @@ export default {
             default () {
 
             }
+        },
+        exam: {
+            type: Object,
+            required: true
         }
     },
     data () {
