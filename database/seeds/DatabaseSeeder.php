@@ -20,8 +20,9 @@ class DatabaseSeeder extends Seeder
         
         $this->call(RoleSeed::class);
         $this->call(UserSeed::class);
-        $this->call(CourseSeed::class);
+        $this->call(SubjectSeed::class);
         $this->call(TopicSeed::class);
+        $this->call(CourseSeed::class);
 
         $this->command->call("passport:install");
     }

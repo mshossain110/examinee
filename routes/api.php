@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,14 +11,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function(){
+Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
     Route::get('courses/my-courses', 'MyCourseController@index');
     Route::get('courses/my-courses/{id}', 'MyCourseController@show');
     Route::apiResource('course', 'CourseController');
     Route::apiResource('lessons', 'LessonController');
     Route::apiResource('topics', 'TopicController');
+
+    Route::apiResource('subjects', 'SubjectController');
+    Route::apiResource('lessons-section', 'LessonsSectionController');
+
+    Route::apiResource('exams', 'ExamController');
+    Route::apiResource('questions', 'QuestionController');
+    
+    
     Route::post('/file', 'FileController@store');
 });

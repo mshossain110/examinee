@@ -20,6 +20,7 @@ $factory->define(App\Lesson::class, function (Faker\Generator $faker) {
         'slug' => str_slug($name),
         'short_text' => $faker->paragraph(),
         'full_text' => $faker->text(1000),
+        'lessons_section_id' => 1,
         'position' => rand(1, 10),
         'status' => rand(0, 1),
         'created_by' => rand(1, 5),

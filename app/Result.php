@@ -8,30 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Result extends Model
 {
-	protected $fillable = ['sid', 'eid','answer','obtain'];
+	protected $fillable = ['answer','obtain'];
 
 
-	public function resultExam()
+	public function exam()
 	{
-		return $this->belongsTo(Exam::class, 'eid');
+		return $this->belongsTo(Exam::class, 'exam_id');
 	}
 
-	public function resultStudent()
+	public function examinee()
 	{
-		return $this->belongsTo(User::class, 'sid');
-	}
-
-
-
-    public function setAnswerAttribute( $value ) {
-    	$this->attributes['answer'] = json_encode( $value );
+		return $this->belongsTo(User::class, 'examinee');
     }
-
-    public function getAnswerAttribute( $value ) {
-    	return json_decode( $value );
-    }
-
-
+    
     public static function calculateMark($answer)
     {
     	$count = 0;

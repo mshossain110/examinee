@@ -21,15 +21,15 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $exams = Exam::with( 'subjects', 'questions' )->where([
-                ['user_id', auth()->user()->id],
+            $exams = Exam::with('subjects', 'questions')->where([
+                ['examiner', auth()->user()->id],
                 ['title', 'like', '%' . $request->search . '%']
             ])->get();
             return view("exam.ajax.index", [
                 'exams' => $exams
             ]);
         }
-        $exams = Exam::with( 'subjects', 'questions' )->where('user_id', auth()->user()->id)->paginate(6);
+        $exams = Exam::with('subjects', 'questions')->where('user_id', auth()->user()->id)->paginate(6);
         return view("exam.index", [
             'exams' => $exams
         ]);
@@ -89,7 +89,7 @@ class ExamController extends Controller
         $result[1] = $exam->examResults->where('obtain', round($avg))->count();
         $result[2] = $exam->examResults->where('obtain', round($max))->count();
 
-        $dataset = implode(',',$result);
+        $dataset = implode(',', $result);
         $totalMarks = $this->calculateTotalMark($exam->questions);
 
         $questions = $exam->questions()->latest()->paginate(2, ['*'], 'questions');
@@ -97,24 +97,22 @@ class ExamController extends Controller
         // if has ajax request
         if ($request->ajax()) {
             if ($request->has('questions')) {
-                
-                return view('exam.ajax.questions',['questions' => $questions, 'exam' => $exam]);
+                return view('exam.ajax.questions', ['questions' => $questions, 'exam' => $exam]);
             }
             return back();
         }
 
-        return view('exam.show', compact('exam','result', 'questions', 'totalMarks','dataset','min','max', 'avg'));
+        return view('exam.show', compact('exam', 'result', 'questions', 'totalMarks', 'dataset', 'min', 'max', 'avg'));
     }
 
-    public function start( Exam $exam )
+    public function start(Exam $exam)
     {
         $exam->load('questions');
         return view('exam.exam', compact('exam'));
     }
 
-    public function end( Request $request, Exam $exam, Result $result )
+    public function end(Request $request, Exam $exam, Result $result)
     {
-        
         $totalMarks = $this->calculateTotalMark($exam->questions);
         $earnMarks = Result::calculateMark($request->answer);
 
@@ -157,7 +155,7 @@ class ExamController extends Controller
         $exam->description = $request->description;
         $exam->save();
         $exam->subjects()->detach();
-        $exam->subjects()->attach( $request->sid );
+        $exam->subjects()->attach($request->sid);
         return redirect()->route('exam.index');
     }
 
@@ -183,5 +181,4 @@ class ExamController extends Controller
         }
         return $count;
     }
-
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ExamSubject extends Migration
+class CreateCourseExamTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class ExamSubject extends Migration
      */
     public function up()
     {
-        Schema::create('exam_subject', function( Blueprint $table ){
-            $table->bigInteger('eid')->references('id')->on('exams')->onDelete('cascade');
-            $table->bigInteger('sid')->references('id')->on('subjects')->onDelete('cascade');
-
+        Schema::create('course_exam', function (Blueprint $table) {
+            $table->bigInteger('course_id');
+            $table->bigInteger('exam_id');
         });
     }
 
@@ -27,6 +26,6 @@ class ExamSubject extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exam_subject');
+        Schema::dropIfExists('course_exam');
     }
 }

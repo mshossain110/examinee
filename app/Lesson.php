@@ -34,4 +34,10 @@ class Lesson extends Model
     {
         return $this->belongsToMany('App\User', 'lesson_student')->withTimestamps();
     }
+
+    public function lessonsSection()
+    {
+        return $this->belongsTo(LessonsSection::class);
+    }
+
 }

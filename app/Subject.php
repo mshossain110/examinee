@@ -12,10 +12,10 @@ class Subject extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description','user_id',
+        'title', 'description'
     ];
 
     public function subject() {
-    	return $this->belongsToMany( Exam::class, 'exam_subject', 'sid', 'eid' );
+    	return $this->belongsToMany( Exam::class, 'exam_subject', 'subject_id', 'exam_id' );
     }
 }

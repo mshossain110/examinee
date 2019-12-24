@@ -18,8 +18,19 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $courseId = $request->get('course_id');
 
-        $exams = Exam::with( 'subjects')->where('user_id', $user->id)->paginate();
+        $exams = Exam::with(['subjects','questions']);
+
+        if ($courseId) {
+            $exams = $exams->whereHas('courses', function ($q) use ($courseId) {
+                $q->where('course_id', $courseId);
+            });
+        } else {
+            $exams = $exams->where('examiner', $user->id);
+        }
+        
+        $exams = $exams->get();
         
         $resource = JsonResource::collection($exams);
 
@@ -35,17 +46,17 @@ class ExamController extends Controller
      */
     public function store(ExamRequest $request)
     {
-        // dd(auth()->user()->id);
-        $sid = $request->input('sid');
+        $user = $request->user();
+        $subject_id = $request->input('subject_id');
         $exam = Exam::create([
-            'user_id'       => auth()->user()->id,
+            'examiner'       => $user->id,
             'title'         => $request->title,
             'description'   => $request->description
         ]);
-        $eid = $exam->id;
-        $exam->subjects()->attach($sid);
 
-        $resource = New JsonResource($exam);
+        $exam->subjects()->attach($subject_id);
+
+        $resource = new JsonResource($exam);
 
         return $resource;
     }
@@ -67,8 +78,8 @@ class ExamController extends Controller
         $exam->description = $request->description;
         $exam->save();
         $exam->subjects()->detach();
-        $exam->subjects()->attach( $request->sid );
-        $resource = New JsonResource($exam);
+        $exam->subjects()->attach($request->subject_id);
+        $resource = new JsonResource($exam);
 
         return $resource;
     }
@@ -83,10 +94,8 @@ class ExamController extends Controller
     {
         // dd($exam);
         $exam->subjects()->detach();
+        $exam->questions()->delete();
         $exam->delete();
         return response()->json(['success' => true, 'message'=> 'Exam Deleted successfully.']);
     }
-
-
-
 }

@@ -13,14 +13,22 @@ class Topic extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description','user_id',
+        'title', 'description',
     ];
 
-    public function question() {
-    	return $this->belongsToMany( Question::class, 'exam_question', 'tid', 'qid' );
+    /**
+     * Get all of the courses that are assigned this tag.
+     */
+    public function courses()
+    {
+        return $this->morphedByMany(Course::class, 'topicable');
     }
 
-    public function exam() {
-    	return $this->belongsToMany( Exam::class, 'exam_question', 'eid', 'tid' );
+    /**
+     * Get all of the exams that are assigned this tag.
+     */
+    public function exams()
+    {
+        return $this->morphedByMany(Exam::class, 'topicable');
     }
 }
