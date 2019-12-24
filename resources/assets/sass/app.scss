@@ -154,11 +154,13 @@
             padding: 7px;
             border-radius: inherit;
 
-        }
-            
-            
-       
-       
+        }  
     }
 }
-    
+
+.lesson-list{
+    overflow: scroll;
+    height: 300px;
+    width: 100%;
+}
+ 
