@@ -53,4 +53,9 @@ class Exam extends Model
         }
         return $count;
     }
+
+    public function sessionable()
+    {
+        return $this->morphOne(Sessionable::class, 'sessionable');
+    }
 }

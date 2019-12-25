@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LessonsSection extends Model
+class Session extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -15,8 +15,8 @@ class LessonsSection extends Model
         'title', 'description',
     ];
 
-    public function lessons()
+    public function sessions()
     {
-        return $this->hasMany(Lesson::class)->orderBy('position');
+        return $this->hasMany(Sessionable::class, 'session_id')->orderBy('order', 'desc');   
     }
 }

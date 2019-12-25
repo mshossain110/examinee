@@ -29,13 +29,10 @@ class CreateLessonsTable extends Migration
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->bigInteger('lessons_section_id')->index()->unsigned();
-
                 $table->bigInteger('created_by')->unsigned();
                 $table->bigInteger('updated_by')->unsigned();
                 
                 $table->index(['deleted_at']);
-                $table->foreign('lessons_section_id')->references('id')->on('lessons_sections');
                 $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
     }

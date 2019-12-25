@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\LessonsSection::class, function (Faker\Generator $faker) {
+$factory->define(App\Session::class, function (Faker\Generator $faker) {
     $name = ['Intruduction', 'Basic', 'Get into Deep', 'Advance',  'Example', 'Practices'];
     return [
         'title' => $name[rand(0, 5)],

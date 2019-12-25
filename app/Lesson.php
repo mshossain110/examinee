@@ -11,17 +11,17 @@ class Lesson extends Model
     use Topicable;
     
     protected $fillable = [
-        'title', 
-        'slug', 
-        'thumbnail', 
-        'short_text', 
-        'full_text', 
-        'position', 
-        'type', 
-        'object', 
-        'status', 
-        'course_id', 
-        'created_by', 
+        'title',
+        'slug',
+        'thumbnail',
+        'short_text',
+        'full_text',
+        'position',
+        'type',
+        'object',
+        'status',
+        'course_id',
+        'created_by',
         'updated_by'
     ];
     
@@ -35,9 +35,8 @@ class Lesson extends Model
         return $this->belongsToMany('App\User', 'lesson_student')->withTimestamps();
     }
 
-    public function lessonsSection()
+    public function sessionable()
     {
-        return $this->belongsTo(LessonsSection::class);
+        return $this->morphOne(Sessionable::class, 'sessionable');
     }
-
 }
