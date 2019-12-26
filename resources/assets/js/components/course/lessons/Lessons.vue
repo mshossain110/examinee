@@ -163,10 +163,10 @@ export default {
     },
     methods: {
         getLessons () {
+            const courseId = this.$route.params.id
             const params = {
-                course_id: this.$route.params.id
             }
-            axios.get(`/api/lessons`, { params: params })
+            axios.get(`/api/courses/${courseId}/sessions`, { params: params })
                 .then(res => {
                     this.lessons = res.data.data
                 })

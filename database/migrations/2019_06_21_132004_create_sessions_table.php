@@ -17,6 +17,7 @@ class CreateSessionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('description');
+            $table->unsignedBigInteger('course_id')->index();
             $table->timestamps();
         });
     }

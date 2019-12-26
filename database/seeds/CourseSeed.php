@@ -22,7 +22,7 @@ class CourseSeed extends Seeder
             $course->students()->sync(rand(1, 2));
             $course->subjects()->attach(rand(1, 5));
             $course->topics()->attach([rand(1, 5), rand(1, 10), rand(1, 10), rand(1, 10)]);
-            $sessions = factory(Session::class, 5)->create();
+            $sessions = factory(Session::class, 5)->create(['course_id'=> $course->id]);
             factory(Lesson::class, 10)->create(['course_id' => $course->id ])->each(function($lesson) use($sessions, $course) {
                 $lesson->sessionable()->create([
                     'session_id' => $sessions->random()->id,

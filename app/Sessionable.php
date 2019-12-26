@@ -14,9 +14,13 @@ class Sessionable extends Model
     protected $guarded=[];
 
 
-    public function sessionablae()
+    public function sessionable()
     {
         return $this->morphTo();
     }
-    
+
+    public function session ()
+    {
+        return $this->belongsTo(Session::class, 'session_id');
+    }
 }

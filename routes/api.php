@@ -14,6 +14,9 @@
 Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
     Route::get('courses/my-courses', 'MyCourseController@index');
     Route::get('courses/my-courses/{id}', 'MyCourseController@show');
+
+    Route::get('courses/{course}/sessions', 'SessionableController@lessons');
+
     Route::apiResource('course', 'CourseController');
     Route::apiResource('lessons', 'LessonController');
     Route::apiResource('topics', 'TopicController');
@@ -23,6 +26,8 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
 
     Route::apiResource('exams', 'ExamController');
     Route::apiResource('questions', 'QuestionController');
+
+    
     
     
     Route::post('/file', 'FileController@store');
