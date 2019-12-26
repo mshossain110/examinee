@@ -19,7 +19,7 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
     Route::apiResource('topics', 'TopicController');
 
     Route::apiResource('subjects', 'SubjectController');
-    Route::apiResource('lessons-section', 'LessonsSectionController');
+    Route::apiResource('sessions', 'SessionController');
 
     Route::apiResource('exams', 'ExamController');
     Route::apiResource('questions', 'QuestionController');

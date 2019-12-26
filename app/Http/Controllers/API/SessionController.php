@@ -5,9 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
-use App\LessonsSection;
+use App\Session;
 
-class LessonsSectionController extends Controller
+class SessionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +18,15 @@ class LessonsSectionController extends Controller
     {
         $search = $request->get('s');
 
-        $topics = LessonsSection::query();
+        $sessions = Session::query();
 
-        if($search) {
-            $topics = $topics->where('title', 'like', "%$search%");
+        if ($search) {
+            $sessions = $sessions->where('title', 'like', "%$search%");
         }
 
-        $topics = $topics->get();
+        $sessions = $sessions->get();
         
-        $resource = JsonResource::collection($topics);
+        $resource = JsonResource::collection($sessions);
 
         return $resource;
     }
@@ -41,23 +41,22 @@ class LessonsSectionController extends Controller
      */
     public function store(Request $request)
     {
-        $topic = LessonsSection::create( $request->all() );
+        $session = Session::create($request->all());
         
-        $resource = New JsonResource($topic);
+        $resource = new JsonResource($session);
 
         return $resource;
-        
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\LessonsSection  $lessonsSection
+     * @param  \App\Session  $Session
      * @return \Illuminate\Http\Response
      */
-    public function show(LessonsSection $lessonsSection)
+    public function show(Session $Session)
     {
-        $resource = New JsonResource($lessonsSection);
+        $resource = new JsonResource($Session);
 
         return $resource;
     }
@@ -67,15 +66,15 @@ class LessonsSectionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\LessonsSection  $lessonsSection
+     * @param  \App\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LessonsSection $lessonsSection)
+    public function update(Request $request, Session $session)
     {
-        $lessonsSection->title = $request->title;
-        $lessonsSection->description = $request->description;
-        $lessonsSection->save();
-        $resource = New JsonResource($lessonsSection);
+        $session->title = $request->title;
+        $session->description = $request->description;
+        $session->save();
+        $resource = new JsonResource($session);
 
         return $resource;
     }
@@ -83,12 +82,12 @@ class LessonsSectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\LessonsSection  $lessonsSection
+     * @param  \App\Session  $Session
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LessonsSection $lessonsSection)
+    public function destroy(Session $session)
     {
-        $lessonsSection->delete();
+        $session->delete();
 
         return response()->json(['success' => true, 'message' => 'Lessen section has deleted success fully.']);
     }
