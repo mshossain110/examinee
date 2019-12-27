@@ -99,46 +99,11 @@
                             href=""
                             class="btn btn-primary"
                             @click.prevent="create = !create"
-                        >Create Lessons</a>
-                    </div>
-                </div>
-                <div
-                    v-if="create"
-                    class="row mt-5"
-                >
-                    <div class="col">
-                        <NewLesson @new-lesson="newLesson" />
+                        >Create session</a>
                     </div>
                 </div>
             </div>
-            <div class="lessons-list">
-                <div
-                    v-for="l in lessons"
-                    :key="l.id"
-                    class="row mt-3"
-                >
-                    <div class="col-2">
-                        <img
-                            src="https://getbrainybox.com/wp-content/uploads/2016/08/montessori-lesson-plan-1024x685.jpg"
-                            alt=""
-                            width="150"
-                            height="80"
-                        >
-                    </div>
-                    <div class="col">
-                        <h1>{{ l.title }}</h1>
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h6>views 1,243,067</h6>
-                            </div>
-                            <div>
-                                <i class="far fa-trash-alt" />
-                                <i class="far fa-edit" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Sessions :sessions="sessions" />
         </div>
 
         <div class="col-md-3">
@@ -147,15 +112,16 @@
     </div>
 </template>
 <script>
-import NewLesson from './NewLesson'
+import Sessions from './Sessions'
 export default {
     components: {
-        NewLesson
+        Sessions
+
     },
     data () {
         return {
             create: false,
-            lessons: []
+            sessions: []
         }
     },
     created () {
@@ -168,11 +134,11 @@ export default {
             }
             axios.get(`/api/courses/${courseId}/sessions`, { params: params })
                 .then(res => {
-                    this.lessons = res.data.data
+                    this.sessions = res.data
                 })
         },
-        newLesson (lesson) {
-            this.lessons.push(lesson)
+        newSession (session) {
+            this.sessions.push(session)
             this.create = false
         }
     }
