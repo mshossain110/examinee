@@ -214,6 +214,10 @@ export default {
 
                 }
             }
+        },
+        session: {
+            type: Number,
+            required: true
         }
     },
     data () {
@@ -230,11 +234,19 @@ export default {
         submit () {
             var params = this.lesson
             params.course_id = this.$route.params.id
+            params.session = this.session
             params.topics = this.selectTopics.map(t => t.id)
-            axios.post('/api/lessons', params)
-                .then(response => {
-                    this.$emit('new-lesson', response.data.data)
-                })
+            if (!this.lesson.id) {
+                axios.post(`/api/lessons`, params)
+                    .then(response => {
+                        this.$emit('store', response.data.data)
+                    })
+            } else {
+                axios.put(`/api/lessons/${this.lesson.id}`, params)
+                    .then(response => {
+                        this.$emit('update', response.data.data)
+                    })
+            }
         },
         titleInput (text) {
             this.lesson.title = text

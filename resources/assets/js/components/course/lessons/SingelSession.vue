@@ -11,11 +11,11 @@
                     {{ session.title }}
                 </h3>
                 <div class="card-action">
-                    <!-- <a
+                    <a
                         href="#"
                         class="btn btn-primary btn-sm"
-                        @click.prevent="newQuestionForm = !newQuestionForm"
-                    > New Question</a> -->
+                        @click.prevent="newLesson = !newLesson"
+                    > New Lesson</a>
                     <a
                         href="#"
                         class="btn btn-primary  btn-sm"
@@ -41,6 +41,15 @@
             <p>{{ session.description }}</p>
         </div>
         <div
+            v-if="newLesson"
+            class="card-body"
+        >
+            <NewLesson
+                :session="session.id"
+                @store="newlessonfrom"
+            />
+        </div>
+        <div
             v-if="editSession"
             class="card-body"
         >
@@ -58,10 +67,12 @@
 <script>
 import Resources from './Resources'
 import EditSession from './NewSession'
+import NewLesson from './NewLesson'
 export default {
     components: {
         Resources,
-        EditSession
+        EditSession,
+        NewLesson
     },
     props: {
         session: {
@@ -71,12 +82,17 @@ export default {
     },
     data () {
         return {
-            editSession: false
+            editSession: false,
+            newLesson: false
         }
     },
     methods: {
         updatesession (session) {
             this.editSession = false
+        },
+        newlessonfrom (lesson) {
+            this.session.resources.push(lesson)
+            this.newLesson = false
         }
     }
 }

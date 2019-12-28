@@ -49,6 +49,13 @@ class LessonController extends Controller
             $lesson->topics()->attach($topics);
         }
 
+        if ($request->session) {
+            $lesson->sessionable()->create([
+                'session_id' => $request->session,
+                'course_id' => $course->id,
+            ]);
+        }
+
         $resource = new JsonResource($lesson);
 
         return $resource;
