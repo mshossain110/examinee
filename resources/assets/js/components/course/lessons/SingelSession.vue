@@ -18,6 +18,11 @@
                     > New Lesson</a>
                     <a
                         href="#"
+                        class="btn btn-primary btn-sm"
+                        @click.prevent="attachExamForm = !attachExamForm"
+                    > Attach Exam</a>
+                    <a
+                        href="#"
                         class="btn btn-primary  btn-sm"
                     ><i class="fas fa-info-circle" /></a>
                     <a
@@ -50,6 +55,15 @@
             />
         </div>
         <div
+            v-if="attachExamForm"
+            class="card-body"
+        >
+            <AttachExam
+                :session="session"
+                @attach="attachExam"
+            />
+        </div>
+        <div
             v-if="editSession"
             class="card-body"
         >
@@ -68,11 +82,14 @@
 import Resources from './Resources'
 import EditSession from './NewSession'
 import NewLesson from './NewLesson'
+import AttachExam from './AttachExam'
 export default {
     components: {
         Resources,
         EditSession,
-        NewLesson
+        NewLesson,
+        AttachExam
+
     },
     props: {
         session: {
@@ -83,7 +100,8 @@ export default {
     data () {
         return {
             editSession: false,
-            newLesson: false
+            newLesson: false,
+            attachExamForm: false
         }
     },
     methods: {
@@ -93,6 +111,10 @@ export default {
         newlessonfrom (lesson) {
             this.session.resources.push(lesson)
             this.newLesson = false
+        },
+        attachExam (exam) {
+            this.session.resources.push(exam)
+            this.attachExamForm = false
         }
     }
 }

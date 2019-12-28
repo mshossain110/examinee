@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
 use App\Session;
+use App\Exam;
 
 class SessionController extends Controller
 {
@@ -93,13 +94,15 @@ class SessionController extends Controller
     }
 
 
-    public function attachExam (Request $request, Session $session) {
-        $session->exams()->attach($request->exam_id, ['course_id' => $session->course_id]);
-        return response()->json(['success' => true, 'message' => 'Exam attach with session successfully.']);
+    public function attachExam (Request $request, Session $session) { 
+        $exam = Exam::find($request->exam_id);
+        $session->exams()->attach($exam, ['course_id' => $session->course_id]);
+        return response()->json($exam);
     }
 
     public function attachLession (Request $request, Session $session) {
-        $session->lessons()->attach($request->lession_id, ['course_id' => $session->course_id]);
-        return response()->json(['success' => true, 'message' => 'Lesson attach with session successfully.']);
+        $lesson = Lesson::find($request->lesson_id);
+        $session->lessons()->attach($lesson, ['course_id' => $session->course_id]);
+        return response()->json($lesson);
     }
 }

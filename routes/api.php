@@ -22,8 +22,8 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
     Route::apiResource('topics', 'TopicController');
 
     Route::apiResource('subjects', 'SubjectController');
-    Route::put('sessions/{id}/attachExam', 'SessionController@attachExam');
-    Route::put('sessions/{id}/attachLession', 'SessionController@attacLession');
+    Route::put('sessions/{session}/attach-exam', 'SessionController@attachExam');
+    Route::put('sessions/{session}/attach-lession', 'SessionController@attacLession');
     
     Route::apiResource('sessions', 'SessionController');
 
