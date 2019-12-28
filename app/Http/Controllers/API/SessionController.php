@@ -89,6 +89,17 @@ class SessionController extends Controller
     {
         $session->delete();
 
-        return response()->json(['success' => true, 'message' => 'Lessen section has deleted success fully.']);
+        return response()->json(['success' => true, 'message' => 'session has deleted successfully.']);
+    }
+
+
+    public function attachExam (Request $request, Session $session) {
+        $session->exams()->attach($request->exam_id, ['course_id' => $session->course_id]);
+        return response()->json(['success' => true, 'message' => 'Exam attach with session successfully.']);
+    }
+
+    public function attachLession (Request $request, Session $session) {
+        $session->lessons()->attach($request->lession_id, ['course_id' => $session->course_id]);
+        return response()->json(['success' => true, 'message' => 'Lesson attach with session successfully.']);
     }
 }
