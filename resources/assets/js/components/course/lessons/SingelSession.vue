@@ -4,34 +4,79 @@
         class="card"
     >
         <div class="card-header">
-            <h3>
-                {{ session.title }}
-            </h3>
-            <p>{{ session.description }}</p>
-        </div>
-        <div class="card-body">
             <div
-                v-for="r in session.resources"
-                :key="r.id"
-                class="card mt-2"
+                class="d-flex justify-content-between"
             >
-                <div class="card-header">
-                    {{ r.title }}
-                </div>
-                <div class="card-body">
-                    fggfdg
+                <h3>
+                    {{ session.title }}
+                </h3>
+                <div class="card-action">
+                    <!-- <a
+                        href="#"
+                        class="btn btn-primary btn-sm"
+                        @click.prevent="newQuestionForm = !newQuestionForm"
+                    > New Question</a> -->
+                    <a
+                        href="#"
+                        class="btn btn-primary  btn-sm"
+                    ><i class="fas fa-info-circle" /></a>
+                    <a
+                        href="#"
+                        class="btn btn-primary  btn-sm"
+                    ><i class="fas fa-cogs" /></a>
+
+                    <a
+                        href="#"
+                        class="btn btn-primary  btn-sm"
+                        @click.prevent="editSession = !editSession"
+                    ><i class="fas fa-edit" /></a>
+
+                    <a
+                        href="#"
+                        class="btn btn-primary  btn-sm"
+                    ><i class="fas fa-trash-alt" /></a>
                 </div>
             </div>
+
+            <p>{{ session.description }}</p>
+        </div>
+        <div
+            v-if="editSession"
+            class="card-body"
+        >
+            <EditSession
+                :session="session"
+                @update="updatesession"
+            />
+        </div>
+        <div class="card-body">
+            <Resources :resources="session.resources" />
         </div>
     </div>
 </template>
 
 <script>
+import Resources from './Resources'
+import EditSession from './NewSession'
 export default {
+    components: {
+        Resources,
+        EditSession
+    },
     props: {
         session: {
             type: Object,
             required: true
+        }
+    },
+    data () {
+        return {
+            editSession: false
+        }
+    },
+    methods: {
+        updatesession (session) {
+            this.editSession = false
         }
     }
 }

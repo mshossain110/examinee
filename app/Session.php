@@ -12,7 +12,7 @@ class Session extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description',
+        'title', 'description', 'course_id'
     ];
 
     public function sessions()

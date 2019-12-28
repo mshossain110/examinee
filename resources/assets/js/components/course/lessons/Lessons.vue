@@ -103,6 +103,10 @@
                     </div>
                 </div>
             </div>
+            <NewSession
+                v-if="create"
+                @store="newSession"
+            />
             <Sessions :sessions="sessions" />
         </div>
 
@@ -113,10 +117,11 @@
 </template>
 <script>
 import Sessions from './Sessions'
+import NewSession from './NewSession'
 export default {
     components: {
-        Sessions
-
+        Sessions,
+        NewSession
     },
     data () {
         return {

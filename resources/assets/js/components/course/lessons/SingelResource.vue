@@ -5,13 +5,7 @@
         class="card"
     >
         <div class="card-header">
-            <h3>
-                {{ resource.title }}
-            </h3>
-            <p>{{ resource.description }}</p>
-        </div>
-        <div class="card-body">
-            fgfdg
+            {{ resource.title }}
         </div>
     </div>
 </template>
