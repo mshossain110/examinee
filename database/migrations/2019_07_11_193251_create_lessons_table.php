@@ -15,7 +15,6 @@ class CreateLessonsTable extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->bigInteger('course_id')->unsigned();
                 $table->string('title')->nullable();
                 $table->string('slug')->nullable();
                 $table->string('thumbnail')->nullable();
@@ -33,7 +32,6 @@ class CreateLessonsTable extends Migration
                 $table->bigInteger('updated_by')->unsigned();
                 
                 $table->index(['deleted_at']);
-                $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
     }
 

@@ -27,7 +27,7 @@ class Lesson extends Model
     
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id')->withTrashed();
+        return $this->belongsToMany( Course::class, 'sessionables', 'sessionable_id', 'course_id' )->wherePivot('sessionable_type', Lesson::class);
     }
 
     public function students()

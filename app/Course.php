@@ -101,7 +101,7 @@ class Course extends Model
 
     public function lessons()
     {
-        return $this->hasMany(Lesson::class)->orderBy('position');
+        return $this->belongsToMany(Lesson::class, 'sessionables', 'course_id', 'sessionable_id')->wherePivot('sessionable_type', Lesson::class);
     }
 
     public function publishedLessons()
@@ -110,7 +110,7 @@ class Course extends Model
     }
 
     public function exams() {
-    	return $this->belongsToMany(Exam::class, 'course_exam', 'course_id', 'exam_id');
+    	return $this->belongsToMany(Exam::class, 'sessionables', 'course_id', 'sessionable_id')->wherePivot('sessionable_type', Exam::class);
     }
 
     public function topics() {

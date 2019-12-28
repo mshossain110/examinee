@@ -23,27 +23,27 @@ class CourseSeed extends Seeder
             $course->subjects()->attach(rand(1, 5));
             $course->topics()->attach([rand(1, 5), rand(1, 10), rand(1, 10), rand(1, 10)]);
             $sessions = factory(Session::class, 5)->create(['course_id'=> $course->id]);
-            factory(Lesson::class, 10)->create(['course_id' => $course->id ])->each(function($lesson) use($sessions, $course) {
-                $lesson->sessionable()->create([
+          
+            factory(Lesson::class, 15)->create()->each(function($lesson) use($sessions, $course) {
+                $course->lessons()->save($lesson, [
                     'session_id' => $sessions->random()->id,
-                    'course_id' => $course->id,
-                    'order' => $lesson->id
+                    'sessionable_type' => Lesson::class,
+                    'order' => rand(1, 15)
                 ]);
             });
 
-            factory(Exam::class, rand(1, 8))->create()->each(function ($exam)  use($sessions, $course) {
+            factory(Exam::class, rand(5, 15))->create()->each(function ($exam) use($sessions, $course) {
             
                 $exam->topics()->attach([rand(1, 5), rand(1, 10), rand(1, 10), rand(1, 10)]);
-                $exam->courses()->attach([$course->id]);
     
                 factory(Question::class, 20)->create(['exam_id' => $exam->id]);
                 
-                $exam->sessionable()->create([
+                $course->exams()->save($exam, [
                     'session_id' => $sessions->random()->id,
-                    'course_id' => $course->id,
-                    'order' => ($exam->id + 10)
+                    'sessionable_type' => Exam::class,
+                    'order' => rand(15, 30)
                 ]);
-                
+
             });
             
         });

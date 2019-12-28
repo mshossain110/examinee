@@ -25,7 +25,7 @@ class Exam extends Model
     }
 
     public function courses() {
-    	return $this->belongsToMany( Course::class, 'course_exam', 'exam_id', 'course_id' );
+        return $this->belongsToMany( Course::class, 'sessionables', 'sessionable_id', 'course_id' )->wherePivot('sessionable_type', Exam::class);
     }
 
     public function questions() {
