@@ -24,6 +24,7 @@
                     <a
                         href="#"
                         class="btn btn-primary  btn-sm"
+                        @click.prevent="deleteLesson"
                     ><i class="fas fa-trash-alt" /></a>
                 </div>
                 <div v-if="isExam">
@@ -70,6 +71,20 @@ export default {
         isExam () {
             return this.resource.pivot.sessionable_type === `App\\Exam`
         }
+    },
+    methods: {
+        deleteLesson () {
+            const con = confirm('Do You Want To Delete Lesson?')
+
+            if (!con) {
+                return
+            }
+            axios.delete(`/api/lessons/${this.resource.id}`)
+                .then(res => {
+                    this.$emit('deleteLesson', this.resource)
+                })
+        }
+
     }
 }
 </script>

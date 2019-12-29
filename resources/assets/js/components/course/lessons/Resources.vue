@@ -7,6 +7,7 @@
         >
             <Resource
                 :resource="resource"
+                @deleteLesson="$emit('deleteLesson', $event)"
             />
         </div>
     </div>

@@ -70,7 +70,10 @@
             />
         </div>
         <div class="card-body p-1">
-            <Resources :resources="session.resources" />
+            <Resources
+                :resources="session.resources"
+                @deleteLesson="deleteLesson"
+            />
         </div>
     </div>
 </template>
@@ -112,6 +115,12 @@ export default {
         attachExam (exam) {
             this.session.resources.push(exam)
             this.attachExamForm = false
+        },
+        deleteLesson (lesson) {
+            var i = this.session.resources.findIndex(r => r.id === lesson.id && r.pivot.sessionable_type === lesson.pivot.sessionable_type)
+            if (i !== -1) {
+                this.session.resources.splice(i, 1)
+            }
         }
     }
 }
