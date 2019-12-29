@@ -1,18 +1,21 @@
 <template>
-    <div class="fileUpload">
+    <div
+        class="fileUpload"
+    >
         <Dropzone
             id="fileUpload"
             ref="myVueDropzone"
+            style="height: calc(100% - 70px);"
             :options="dropzoneOptions"
             v-bind="$attrs"
             @vdropzone-file-added="fileAdded"
             @vdropzone-files-added="filesAdded"
             @vdropzone-success="success"
-            @vdropzone-chunks-uploaded="chunksUploaded"
             @vdropzone-sending="sending"
             @vdropzone-drop="deactive"
             @vdropzone-drag-leave="deactive"
             @vdropzone-removed-file="removed"
+            @vdropzone-queue-complete="completeQueue"
         />
     </div>
 </template>
@@ -41,6 +44,10 @@ export default {
             default () {
                 return []
             }
+        },
+        projectId: {
+            type: Number,
+            default: 0
         }
     },
     data () {
@@ -52,16 +59,15 @@ export default {
     },
     computed: {
         dropzoneOptions () {
-            const bearer = window.localStorage['auth_token']
             return {
-                url: '/api/file',
+                url: '/api/files',
                 method: 'POST',
                 thumbnailWidth: 200,
                 parallelUploads: 1,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
-                    Authorization: 'Bearer ' + bearer
+                    Authorization: 'Bearer ' + window.localStorage['auth_token']
                 },
                 chunking: true,
                 forceChunking: true,
@@ -118,7 +124,7 @@ export default {
         },
         success (file) {
             const response = JSON.parse(file.xhr.response)
-            this.fileResponse.push(response)
+            this.fileResponse.push(response.data)
             this.$emit('input', this.fileResponse)
         },
         chunksUploaded (file, done) {
@@ -132,6 +138,9 @@ export default {
             }
             formData.append('path', '/' + path)
             formData.append('parent_id', 0)
+            if (this.projectId) {
+                formData.append('project_id', this.projectId)
+            }
             formData.append('sizes', this.sizes)
         },
         removed (file) {
@@ -143,6 +152,9 @@ export default {
             this.fileList = []
             this.fileResponse = []
             this.$refs.myVueDropzone.dropzone.removeAllFiles()
+        },
+        completeQueue (files) {
+            this.$emit('complete-queue')
         }
     }
 }

@@ -2,15 +2,17 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Observers\FileObserver;
+use App\User;
+use App\Traits\HashesId;
 use App\Jobs\ResizedImage;
-use Storage;
+use App\Traits\FileStorage;
+use App\Observers\FileObserver;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class File extends Model
 {
-    use SoftDeletes;
+    use HashesId, FileStorage;
 
     protected $fillable = [
         'name',
@@ -21,12 +23,11 @@ class File extends Model
         'mime',
         'type',
         'public_path',
-        'file_size',
         'parent_id',
         'driver',
         'driver_data',
+        'uploaded_by',
         'meta',
-        'permissions',
     ];
 
     protected $casts = [
@@ -44,21 +45,68 @@ class File extends Model
      * @var array
      */
     protected $hidden = [
-        'permissions',
+        'meta',
+        'file_name'
     ];
 
     /**
-     * Bootstrap any application services.
+     * the accessor that should append with response.
+     *
+     * @var array
      */
+    protected $appends = [
+        'sizes',
+        'hash'
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Booting
+    |--------------------------------------------------------------------------
+    */
     public static function boot()
     {
         parent::boot();
         File::observe(FileObserver::class);
     }
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS Variables
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS & Mutation
+    |--------------------------------------------------------------------------
+    */
+    public function getSizesAttribute()
+    {
+        if ($this->type == 'image') {
+            return $this->getImageSizes();
+        }
+
+        return [];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
     public function children()
     {
         return $this->hasMany(static::class, 'folder_id');
@@ -72,13 +120,72 @@ class File extends Model
         return $this->belongsTo(static::class, 'folder_id');
     }
 
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'fileables', 'file_id', 'project_id');
+    }
+
+    public function uploader()
+    {
+        return $this->hasOne(User::class, 'id', 'uploaded_by');
+    }
+
+    
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    public function setPermission($permission, $value)
+    {
+        $permissions = $this->meta['permissions'];
+        $permissions[$permission] = $value;
+
+        $this->save();
+    }
+
+    public function getPermission($permission = null)
+    {
+        $permissions = $this->meta['permissions'];
+
+        if ($permission !== null) {
+            if (array_key_exists($permission, $permissions)) {
+                return $permissions[$permission];
+            } else {
+                return false;
+            }
+        }
+        return $permissions;
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->getPermission($permission) === true;
+    }
+
+    public function setImageSize($size)
+    {
+        $sizes = $this->meta['sizes'];
+        $sizes[$size] = false;
+
+        $this->save();
+    }
+
+    public function getImageSizes()
+    {
+        return $this->meta['sizes'];
+    }
+
     public function updatePublicPaths($driver = null)
     {
         if ($this->driver !== $driver) {
             $this->driver = $driver;
         }
 
-        if ($this->permissions['public']) {
+        if ($this->hasPermission('public')) {
             $this->public_path = Storage::disk($this->driver)->url($this->getStoragePath());
         } else {
             $this->public_path = Storage::disk('local')->url($this->getStoragePath());
@@ -86,163 +193,9 @@ class File extends Model
         $this->save();
     }
 
-    /**
-     * @param string $oldPath
-     * @param string $newPath
-     * @param null   $entryIds
-     */
-    public function updatePaths($oldPath, $newPath, $entryIds = null)
-    {
-        $oldPath = $this->encodePath($oldPath);
-        $newPath = $this->encodePath($newPath);
-
-        $query = $this->newQuery();
-
-        if ($entryIds) {
-            $query->whereIn('id', $entryIds);
-        }
-
-        $query->where('path', 'LIKE', "$oldPath%")
-            ->update(['path' => DB::raw("REPLACE(path, '$oldPath', '$newPath')")]);
-    }
-
-    /**
-     * Get all children of current entry.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function findChildren()
-    {
-        if (!$this->exists) {
-            return collect();
-        }
-
-        return $this->where('path', 'like', $this->attributes['path'].'%')->get();
-    }
-
-    /**
-     * Generate full path for current entry, based on its parent.
-     */
-    public function generatePath()
-    {
-        if (!$this->exists) {
-            return;
-        }
-
-        $this->path = $this->id;
-
-        if ($this->parent) {
-            $parent = $this->find($this->parent_id);
-            $this->path = "{$parent->path}/$this->path";
-        }
-
-        $this->save();
-    }
-
-    private function encodePath($path)
-    {
-        $parts = explode('/', (string) $path);
-
-        $parts = array_filter($parts);
-
-        $parts = array_map(function ($part) {
-            return $this->encodePathId($part);
-        }, $parts);
-
-        return implode('/', $parts);
-    }
-
-    private function encodePathId($id)
-    {
-        return base_convert($id, 10, 36);
-    }
-
-    private function decodePathId($id)
-    {
-        return base_convert($id, 36, 10);
-    }
-
-    public function getHashAttribute()
-    {
-        return trim(base64_encode(str_pad($this->getOriginal('id').'|', 10, 'padding')), '=');
-    }
-
-    public function scopeWhereHash(Builder $query, $value)
-    {
-        $id = $this->decodeHash($value);
-
-        return $query->where('id', $id);
-    }
-
-    public function decodeHash($hash)
-    {
-        if ((int) $hash !== 0) {
-            return $hash;
-        }
-
-        return (int) explode('|', base64_decode($hash))[0];
-    }
-
-    /**
-     * Get url for previewing upload.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function getUrlAttribute($value)
-    {
-        if ($value) {
-            return $value;
-        }
-        if (!isset($this->attributes['type']) || $this->attributes['type'] === 'folder') {
-            return null;
-        }
-
-        if (array_get($this->attributes, 'public')) {
-            return "storage/$this->public_path/$this->file_name";
-        } else {
-            return 'uploads/'.$this->attributes['id'];
-        }
-    }
-
-    public function getStoragePath()
+    public function getStoragePath($prefix = null)
     {
         return "$this->file_name/$this->name";
-    }
-
-    /**
-     * Get path of specified entry.
-     *
-     * @param int $id
-     *
-     * @return string
-     */
-    public function findPath($id)
-    {
-        $entry = $this->find($id, ['path']);
-
-        return $entry ? $entry->getOriginal('path') : '';
-    }
-
-    /**
-     * Return file entry name with extension.
-     *
-     * @return string
-     */
-    public function getNameWithExtension()
-    {
-        if (!$this->exists) {
-            return '';
-        }
-
-        $extension = pathinfo($this->name, PATHINFO_EXTENSION);
-
-        if (!$extension) {
-            return $this->name.'.'.$this->extension;
-        }
-
-        return $this->name;
     }
 
     /**
