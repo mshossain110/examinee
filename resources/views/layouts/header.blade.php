@@ -24,6 +24,13 @@
         @if (Session::has('token'))
             window.localStorage['auth_token'] = '{{ Session::get("token") }}'
         @endif
+
+        window.Examinee = {}
+
+
+        @if(Auth::check())
+            window.Examinee.user = @json(Auth::user())
+        @endif
     </script>
     @stack('head')
 </head>

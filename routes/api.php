@@ -33,5 +33,5 @@ Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
     
     
     
-    Route::post('/file', 'FileController@store');
+    Route::apiResource('/files', 'FileController');
 });

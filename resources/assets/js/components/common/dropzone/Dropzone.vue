@@ -142,7 +142,7 @@ export default {
         })
 
         this.dropzone.on('chunksUploaded', function (file, done) {
-            vm.$emit('vdropzone-chunks-uploaded', file, done)
+            done()
         })
 
         this.dropzone.on('addedfiles', function (files) {

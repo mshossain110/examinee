@@ -170,6 +170,12 @@
                             ref="courseUploader"
                             v-model="attachments"
                         />
+
+                        <AttachFiles
+                            v-model="files"
+                            multiple
+                            sidebar
+                        />
                     </div>
                     <div class="form-group">
                         <button
@@ -186,7 +192,11 @@
 </template>
 
 <script>
+import AttachFiles from '@c/common/dropzone/AttachFiles.vue'
 export default {
+    components: {
+        AttachFiles
+    },
     props: {
         course: {
             type: Object,
@@ -212,7 +222,8 @@ export default {
         return {
             slugReadonly: true,
             attachments: [],
-            thumbanile: []
+            thumbanile: [],
+            files: []
         }
     },
     computed: {
