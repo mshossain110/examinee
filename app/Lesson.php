@@ -20,7 +20,6 @@ class Lesson extends Model
         'type',
         'object',
         'status',
-        'course_id',
         'created_by',
         'updated_by'
     ];

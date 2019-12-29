@@ -215,9 +215,10 @@ export default {
                 }
             }
         },
+        // eslint-disable-next-line vue/require-default-prop
         session: {
-            type: Number,
-            required: true
+            type: Number
+
         }
     },
     data () {
