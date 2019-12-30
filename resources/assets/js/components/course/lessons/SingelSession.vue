@@ -69,7 +69,7 @@
                 @update="updatesession"
             />
         </div>
-        <div class="card-body p-1">
+        <div class="card-body p-0">
             <Resources
                 :resources="session.resources"
                 @deleteLesson="deleteLesson"

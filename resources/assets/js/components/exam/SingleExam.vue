@@ -44,7 +44,7 @@
         >
             <NewQuestion :exam="exam" />
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
             <template v-if="exam.questions.length">
                 <SingleQuestion
                     v-for="question in exam.questions"
