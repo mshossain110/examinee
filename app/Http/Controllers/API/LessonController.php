@@ -38,22 +38,22 @@ class LessonController extends Controller
         $user = $request->user();
         $courseId = $request->get('course_id');
         $topics = $request->get('topics');
-        $course = Course::find($courseId);
 
         $data = $request->all();
         $data['created_by'] = $user->id;
         $data['updated_by'] = $user->id;
-        $lesson = $course->lessons()->create($data);
+        $lesson = Lesson::create($data);
 
         if ($topics) {
             $lesson->topics()->attach($topics);
         }
 
         if ($request->session) {
-            $lesson->sessionable()->create([
-                'session_id' => $request->session,
-                'course_id' => $course->id,
+            $lesson->sessions()->attach($request->session, [
+                'course_id' => $courseId,
             ]);
+
+            $lesson->load(['sessionable']);
         }
 
         $resource = new JsonResource($lesson);

@@ -3,7 +3,7 @@
         <div
             v-for="session in sessions"
             :key="session.id"
-            class="Singel-session mt-3"
+            class="singel-session mt-3"
         >
             <Session
                 :session="session"

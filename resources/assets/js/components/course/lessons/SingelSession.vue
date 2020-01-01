@@ -4,35 +4,9 @@
         class="card"
     >
         <div class="card-header">
-            <div
-                class="d-flex justify-content-between"
-            >
-                <h5>
-                    {{ session.title }}
-                </h5>
-                <div class="card-action">
-                    <a
-                        href="#"
-                        class="btn btn-primary btn-sm"
-                        @click.prevent="newLesson = !newLesson"
-                    > New Lesson</a>
-                    <a
-                        href="#"
-                        class="btn btn-primary btn-sm"
-                        @click.prevent="attachExamForm = !attachExamForm"
-                    > Attach Exam</a>
-                    <a
-                        href="#"
-                        class="btn btn-primary  btn-sm"
-                        @click.prevent="editSession = !editSession"
-                    ><i class="fas fa-edit" /></a>
-
-                    <a
-                        href="#"
-                        class="btn btn-primary  btn-sm"
-                    ><i class="fas fa-trash-alt" /></a>
-                </div>
-            </div>
+            <h5>
+                {{ session.title }}
+            </h5>
             <div
                 class="description"
                 style="font-size:13px;"
@@ -40,6 +14,29 @@
                 <p class="m-0">
                     {{ session.description }}
                 </p>
+            </div>
+            <div class="s-action">
+                <a
+                    href="#"
+                    class="ex-btn"
+                    @click.prevent="newLesson = !newLesson"
+                > New Lesson</a>
+                <a
+                    href="#"
+                    class="ex-btn"
+                    @click.prevent="attachExamForm = !attachExamForm"
+                > Attach Exam</a>
+                <a
+                    href="#"
+                    class="ex-icon"
+                    @click.prevent="editSession = !editSession"
+                ><i class="fas fa-edit" /></a>
+
+                <a
+                    href="#"
+                    class="ex-icon text-danger"
+                    @click.prevent="deletesession"
+                ><i class="fas fa-trash-alt" /></a>
             </div>
         </div>
         <div
@@ -109,6 +106,7 @@ export default {
             this.editSession = false
         },
         newlessonfrom (lesson) {
+            lesson.pivot = lesson.sessionable
             this.session.resources.push(lesson)
             this.newLesson = false
         },
@@ -121,6 +119,15 @@ export default {
             if (i !== -1) {
                 this.session.resources.splice(i, 1)
             }
+        },
+        deletSession () {
+            const con = confirm('Do You Want To Delete Session?')
+
+            if (!con) {
+                return
+            }
+            axios.delete(`/api/session/${this.session.id}`)
+                .then(res => {})
         }
     }
 }

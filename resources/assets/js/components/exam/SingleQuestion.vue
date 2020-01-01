@@ -9,14 +9,13 @@
             <div class="card-action">
                 <a
                     href="#"
-                    class="btn btn-primary  btn-sm"
                     @click.prevent="editQuestionForm = !editQuestionForm"
                 ><i class="fas fa-edit" /></a>
 
                 <a
                     href="#"
-                    class="btn btn-primary  btn-sm"
-                    @click.prevent="deleteExam"
+                    class="text-danger"
+                    @click.prevent="deleteQuestion"
                 ><i class="fas fa-trash-alt" /></a>
             </div>
         </div>
@@ -56,8 +55,8 @@ export default {
 
     },
     methods: {
-        deleteExam () {
-            const con = confirm('Do You Want To Delete Exam?')
+        deleteQuestion () {
+            const con = confirm('Do You Want To Delete Question?')
 
             if (!con) {
                 return

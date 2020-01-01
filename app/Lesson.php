@@ -38,4 +38,9 @@ class Lesson extends Model
     {
         return $this->morphOne(Sessionable::class, 'sessionable');
     }
+
+    public function sessions()
+    {
+        return $this->morphToMany(Session::class, 'sessionable');
+    }
 }

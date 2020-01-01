@@ -15,13 +15,13 @@
 
                     <a
                         href="#"
-                        class="btn btn-primary  btn-sm"
                         @click.prevent="editExam = !editExam"
                     ><i class="fas fa-edit" /></a>
 
                     <a
                         href="#"
-                        class="btn btn-primary  btn-sm"
+                        class="text-danger"
+                        @click.prevent="deleteExam"
                     ><i class="fas fa-trash-alt" /></a>
                 </div>
             </div>
@@ -88,6 +88,15 @@ export default {
 
     },
     methods: {
+        deleteExam () {
+            const con = confirm('Do You Want To Delete Exam?')
+
+            if (!con) {
+                return
+            }
+            axios.delete(`/api/exams/${this.exam.id}`)
+                .then(res => {})
+        }
 
     }
 }

@@ -1,0 +1,48 @@
+.singel-session {
+    overflow: hidden;
+    position: relative;
+    display: block;
+    .s-action {
+            position: absolute;
+            top: -35px;
+            right: 3px;
+            -webkit-transition: top .2s; /* Safari prior 6.1 */
+            transition: top .2s;
+        
+        a {
+            font-size: 10px;
+            background: #563d7c;
+            color: #fff;
+            padding: 2px 5px;
+            text-align: center;
+            line-height: 1;
+            text-decoration: none;
+            &.ex-icon {
+                background: transparent;
+                color: #777;
+                font-size: 12px;
+                padding: 1px 2px;
+            }
+        }
+    }
+    &:hover .s-action {
+        top: 0px;
+    }
+
+    .singel-resource {
+        
+        .r-action {
+            display: none;
+            position: relative;
+            a {
+                background: transparent;
+                color: #777;
+                font-size: 12px;
+                padding: 1px 2px;
+            }
+        }
+        &:hover .r-action {
+            display: inline;
+        }
+    }
+}

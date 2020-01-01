@@ -3,7 +3,7 @@
         <div
             v-for="resource in resources"
             :key="resource.id"
-            class="Singel-resource"
+            class="singel-resource"
         >
             <Resource
                 :resource="resource"

@@ -13,24 +13,23 @@
                 </span>
                 {{ resource.title }}
             </div>
-            <div class="card-action">
+            <div class="r-action">
                 <div v-if="isLesson">
                     <a
                         href="#"
-                        class="btn btn-primary  btn-sm"
                         @click.prevent="editLessonForm = !editLessonForm"
                     ><i class="fas fa-edit" /></a>
 
                     <a
                         href="#"
-                        class="btn btn-primary  btn-sm"
+                        class="text-danger"
                         @click.prevent="deleteLesson"
                     ><i class="fas fa-trash-alt" /></a>
                 </div>
                 <div v-if="isExam">
                     <a
                         href="#"
-                        class="btn btn-primary  btn-sm"
+                        @click.prevent="deTuchLesson"
                     ><i class="fas fa-times-circle" /></a>
                 </div>
             </div>
@@ -82,6 +81,17 @@ export default {
             axios.delete(`/api/lessons/${this.resource.id}`)
                 .then(res => {
                     this.$emit('deleteLesson', this.resource)
+                })
+        },
+        deTuchLesson () {
+            const con = confirm('Do You Want To DeTuch Lesson?')
+
+            if (!con) {
+                return
+            }
+            axios.delete(`/api/lessons/${this.resource.id}`)
+                .then(res => {
+
                 })
         }
 
