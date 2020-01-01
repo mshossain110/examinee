@@ -113,12 +113,13 @@
                             for="course_image"
                             class="control-label"
                         >Feature image</label>
-                        <FileUploader
+                        <AttachFiles
                             v-model="thumbanile"
-                            :upload-multiple="false"
-                            auto-process-queue
-                            accepted-files="image/*"
+                            sidebar
                         />
+                        <template v-if="thumbanile.id">
+                            <FilesPreview :files="[thumbanile]" />
+                        </template>
                     </div>
                     <div class="form-group">
                         <label
@@ -166,16 +167,13 @@
                             for="course_image"
                             class="control-label"
                         >Course Files</label>
-                        <FileUploader
-                            ref="courseUploader"
-                            v-model="attachments"
-                        />
-
                         <AttachFiles
-                            v-model="files"
+                            v-model="attachments"
                             multiple
                             sidebar
                         />
+
+                        <FilesPreview :files="attachments" />
                     </div>
                     <div class="form-group">
                         <button
@@ -193,9 +191,11 @@
 
 <script>
 import AttachFiles from '@c/common/dropzone/AttachFiles.vue'
+import FilesPreview from '@c/common/dropzone/FilesPreview.vue'
 export default {
     components: {
-        AttachFiles
+        AttachFiles,
+        FilesPreview
     },
     props: {
         course: {
@@ -221,9 +221,9 @@ export default {
     data () {
         return {
             slugReadonly: true,
+            slugEditable: !this.course.id,
             attachments: [],
-            thumbanile: [],
-            files: []
+            thumbanile: {}
         }
     },
     computed: {
@@ -234,37 +234,35 @@ export default {
     },
     methods: {
         submit () {
-            this.saving = true
-            if (this.attachments.length) {
-                this.uploadAndSave()
-            } else {
-                this.storeCourse()
-            }
-        },
-        uploadAndSave () {
-            this.$refs.protfilioUploader.processQueue()
-                .then(files => {
-                    this.storeCourse()
-                })
-        },
-        storeCourse () {
             var params = this.course
             if (this.attachments.length) {
                 params.files = this.attachments.map(a => a.id)
             }
 
             if (this.thumbanile) {
-                params.thumbnail = this.thumbanile.map(a => a.id)[0]
+                params.thumbnail = this.thumbanile.id
             }
-
-            axios.post('/api/course', params)
-                .then(response => {
-
-                })
+            if (!this.course.id) {
+                axios.post('/api/course', params)
+                    .then(response => {
+                        this.$emit('store', response.data.data)
+                        this.$router.push({
+                            name: 'coures-lessons',
+                            params: {
+                                id: response.data.data.id
+                            }
+                        })
+                    })
+            } else {
+                axios.put(`/api/course/${this.course.id}`, params)
+                    .then(response => {
+                        this.$emit('update', response.data.data)
+                    })
+            }
         },
         titleInput (text) {
             this.course.title = text
-            if (this.slugReadonly) {
+            if (this.slugReadonly && this.slugEditable) {
                 this.course.slug = this.slugify(this.course.title)
             }
         },

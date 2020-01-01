@@ -88,7 +88,6 @@
                     <FileUploader
                         ref="mediaUploader"
                         v-model="attachments"
-                        :project-id="projectId"
                         :style="fileUploaderStyle"
                         auto-process-queue
                         @complete-queue="completeMultiple"
@@ -158,6 +157,19 @@
                 </div>
             </div>
         </div>
+        <div class="footer d-flex justify-content-between align-items-center">
+            <div class="selectd">
+                {{ selectedFiles.length }} files selected
+            </div>
+            <div class="action">
+                <button
+                    class="btn btn-primary"
+                    @click.prevent="attachFiles"
+                >
+                    Attach File
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -168,7 +180,7 @@ export default {
         Sidebar
     },
     props: {
-        projectId: {
+        course: {
             type: Number,
             default: null
         },
@@ -190,6 +202,10 @@ export default {
             validator (val) {
                 return ['owner', true, false].indexOf(val) !== -1
             }
+        },
+        value: {
+            type: [Array, Object],
+            default: null
         }
     },
     data () {
@@ -261,6 +277,11 @@ export default {
     created () {
         this.getFiles()
     },
+    mounted () {
+        if (this.value) {
+            this.selectedFiles = this.value.slice()
+        }
+    },
     methods: {
         changeFileViwType (type) {
             this.fileViewType = type
@@ -277,8 +298,8 @@ export default {
                 search: this.searchQuery
             }
 
-            if (this.projectId) {
-                params.project_id = this.projectId
+            if (this.course) {
+                params.course_id = this.course.id
             }
 
             axios.get('/api/files', { params: params })
@@ -344,7 +365,6 @@ export default {
                     this.selectedFiles = file
                 }
             }
-            this.$emit('input', this.selectedFiles)
         },
         isSelected (file) {
             if (this.selectedFiles.length) {
@@ -365,6 +385,10 @@ export default {
 
                     })
             }
+        },
+        attachFiles () {
+            this.$emit('input', this.selectedFiles)
+            this.$emit('close')
         }
     }
 }

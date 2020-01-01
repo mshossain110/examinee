@@ -2,6 +2,7 @@
 // Event bus
 import Dropzone from './components/common/dropzone'
 import Vuex from 'vuex'
+import mixin from './mixin/mixin'
 
 const VueRouter = require('vue-router').default
 
@@ -25,6 +26,7 @@ const router = new VueRouter({
     }
 })
 
+Vue.mixin(mixin)
 const app = new Vue({
     el: '#app',
     router,

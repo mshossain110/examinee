@@ -4,7 +4,7 @@
             class="btn btn-sm btn-info"
             @click.prevent="openModal"
         >
-            Attach from Upload
+            Attach Files
         </a>
 
         <Modal
@@ -29,6 +29,7 @@
                 v-if="modal"
                 v-bind="$attrs"
                 @input="$emit('input', $event)"
+                @close="cancel"
             />
         </Modal>
     </div>

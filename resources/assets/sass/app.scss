@@ -12,7 +12,10 @@
 @import "node_modules/@fortawesome/fontawesome-free/scss/solid";
 @import "node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
 @import "node_modules/vue-multiselect/dist/vue-multiselect.min";
+
 @import 'partials/dropzone.scss';
+@import 'partials/filemanager.scss';
+
 
 @import "partials/instructor";
 
