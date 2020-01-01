@@ -17,8 +17,7 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $courses = $user->instructs;
-
+        $courses = $user->instructCourses;
         $collection = JsonResource::collection($courses);
 
         return $collection->response();
@@ -36,13 +35,13 @@ class CourseController extends Controller
         $data = $request->only(['title', 'slug', 'description', 'price', 'thumbnail', 'start_date', 'status', 'certified']);
         $data['created_by'] = $user->id;
         $data['updated_by'] = $user->id;
-        $course = $user->instructs()->create($data);
+        $course = $user->instructCourses()->create($data);
 
         if ($request->has('files')) {
             $course->files()->attach($request->get('files'));
         }
 
-        $resource = New JsonResource($course);
+        $resource = new JsonResource($course);
 
         return $resource;
     }
@@ -55,7 +54,8 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        $resource = New JsonResource($course);
+        $course->load(['files']);
+        $resource = new JsonResource($course);
 
         return $resource;
     }
@@ -74,7 +74,11 @@ class CourseController extends Controller
         $data['updated_by'] = $user->id;
         $course = $course->update($data);
 
-        $resource = New JsonResource($course);
+        if ($request->has('files')) {
+            $course->files()->attach($request->get('files'));
+        }
+
+        $resource = new JsonResource($course);
 
         return $resource;
     }
@@ -88,7 +92,7 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course->lessons()->delete();
-        $resource->delete();
+        $course->delete();
 
         return response(['Course delete successfully']);
     }

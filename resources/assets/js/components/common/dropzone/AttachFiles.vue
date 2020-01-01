@@ -4,7 +4,7 @@
             class="btn btn-sm btn-info"
             @click.prevent="openModal"
         >
-            Attach from Upload
+            Attach Files
         </a>
 
         <Modal

@@ -96,3 +96,27 @@
     }
     
 }
+.file-preview {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    margin: 1rem 0;
+    .file-lists {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        .items {
+            display: flex;
+            align-items: flex-start;
+            max-width: 150px;
+            margin-left: 2px;
+            img {
+                width: 100%;
+                height: 100%
+            }
+        }
+    }
+}
+

@@ -11,7 +11,7 @@
                 <div class="card_img">
                     <i class="fas fa-play-circle" />
                     <img
-                        src="https://tricksinfo.net/wp-content/uploads/2019/07/533430_ce1e_3-750x405.jpg"
+                        :src="thumbnail"
                         class="card-img-top"
                         alt=""
                     >
@@ -97,6 +97,13 @@ export default {
         button: {
             type: String,
             default: 'Start Learning'
+        }
+    },
+    computed: {
+        thumbnail () {
+            if (this.course.thumbnail) return this.course.thumbnail.public_path
+
+            return 'https://tricksinfo.net/wp-content/uploads/2019/07/533430_ce1e_3-750x405.jpg'
         }
     }
 }
