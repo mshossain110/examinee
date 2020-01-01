@@ -1,0 +1,98 @@
+
+.media-manager {
+    .navbar{
+        background: #ddd;
+        padding: 0.1rem 1rem;
+        a.active {
+            color: #0d5e4e;
+        }
+        .btn-sm, .btn-group-sm > .btn {
+            padding: 0.15rem 0.5rem;
+        }
+    }
+    .file-container {
+        
+        .file-items {
+            height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin: 10px 0;
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                display: flex;
+                flex-wrap: wrap;
+                li.file {
+                    padding: 2px 8px;
+                    overflow: hidden;
+                    background: #fff;
+                    box-shadow: 1px 1px 5px 0px #777;
+                    flex-basis: 145px;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    margin: 5px;
+                    .name {
+                        width: 100%;
+                        text-align: center;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                    img {
+                        width: 100%;
+                        max-height: 100px;
+                    }
+                    input, .uploader, .ulat {
+                        display: none;
+                    }
+                    &.selectd {
+                        border: 1px solid #0d5e4e;
+                    }
+                    
+                    
+                }
+            }
+            &.list-view {
+                ul {
+                    display: block;
+                    li.file{
+                        display: flex;
+                        width: 98%;
+                        overflow: hidden;
+                        justify-content: center;
+                        align-items: center;
+                        input {
+                            display: inline-block;
+                            flex-basis: 30px;
+                        }
+                        img {
+                            width: 80px;
+                            max-height: 48px;
+                        }
+                        .name{
+                            width: auto;
+                            flex-grow: 1;
+                        }
+                        .uploader, .ulat {
+                            display: inline-block;
+                            flex-basis: 150px;
+                        }
+                    }
+                }
+            }
+        }
+        .sidebar {
+            height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-left: 0;
+        }
+    }
+    .footer {
+        width: 100%;
+        border-top: 1px solid #ddd;
+        padding: 1rem 2rem 0rem;
+    }
+    
+}

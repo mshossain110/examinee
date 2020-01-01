@@ -29,6 +29,7 @@
                 v-if="modal"
                 v-bind="$attrs"
                 @input="$emit('input', $event)"
+                @close="cancel"
             />
         </Modal>
     </div>
