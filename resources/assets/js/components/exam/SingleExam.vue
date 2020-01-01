@@ -3,36 +3,30 @@
 
         class="card "
     >
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <div class="card-text">
+        <div class="card-header align-items-center">
+            <div class="card-text d-flex   justify-content-between">
                 <h3>{{ exam.title }}</h3>
-                {{ exam.description }}
+                <div class="card-action">
+                    <a
+                        href="#"
+                        class="btn btn-primary btn-sm"
+                        @click.prevent="newQuestionForm = !newQuestionForm"
+                    > New Question</a>
+
+                    <a
+                        href="#"
+                        class="btn btn-primary  btn-sm"
+                        @click.prevent="editExam = !editExam"
+                    ><i class="fas fa-edit" /></a>
+
+                    <a
+                        href="#"
+                        class="btn btn-primary  btn-sm"
+                    ><i class="fas fa-trash-alt" /></a>
+                </div>
             </div>
-            <div class="card-action">
-                <a
-                    href="#"
-                    class="btn btn-primary btn-sm"
-                    @click.prevent="newQuestionForm = !newQuestionForm"
-                > New Question</a>
-                <a
-                    href="#"
-                    class="btn btn-primary  btn-sm"
-                ><i class="fas fa-info-circle" /></a>
-                <a
-                    href="#"
-                    class="btn btn-primary  btn-sm"
-                ><i class="fas fa-cogs" /></a>
-
-                <a
-                    href="#"
-                    class="btn btn-primary  btn-sm"
-                    @click.prevent="editExam = !editExam"
-                ><i class="fas fa-edit" /></a>
-
-                <a
-                    href="#"
-                    class="btn btn-primary  btn-sm"
-                ><i class="fas fa-trash-alt" /></a>
+            <div>
+                {{ exam.description }}
             </div>
         </div>
         <div
@@ -50,7 +44,7 @@
         >
             <NewQuestion :exam="exam" />
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
             <template v-if="exam.questions.length">
                 <SingleQuestion
                     v-for="question in exam.questions"

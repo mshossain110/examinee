@@ -7,9 +7,9 @@
             <div
                 class="d-flex justify-content-between"
             >
-                <h3>
+                <h5>
                     {{ session.title }}
-                </h3>
+                </h5>
                 <div class="card-action">
                     <a
                         href="#"
@@ -24,15 +24,6 @@
                     <a
                         href="#"
                         class="btn btn-primary  btn-sm"
-                    ><i class="fas fa-info-circle" /></a>
-                    <a
-                        href="#"
-                        class="btn btn-primary  btn-sm"
-                    ><i class="fas fa-cogs" /></a>
-
-                    <a
-                        href="#"
-                        class="btn btn-primary  btn-sm"
                         @click.prevent="editSession = !editSession"
                     ><i class="fas fa-edit" /></a>
 
@@ -42,8 +33,14 @@
                     ><i class="fas fa-trash-alt" /></a>
                 </div>
             </div>
-
-            <p>{{ session.description }}</p>
+            <div
+                class="description"
+                style="font-size:13px;"
+            >
+                <p class="m-0">
+                    {{ session.description }}
+                </p>
+            </div>
         </div>
         <div
             v-if="newLesson"
@@ -72,8 +69,11 @@
                 @update="updatesession"
             />
         </div>
-        <div class="card-body">
-            <Resources :resources="session.resources" />
+        <div class="card-body p-0">
+            <Resources
+                :resources="session.resources"
+                @deleteLesson="deleteLesson"
+            />
         </div>
     </div>
 </template>
@@ -115,6 +115,12 @@ export default {
         attachExam (exam) {
             this.session.resources.push(exam)
             this.attachExamForm = false
+        },
+        deleteLesson (lesson) {
+            var i = this.session.resources.findIndex(r => r.id === lesson.id && r.pivot.sessionable_type === lesson.pivot.sessionable_type)
+            if (i !== -1) {
+                this.session.resources.splice(i, 1)
+            }
         }
     }
 }

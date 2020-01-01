@@ -219,7 +219,7 @@ export default {
         },
         exam: {
             type: Object,
-            required: true
+            default: null
         }
     },
     data () {
