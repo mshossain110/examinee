@@ -28,6 +28,15 @@
                         <strong>file.name</strong>
                     </a>
                 </template>
+                <button
+                    v-if="closable"
+                    type="button"
+                    class="close"
+                    title="Close"
+                    @click.prevent="$emit('close', file)"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     </div>
@@ -48,6 +57,10 @@ export default {
         files: {
             type: Array,
             required: true
+        },
+        closable: {
+            type: Boolean,
+            default: false
         }
     },
     data () {

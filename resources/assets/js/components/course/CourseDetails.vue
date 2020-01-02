@@ -35,7 +35,10 @@
                 v-if="editCourse"
                 class="mt-3"
             >
-                <NewCourse :course="course" />
+                <EditCourse
+                    :course="Object.assign({}, course)"
+                    @update="updateCource"
+                />
             </div>
             <div
                 v-if="course.title"
@@ -103,10 +106,10 @@
     </div>
 </template>
 <script>
-import NewCourse from './NewCourse'
+import EditCourse from './NewCourse'
 export default {
     components: {
-        NewCourse
+        EditCourse
     },
     data () {
         return {
@@ -122,7 +125,10 @@ export default {
 
     },
     methods: {
-
+        updateCource (course) {
+            this.$store.commit('Course/setCourse', course)
+            this.editCourse = false
+        }
     }
 }
 </script>
