@@ -117,8 +117,12 @@
                             v-model="thumbanile"
                             sidebar
                         />
-                        <template v-if="thumbanile.id">
-                            <FilesPreview :files="[thumbanile]" />
+                        <template v-if="thumbanile">
+                            <FilesPreview
+                                :files="[thumbanile]"
+                                closable
+                                @close="detachThumb"
+                            />
                         </template>
                     </div>
                     <div class="form-group">
@@ -173,7 +177,11 @@
                             sidebar
                         />
 
-                        <FilesPreview :files="attachments" />
+                        <FilesPreview
+                            :files="attachments"
+                            closable
+                            @close="detachFile"
+                        />
                     </div>
                     <div class="form-group">
                         <button
@@ -223,25 +231,29 @@ export default {
             slugReadonly: true,
             slugEditable: !this.course.id,
             attachments: [],
-            thumbanile: {}
+            thumbanile: null
         }
     },
     computed: {
 
     },
-    created () {
-
+    mounted () {
+        this.attachments = this.course.files.slice()
+        this.thumbanile = this.course.thumbnail
     },
     methods: {
         submit () {
             var params = this.course
-            if (this.attachments.length) {
-                params.files = this.attachments.map(a => a.id)
-            }
+            delete params.files
+            delete params.thumbnail
 
+            params.files = this.attachments.map(a => a.id)
             if (this.thumbanile) {
                 params.thumbnail = this.thumbanile.id
+            } else {
+                params.thumbnail = null
             }
+
             if (!this.course.id) {
                 axios.post('/api/course', params)
                     .then(response => {
@@ -283,6 +295,17 @@ export default {
                 .replace(/--+/g, '-') // Replace multiple - with single -
                 .replace(/^-+/, '') // Trim - from start of text
                 .replace(/-+$/, '') // Trim - from end of text
+        },
+        detachThumb (file) {
+            if (this.thumbanile.id === file.id) {
+                this.thumbanile = null
+            }
+        },
+        detachFile (file) {
+            const i = this.attachments.findIndex(f => f.id === file.id)
+            if (i !== -1) {
+                this.attachments.splice(i, 1)
+            }
         }
     }
 }

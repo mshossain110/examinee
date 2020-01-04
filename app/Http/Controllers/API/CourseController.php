@@ -37,9 +37,9 @@ class CourseController extends Controller
         $data['updated_by'] = $user->id;
         $course = $user->instructCourses()->create($data);
 
-        if ($request->has('files')) {
-            $course->files()->attach($request->get('files'));
-        }
+        
+        $course->files()->sync($request->input('files', []));
+        
 
         $resource = new JsonResource($course);
 
@@ -72,12 +72,12 @@ class CourseController extends Controller
         $user = $request->user();
         $data = $request->all();
         $data['updated_by'] = $user->id;
-        $course = $course->update($data);
 
-        if ($request->has('files')) {
-            $course->files()->attach($request->get('files'));
-        }
+        $course->update($data);
 
+        $course->files()->sync($request->input('files', []));
+        
+        $course->load(['files']);
         $resource = new JsonResource($course);
 
         return $resource;
@@ -92,6 +92,7 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course->lessons()->delete();
+        $course->files()->sync([]);
         $course->delete();
 
         return response(['Course delete successfully']);
