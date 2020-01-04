@@ -42,7 +42,10 @@
             v-if="newQuestionForm"
             class="card-body"
         >
-            <NewQuestion :exam="exam" />
+            <NewQuestion
+                :exam="exam"
+                @store="newQuestionFrom"
+            />
         </div>
         <div class="card-body p-0">
             <template v-if="exam.questions.length">
@@ -96,6 +99,10 @@ export default {
             }
             axios.delete(`/api/exams/${this.exam.id}`)
                 .then(res => {})
+        },
+        newQuestionFrom (question) {
+            this.exam.questions.push(question)
+            this.newQuestionForm = false
         }
 
     }

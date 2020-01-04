@@ -63,6 +63,8 @@
         .card_img {
             position: relative;
             overflow: hidden;
+            max-width: 300px;
+            max-height: 137px;
             .fa-play-circle {
                 display: none;
             }
