@@ -5,8 +5,8 @@
     >
         <div class="card-header align-items-center">
             <div class="card-text d-flex   justify-content-between">
-                <h3>{{ exam.title }}</h3>
-                <div class="card-action">
+                <h5>{{ exam.title }}</h5>
+                <div class="e-action">
                     <a
                         href="#"
                         class="btn btn-primary btn-sm"
@@ -15,18 +15,24 @@
 
                     <a
                         href="#"
+                        class="ea-icon"
                         @click.prevent="editExam = !editExam"
                     ><i class="fas fa-edit" /></a>
 
                     <a
                         href="#"
-                        class="text-danger"
+                        class=" ea-icon text-danger"
                         @click.prevent="deleteExam"
                     ><i class="fas fa-trash-alt" /></a>
                 </div>
             </div>
-            <div>
-                {{ exam.description }}
+            <div
+                class="description"
+                style="font-size:13px;"
+            >
+                <p class="m-0">
+                    {{ exam.description }}
+                </p>
             </div>
         </div>
         <div

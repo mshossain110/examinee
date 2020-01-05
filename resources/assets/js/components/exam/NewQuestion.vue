@@ -247,24 +247,41 @@ export default {
     computed: {
 
     },
-    created () {
-
+    mounted () {
+        if (this.question.options.length) {
+            this.aoptions = []
+        }
+        this.question.options.map(o => {
+            this.aoptions.push({
+                answer: this.question.answers.indexOf(o) !== -1,
+                option: o
+            })
+        })
     },
     methods: {
         submit () {
             const params = this.question
+            params.answers = []
+            params.options = []
             this.aoptions.map(a => {
                 if (a.answer) {
                     params.answers.push(a.option)
                 }
                 params.options.push(a.option)
             })
-            params.exam_id = this.exam.id
+            if (this.exam) { params.exam_id = this.exam.id }
 
-            axios.post(`/api/questions`, params)
-                .then(res => {
-                    this.$emit('store', res.data.data)
-                })
+            if (!this.question.id) {
+                axios.post(`/api/questions`, params)
+                    .then(res => {
+                        this.$emit('store', res.data.data)
+                    })
+            } else {
+                axios.put(`/api/questions/${this.question.id}`, params)
+                    .then(res => (
+                        this.$emit(`update`, res.data.data)
+                    ))
+            }
         },
         addMoreOption () {
             this.aoptions.push({ answer: '', option: '' })
