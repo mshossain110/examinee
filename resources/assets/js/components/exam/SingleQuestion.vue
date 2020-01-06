@@ -62,7 +62,9 @@ export default {
                 return
             }
             axios.delete(`/api/questions/${this.question.id}`)
-                .then(res => {})
+                .then(res => {
+                    this.$emit('deleteQuestion', this.question)
+                })
         }
 
     }

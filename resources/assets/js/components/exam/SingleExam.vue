@@ -59,6 +59,7 @@
                     v-for="question in exam.questions"
                     :key="question.id"
                     :question="question"
+                    @deleteQuestion="deleteQuestion"
                 />
             </template>
         </div>
@@ -109,6 +110,12 @@ export default {
         newQuestionFrom (question) {
             this.exam.questions.push(question)
             this.newQuestionForm = false
+        },
+        deleteQuestion (question) {
+            var i = this.exam.questions.findIndex(q => q.id === question.id)
+            if (i !== -1) {
+                this.exam.questions.splice(i, 1)
+            }
         }
 
     }
