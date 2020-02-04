@@ -32,6 +32,6 @@ class Question extends Model
     }
 
     public function setAnswerAttribute( $value ) {
-    	$this->attributes['answer'] = json_encode( $value );
+    	$this->attributes['answers'] = json_encode( $value );
     }
 }
