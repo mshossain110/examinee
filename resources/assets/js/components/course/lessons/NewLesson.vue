@@ -3,7 +3,6 @@
         <div class="card p-3">
             <div class="card-body">
                 <form
-                    action=""
                     @submit.prevent="submit"
                 >
                     <div class="form-group">
@@ -58,14 +57,14 @@
                         />
                     </div>
                     <div class="form-group">
-                        <label for="short_text">Short Text</label>
+                        <label for="short-text">Short Text</label>
                         <input
                             id="short-text"
                             v-model="lesson.short_text"
                             type="short_text"
                             class="form-control"
                             aria-describedby="short_text"
-                            placeholder="lesson short_text"
+                            placeholder="lesson short text"
                         >
                     </div>
                     <div class="form-group">

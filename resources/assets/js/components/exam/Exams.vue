@@ -3,7 +3,7 @@
         <div
             v-for="exam in exams"
             :key="exam.id"
-            class="exam-lists mt-5"
+            class="exam-lists mt-2"
         >
             <SingleExam :exam="exam" />
         </div>

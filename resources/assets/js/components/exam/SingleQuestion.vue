@@ -1,12 +1,12 @@
 <template>
     <div
-        class="card mt-1 border-0"
+        class="card question-list mt-1 border-0"
     >
         <div class="card-header d-flex justify-content-between">
             <div>
                 {{ question.question }}
             </div>
-            <div class="card-action">
+            <div class="q-action">
                 <a
                     href="#"
                     @click.prevent="editQuestionForm = !editQuestionForm"
@@ -62,7 +62,9 @@ export default {
                 return
             }
             axios.delete(`/api/questions/${this.question.id}`)
-                .then(res => {})
+                .then(res => {
+                    this.$emit('deleteQuestion', this.question)
+                })
         }
 
     }

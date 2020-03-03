@@ -34,19 +34,21 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $user= $request->user();
-        $eid = $request->get('exam_id');;
-        $question = Question::create([
-            'exam_id'       => $eid,
-            'examinee'      => $user->id,
+        $user = $request->user();
+        $eid = $request->get('exam_id');
+        $exam = Exam::findOrFail($eid);
+
+        $question = $exam->questions()->create([
+            'created_by'    => $user->id,
             'qtype'         => $request->qtype,
             'question'      => $request->question,
             'options'       => $request->options,
-            'answer'        => $request->answer,
+            'answers'       => $request->answers,
             'hint'          => $request->hint,
             'mark'          => $request->mark,
+            'nmark'         => $request->nmark,
             'explanation'   => $request->explanation,
-            'defficulty'    => $request->defficulty,
+            'defficulty'    => $request->defficulty
         ]);
        
         $resource = New JsonResource($question);

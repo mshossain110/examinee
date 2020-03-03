@@ -1,6 +1,9 @@
 <template>
     <div class="newquestion">
-        <form class="form-horizontal border bg-light p-5">
+        <form
+            class="form-horizontal border bg-light p-5"
+            @submit.prevent="submit"
+        >
             <div class="heading">
                 <h3>New Question</h3>
             </div>
@@ -20,36 +23,33 @@
                     >
                         <button
                             type="button"
-                            class="btn btn-secondary active"
-                            data-title="0"
+                            class="btn btn-primary"
+                            :class="{'active': question.qtype===1}"
+                            @click.prevent="question.qtype=1"
                         >
                             Objective
                         </button>
                         <button
                             type="button"
-                            class="btn btn-secondary"
-                            data-title="1"
+                            class="btn btn-primary"
+                            :class="{'active': question.qtype===2}"
+                            @click.prevent="question.qtype=2"
                         >
                             True/False
                         </button>
-
-                        <input
-                            type="hidden"
-                            name="qtype"
-                            value="0"
-                        >
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label
-                    for="title"
+                    for="question"
                     class="col-md-4 control-label"
                 >Question</label>
 
                 <div class="col">
                     <textarea
                         id="question"
+                        v-model="question.question"
                         class="form-control"
                         name="question"
                         cols="100"
@@ -72,23 +72,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="option-input option-0">
+                        <tr
+                            v-for="(q,index) in aoptions"
+                            :key="index"
+                            class="option-input option-0"
+                        >
                             <td>
                                 <input
+                                    v-model="q.answer"
                                     class="form-control"
                                     type="checkbox"
-                                    name="answer[]"
-                                    value="0"
                                 >
                             </td>
                             <td>
                                 <textarea
+                                    v-model="q.option"
                                     class="form-control"
                                     name="options[0]"
                                 />
                             </td>
                             <td>
-                                <button class="btn btn-danger remove">
+                                <button
+                                    v-if="aoptions.length>1"
+                                    class="btn btn-danger remove"
+                                    @click.prevent="removeOptin(index)"
+                                >
                                     remove
                                 </button>
                             </td>
@@ -98,6 +106,7 @@
                 <button
                     id="addoption"
                     class="btn btn-secondary"
+                    @click.prevent="addMoreOption"
                 >
                     Add More Option
                 </button>
@@ -110,17 +119,11 @@
                         class="control-label mr-2"
                     >Mark </label>
                     <input
+                        id="mark"
+                        v-model.number="question.mark"
                         type="number"
                         class="form-control"
-                        name="mark"
                         value="1"
-                    >
-
-                    <input
-                        type="hidden"
-                        class="form-control"
-                        name="nagetive_mark"
-                        value="0"
                     >
                 </div>
 
@@ -128,22 +131,24 @@
                     <label
                         for="nagetive_mark"
                         class="control-label mr-2"
-                    >Mark </label>
+                    >Nagetive Mark </label>
                     <input
+                        id="nagetive_mark"
+                        v-model.number="question.nmark"
                         type="number"
                         class="form-control"
-                        name="nagetive_mark"
                         value="0"
                     >
                 </div>
 
                 <div class="col">
                     <label
-                        for="nagetive_mark"
+                        for="defficulty"
                         class="control-label mr-2"
                     >Defficulty </label>
                     <select
                         id="defficulty"
+                        v-model.number="question.defficulty"
                         class="form-control"
                         name="defficulty"
                     >
@@ -162,13 +167,14 @@
 
             <div class="form-group">
                 <label
-                    for="title"
+                    for="answer_hint"
                     class="col-md-4 control-label"
                 >Answer Hint (Optional)</label>
 
                 <div class="col">
                     <textarea
                         id="answer_hint"
+                        v-model="question.hint"
                         class="form-control"
                         name="hint"
                     />
@@ -176,13 +182,14 @@
             </div>
             <div class="form-group">
                 <label
-                    for="title"
+                    for="explanation"
                     class="col-md-4 control-label"
                 >Answer Explanation (Optional)</label>
 
                 <div class="col">
                     <textarea
                         id="explanation"
+                        v-model="question.explanation"
                         class="form-control"
                         name="answer_explanation"
                     />
@@ -214,7 +221,17 @@ export default {
         question: {
             type: Object,
             default () {
-
+                return {
+                    qtype: 1,
+                    question: '',
+                    options: [],
+                    answers: [],
+                    hint: '',
+                    mark: 1,
+                    nmark: 0,
+                    explanation: '',
+                    defficulty: 1
+                }
             }
         },
         exam: {
@@ -224,16 +241,54 @@ export default {
     },
     data () {
         return {
-
+            aoptions: [{ answer: '', option: '' }]
         }
     },
     computed: {
 
     },
-    created () {
-
+    mounted () {
+        if (this.question.options.length) {
+            this.aoptions = []
+        }
+        this.question.options.map(o => {
+            this.aoptions.push({
+                answer: this.question.answers.indexOf(o) !== -1,
+                option: o
+            })
+        })
     },
     methods: {
+        submit () {
+            const params = this.question
+            params.answers = []
+            params.options = []
+            this.aoptions.map(a => {
+                if (a.answer) {
+                    params.answers.push(a.option)
+                }
+                params.options.push(a.option)
+            })
+            if (this.exam) { params.exam_id = this.exam.id }
+
+            if (!this.question.id) {
+                axios.post(`/api/questions`, params)
+                    .then(res => {
+                        this.$emit('store', res.data.data)
+                    })
+            } else {
+                axios.put(`/api/questions/${this.question.id}`, params)
+                    .then(res => (
+                        this.$emit(`update`, res.data.data)
+                    ))
+            }
+        },
+        addMoreOption () {
+            this.aoptions.push({ answer: '', option: '' })
+        },
+        removeOptin (index) {
+            this.aoptions.splice(index, 1)
+        }
 
     }
 }

@@ -18,8 +18,8 @@ class CreateQuestionsTable extends Migration
             $table->bigInteger('created_by')->unsigned();
             $table->tinyInteger( 'qtype' )->default( 0 )->comment( '0: Objective; 1: True/False;');
             $table->string("question");
-            $table->json("options")->nullable();
-            $table->string("answer");
+            $table->json("options");
+            $table->json("answers");
             $table->string("hint")->nullable();
             $table->integer("mark")->default(1);
             $table->integer("nmark")->default(0);

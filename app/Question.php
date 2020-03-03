@@ -15,11 +15,11 @@ class Question extends Model
      * @var array
      */
     protected $fillable = [
-        'qtype', 'question', 'options', 'answers', 'hint', 'mark', 'nmark', 'explanation', 'defficulty' 
+        'qtype', 'question', 'options', 'answers', 'hint', 'mark', 'nmark', 'explanation', 'defficulty', 'created_by' 
     ];
 
     protected $casts = [
-        'answers' => 'string',
+        'answers' => 'array',
         'options' => 'array'
     ];
     
@@ -32,6 +32,6 @@ class Question extends Model
     }
 
     public function setAnswerAttribute( $value ) {
-    	$this->attributes['answer'] = json_encode( $value );
+    	$this->attributes['answers'] = json_encode( $value );
     }
 }
