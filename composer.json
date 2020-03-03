@@ -14,9 +14,11 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.8",
         "pion/laravel-chunk-upload": "^1.2",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "spatie/laravel-permission": "^3.10"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.6",
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",

@@ -1,12 +1,8 @@
 <?php
 
-use App\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Permission;
-use Carbon\Carbon;
-use App\Topic;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,9 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
-        $this->call(RoleSeed::class);
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         $this->call(UserSeed::class);
+        $this->call(RoleSeed::class);
         $this->call(SubjectSeed::class);
         $this->call(TopicSeed::class);
         $this->call(CourseSeed::class);

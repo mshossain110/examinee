@@ -14,10 +14,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController')->name('home');
-
-Route::group(['middleware' => 'guest'], function(){
-	Route::get('course/{slug}', ['uses' => 'CoursesController@show', 'as' => 'courses.show']);
-});
+Route::get('/course/{course}', 'CourseController')->name('course.show');
 
 Route::group(['middleware' => ['auth']], function(){
 
@@ -27,24 +24,4 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/download', 'DownloadController@download');
     Route::get('/uploads/{id}/{any?}', 'UploadController')->where('any', '.*');
 
-	Route::resource('exam', 'ExamController');
-	Route::resource('subject', 'SubjectController');
-	Route::resource('topic', 'TopicController');
-
-	Route::get('question', 'QuestionController@index')->name('question.index');
-	Route::get('question/create/{todo}', 'QuestionController@create')->name('question.create');
-	Route::post('question', 'QuestionController@store')->name('question.store');
-	Route::get('question/{question}', 'QuestionController@show')->name('question.show');
-	Route::get('question/{question}/edit/{todo}', 'QuestionController@edit')->name('question.edit');
-	Route::put('question/{question}', 'QuestionController@update')->name('question.update');
-	Route::delete('question/{question}', 'QuestionController@destroy')->name('question.destroy');
-
-	Route::resource('courses', 'Admin\CoursesController');
-});
-
-Route::group(['middleware' => ['auth']], function(){
-	Route::get('/dashboard', 'StudentController@index')->name('student.home');
-	Route::get('exam/{exam}/start', 'ExamController@start')->name('exam.start');
-	Route::post('exam/{exam}/end', 'ExamController@end' )->name('exam.end');
-	Route::get('student/exam/results', 'StudentController@ResultSHow' )->name('results');
 });

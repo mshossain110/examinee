@@ -59,7 +59,7 @@ class Course extends Model
 
     public function getPermalinkAttribute()
     {
-        return route('courses.show', ['slug' => $this->attributes['slug']]);
+        return route('course.show', ['slug' => $this->attributes['slug']]);
     }
     /**
      * Set attribute to money format
@@ -76,12 +76,11 @@ class Course extends Model
     */
     public function scopeOfTeacher($query)
     {
-        if (!Auth::user()->isAdmin()) {
-            return $query->whereHas('teachers', function($q) {
-                $q->where('user_id', Auth::user()->id);
-            });
-        }
-        return $query;
+        
+        return $query->whereHas('teachers', function($q) {
+            $q->where('user_id', Auth::user()->id);
+        });
+        
     }
 
     /*

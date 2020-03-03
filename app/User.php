@@ -6,17 +6,18 @@ use App\Result;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, HasRoles;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'firstname', 'lastname', 'name', 'email', 'password','role_id',
+        'firstname', 'lastname', 'name', 'email', 'password', 'avatar'
     ];
 
     /**
@@ -28,28 +29,23 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    const ADMIN = 1;
-    const TEACHER = 2;
-    const STUDENT = 3;
-
     public function getFullNameAttribute()
     {
         return "$this->firstname $this->lastname";
     }
 
+    public function setAvatarAttribute($value)
+    {
+        if (empty($value)) {
+            return get_gravatar($this->emial);
+        }
+
+        return $value;
+    }
+
     public function results()
     {
         return $this->hasMany(Result::class, 'examinee');
-    }
-
-    public function role()
-    {
-        return $this->belongsToMany(Role::class, 'role_user');
-    }
-
-    public function isAdmin()
-    {
-        return $this->role()->where('role_id', self::ADMIN)->first();
     }
 
     public function instructCourses()
