@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => ['auth:api'], 'namespace' => 'API'], function () {
+Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function () {
     Route::get('courses/my-courses', 'MyCourseController@index');
     Route::get('courses/my-courses/{id}', 'MyCourseController@show');
 

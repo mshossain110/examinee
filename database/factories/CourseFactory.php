@@ -16,7 +16,7 @@ $factory->define(App\Course::class, function (Faker\Generator $faker) {
     $name = $faker->name;
     return [
         'title' => $name,
-        'slug' => str_slug($name),
+        'slug' => Str::slug($name),
         'description' => $faker->text(),
         'price' => $faker->randomFloat(2, 0, 199),
         'thumbnail' => $faker->imageUrl($width = 640, $height = 480),

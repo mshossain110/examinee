@@ -55,11 +55,11 @@ if (token) {
  * a simple convenience so we don't have to attach every token manually.
  */
 
-const bearer = window.localStorage['auth_token']
+// const bearer = window.localStorage['auth_token']
 
-if (bearer) {
-    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer
-}
+// if (bearer) {
+//     window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer
+// }
 
 // window.Pusher = require('pusher-js')
 

@@ -39,7 +39,7 @@ class DownloadResponse
             'Content-Type' => $upload->mime,
         ];
 
-        $filename = str_slug(str_before($upload->name, '.'), '-');
+        $filename = Str::slug(Str::before($upload->name, '.'), '-');
 
         $filename = "$filename.$upload->extension";
 
@@ -50,7 +50,7 @@ class DownloadResponse
 
     public function folderDownload($upload)
     {
-        $zip_name = str_random(10);
+        $zip_name = Str::random(10);
         $zip_name = config('app.name').'-'.$zip_name;
 
         $this->zipper->make(storage_path("public/$zip_name.zip"));
@@ -74,7 +74,7 @@ class DownloadResponse
                 $this->fileRecussive($chield, $folderName);
             }
         } else {
-            $filename = str_slug(str_before($file->name, '.'), '-');
+            $filename = Str::slug(Str::before($file->name, '.'), '-');
             $filename = "$filename.$file->extension";
 
             $this->zipper->folder($folderName)->addString($filename, Storage::drive('uploads_local')->get($file->getStoragePath()));
@@ -83,7 +83,7 @@ class DownloadResponse
 
     public function multipleDownload($ids)
     {
-        $zip_name = str_random(10);
+        $zip_name = Str::random(10);
         $zip_name = config('app.name').'-'.$zip_name;
 
         $this->zipper->make(storage_path("public/$zip_name.zip"));

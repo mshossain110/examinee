@@ -59,7 +59,7 @@ class Course extends Model
 
     public function getPermalinkAttribute()
     {
-        return route('course.show', ['slug' => $this->attributes['slug']]);
+        return route('course.show', ['course' => $this->slug ]);
     }
     /**
      * Set attribute to money format

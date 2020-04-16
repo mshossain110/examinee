@@ -48,6 +48,7 @@ class ExamController extends Controller
     {
         $user = $request->user();
         $subject_id = $request->input('subject_id');
+
         $exam = Exam::create([
             'examiner'       => $user->id,
             'title'         => $request->title,
@@ -92,7 +93,6 @@ class ExamController extends Controller
      */
     public function destroy(Exam $exam)
     {
-        // dd($exam);
         $exam->subjects()->detach();
         $exam->questions()->delete();
         $exam->delete();

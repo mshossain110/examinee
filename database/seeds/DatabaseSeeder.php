@@ -20,6 +20,5 @@ class DatabaseSeeder extends Seeder
         $this->call(TopicSeed::class);
         $this->call(CourseSeed::class);
 
-        $this->command->call("passport:install");
     }
 }

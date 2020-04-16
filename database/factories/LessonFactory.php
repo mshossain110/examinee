@@ -17,7 +17,7 @@ $factory->define(App\Lesson::class, function (Faker\Generator $faker) {
     return [
         'title' => $name,
         'thumbnail' => $faker->imageUrl($width = 640, $height = 480),
-        'slug' => str_slug($name),
+        'slug' => Str::slug($name),
         'short_text' => $faker->paragraph(),
         'full_text' => $faker->text(1000),
         'position' => rand(1, 10),

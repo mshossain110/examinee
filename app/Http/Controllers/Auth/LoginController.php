@@ -101,14 +101,11 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
 
-        
-        $token = $user->createToken('Tasqers Personal Access Client')->accessToken;
-        Cookie::queue(Cookie::make('access_token', $token, 24 * 60));
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'redirectTo' => $this->redirectPath(), 'token' => $token]);
+            return response()->json(['success' => true, 'redirectTo' => $this->redirectPath()]);
         }
 
-        return redirect($this->redirectPath())->with('token', $token);
+        return redirect($this->redirectPath());
     }
 
 }
