@@ -140,6 +140,18 @@
                         </ul>
                     </div>
                     <div
+                        v-else
+                        class="nofile"
+                    >
+                        <h3>No uploaded file found!</h3>
+                        <a
+                            class="btn btn-primary btn-lg mr-3"
+                            @click.prevent="openFileUploader"
+                        >
+                            <i class="fas fa-cloud-upload-alt" /> Upload
+                        </a>
+                    </div>
+                    <div
                         v-if="isLoading"
                         style="text-align: center;padding: 20px;background: #efefef;"
                     >

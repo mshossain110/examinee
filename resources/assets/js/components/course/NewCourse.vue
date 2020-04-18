@@ -213,14 +213,15 @@ export default {
                     title: '',
                     subtitle: '',
                     description: '',
-                    thumbnail: '',
+                    thumbnail: null,
                     features: '',
                     requirements: '',
                     start_date: '',
                     certified: 1,
                     slug: '',
                     price: 0,
-                    status: 1
+                    status: 1,
+                    files: []
 
                 }
             }

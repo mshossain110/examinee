@@ -139,7 +139,7 @@ export default {
             }
             axios.get(`/api/courses/${courseId}/sessions`, { params: params })
                 .then(res => {
-                    this.sessions = res.data
+                    this.sessions = res.data.data
                 })
         },
         newSession (session) {

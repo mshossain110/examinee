@@ -11,7 +11,7 @@
         }
     }
     .file-container {
-        
+        min-height: 200px;
         .file-items {
             height: 400px;
             overflow-y: auto;
@@ -81,6 +81,14 @@
                     }
                 }
             }
+        }
+        .nofile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: #ddd;
         }
         .sidebar {
             height: 400px;

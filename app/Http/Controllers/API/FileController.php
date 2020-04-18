@@ -99,7 +99,7 @@ class FileController extends Controller
                 // $this->file->resizeImage($fileEntry, $save->getFile());
                 
 
-                UploadToCloud::dispatch($fileEntry)->delay(now()->addMinutes(10)); // fire resize event and uplad to cloud
+                // UploadToCloud::dispatch($fileEntry)->delay(now()->addMinutes(10)); // fire resize event and uplad to cloud
                 $resource = new JsonResource($fileEntry);
 
                 return $resource;
@@ -156,7 +156,7 @@ class FileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $user = $request->user();
         $file = File::findOrFail($id);

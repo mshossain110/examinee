@@ -53,6 +53,14 @@ export default {
         tagName: {
             type: String,
             default: 'div'
+        },
+        scrollable: {
+            type: Boolean,
+            default: false
+        },
+        centered: {
+            type: Boolean,
+            default: false
         }
     },
     data () {
@@ -93,6 +101,14 @@ export default {
                 mclass.push(this.dialog)
             }
 
+            if (this.scrollable) {
+                mclass.puhs('modal-dialog-scrollable')
+            }
+
+            if (this.centered) {
+                mclass.push('modal-dialog-centered')
+            }
+
             return mclass
         },
         dialogStyle () {
@@ -106,6 +122,8 @@ export default {
     mounted () {
         if (this.backdrop) {
             document.addEventListener('click', this.fireBackdrop)
+        } else {
+            this.$el.setAttribute('data-backdrop', 'static')
         }
 
         jQuery(this.$el).on('shown.bs.modal', this.show)

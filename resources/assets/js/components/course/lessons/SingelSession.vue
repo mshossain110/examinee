@@ -66,7 +66,10 @@
                 @update="updatesession"
             />
         </div>
-        <div class="card-body p-0">
+        <div
+            v-if="session.resources.length"
+            class="card-body p-0"
+        >
             <Resources
                 :resources="session.resources"
                 @deleteLesson="deleteLesson"
