@@ -6,7 +6,7 @@
         <div class="card-body">
             <div class="card-title d-flex align-items-center">
                 <RouterLink
-                    :to="{name: 'singellesson', params: { course: $route.params.course, lesson: lesson.slug}}"
+                    :to="{name: 'singellesson', params: { course: $route.params.course, lesson: lesson.id}}"
                 >
                     <h4>{{ lesson.title }}</h4>
                 </RouterLink>

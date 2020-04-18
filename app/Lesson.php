@@ -38,7 +38,7 @@ class Lesson extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function course()
+    public function courses()
     {
         return $this->belongsToMany( Course::class, 'sessionables', 'sessionable_id', 'course_id' )->wherePivot('sessionable_type', Lesson::class);
     }

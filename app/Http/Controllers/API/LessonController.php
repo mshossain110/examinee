@@ -69,6 +69,7 @@ class LessonController extends Controller
      */
     public function show(Request $request,  Lesson $lesson)
     {
+        $lesson->load(['courses']);
         $resource = new JsonResource($lesson);
 
         return $resource;

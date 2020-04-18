@@ -1,212 +1,87 @@
 <template>
-    <div>
-        <div class="row">
-            <div class="col-4">
-                <div class="lesson-list">
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">1. List group item heading</h5>
+    <div class="lesson-single sidebar">
+        <section class="video">
+            <img
+                src="https://camo.githubusercontent.com/6e39997f79038055aff7479361bc8560d0ad5b28/68747470733a2f2f73332d75732d776573742d322e616d617a6f6e6177732e636f6d2f6e756269782e63612f6769746875622f6578616d706c652e676966"
+                alt=""
+                width="100%"
+            >
+        </section>
 
+        <Sessions
+            v-if="!loading && lesson.courses.length"
+            :course="lesson.courses[0]"
+        />
+
+        <section class="details">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="list-group list-group-horizontal-lg">
+                                <a class="list-group-item">
+                                    Overview
+                                </a>
+                                <a class="list-group-item">
+                                    Descussions
+                                </a>
+                                <a class="list-group-item">
+                                    Author
+                                </a>
                             </div>
+                        </div>
 
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">2. List group item heading</h5>
+                        <div class="card-body">
+                            <div class="overview">
+                                <h3 class="text-uppercase">
+                                    ABOUT THIS Lesson
+                                </h3>
+                                <strong>{{ lesson.title }}</strong>
+                                <p>{{ lesson.short_text }}</p>
 
+                                <h3 class="text-uppercase">
+                                    Details
+                                </h3>
+
+                                <div>{{ lesson.full_text }}</div>
                             </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">3. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">4. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">5. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">6. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">7. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">8. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">9. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">10. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">11. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a
-                            href="#"
-                            class="list-group-item list-group-item-action flex-column align-items-start border-0 justify-content-between"
-                        >
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">12. List group item heading</h5>
-
-                            </div>
-
-                            <small>Upload:1 hour ago</small>
-                            <small><i class="far fa-clock" />2.40</small>
-                            <span class="badge badge-primary">Primary</span>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-8">
-                <div class="lesson-video">
-                    <img
-                        src="https://www.responsiveclassroom.org/wp-content/uploads/2015/12/DSC_3917-1024x682.jpg"
-                        alt=""
-                        height="300px"
-                        width="100%px"
-                    >
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
 </template>
 <script>
+import Sessions from './Sessions'
 export default {
-    data () {
-        return {
-
-        }
+    components: {
+        Sessions
     },
+    data: () => ({
+        loading: false,
+        lesson: {}
+    }),
     created () {
+        this.getLessson()
+    },
+    methods: {
+        getLessson () {
+            if (this.loading) {
+                return
+            }
+            this.loading = true
 
+            const params = {
+                id: this.$route.params.lesson
+            }
+
+            axios.get(`/api/lessons/${params.id}`, { params })
+                .then(res => {
+                    this.lesson = res.data.data
+                    this.loading = false
+                })
+        }
     }
 }
 </script>

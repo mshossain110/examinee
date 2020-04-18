@@ -1,0 +1,25 @@
+.lesson-single {
+    position: relative;
+    top: 0;
+    width: 100%;
+
+    &.sidebar {
+        .video {
+            width: calc(100%-350px);
+            margin-right: 350px;
+        }
+        .session {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 350px;
+            background: #fff;
+        }
+        .details {
+            width: calc(100%-350px);
+            margin-right: 350px;
+        }
+    }
+
+    
+}
