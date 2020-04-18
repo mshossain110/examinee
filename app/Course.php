@@ -98,6 +98,11 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_students')->withTimestamps()->withPivot(['rating', 'progress']);
     }
 
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
+
     public function lessons()
     {
         return $this->belongsToMany(Lesson::class, 'sessionables', 'course_id', 'sessionable_id')->wherePivot('sessionable_type', Lesson::class);

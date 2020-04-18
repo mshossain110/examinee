@@ -24,7 +24,7 @@ class SessionableController extends Controller
             return $s;
         });
 
-        return $sessions;
+        return JsonResource::collection($sessions);
 
     }
 }

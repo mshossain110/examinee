@@ -1,6 +1,6 @@
 import Courses from './Courses'
-import SingelCourse from './SingelCourse'
-import SingelLesson from './SingelLesson'
+import SingelCourse from './Course/SingelCourse'
+import SingelLesson from './Lesson/SingelLesson'
 
 export default [
     {
@@ -23,7 +23,7 @@ export default [
                 component: SingelCourse
             },
             {
-                path: ':course/:lesson',
+                path: ':course/lessons/:lesson?',
                 name: 'singellesson',
                 component: SingelLesson
             }

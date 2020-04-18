@@ -23,7 +23,21 @@ class Lesson extends Model
         'created_by',
         'updated_by'
     ];
-    
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+    public function scopePublished($query) {
+        return $query->where('status', 1);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
     public function course()
     {
         return $this->belongsToMany( Course::class, 'sessionables', 'sessionable_id', 'course_id' )->wherePivot('sessionable_type', Lesson::class);

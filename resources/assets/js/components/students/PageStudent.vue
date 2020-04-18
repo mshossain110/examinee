@@ -5,10 +5,12 @@
                 <div class="page-title text-center">
                     <h3>My Courses</h3>
                     <nav class="nav text-light justify-content-center">
-                        <a
-                            class="nav-link active"
-                            href="#"
-                        >My Courses</a>
+                        <RouterLink
+                            class="nav-link"
+                            :to="{name: 'my-courses'}"
+                        >
+                            My Courses
+                        </RouterLink>
                         <a
                             class="nav-link"
                             href="#"

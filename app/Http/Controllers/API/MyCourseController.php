@@ -34,11 +34,12 @@ class MyCourseController extends Controller
      * @param  \App\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, Course $course)
     {
-        $course = Course::with(['lessons' => function ($query) {
-            $query->where('status', 1);
-        }, 'teachers' ])->withCount('lessons')->find($id);
+
+        $course->load([
+            'teachers'
+        ]);
         
         $resource = New JsonResource($course);
 

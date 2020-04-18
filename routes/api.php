@@ -13,7 +13,7 @@
 
 Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function () {
     Route::get('courses/my-courses', 'MyCourseController@index');
-    Route::get('courses/my-courses/{id}', 'MyCourseController@show');
+    Route::get('courses/my-courses/{course:slug}', 'MyCourseController@show');
 
     Route::get('courses/{course}/sessions', 'SessionableController@lessons');
 
@@ -30,8 +30,6 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function 
     Route::apiResource('exams', 'ExamController');
     Route::apiResource('questions', 'QuestionController');
 
-    
-    
     
     Route::apiResource('/files', 'FileController');
 });

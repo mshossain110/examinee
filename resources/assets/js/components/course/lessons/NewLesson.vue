@@ -130,13 +130,13 @@
                             class="custom-select custom-select-sm"
                         >
                             <option value="1">
-                                Public
+                                Free
                             </option>
                             <option value="2">
-                                Hidden
+                                Subscribers
                             </option>
                             <option value="3">
-                                Subscribers
+                                Hidden
                             </option>
                             <option value="4">
                                 Archived
