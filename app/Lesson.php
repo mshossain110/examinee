@@ -24,6 +24,10 @@ class Lesson extends Model
         'updated_by'
     ];
 
+    protected $casts = [
+        'object' => 'array'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | Scopes

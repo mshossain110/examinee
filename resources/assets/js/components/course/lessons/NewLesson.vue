@@ -49,12 +49,17 @@
                             for="lesson_image"
                             class="control-label"
                         >Feature image</label>
-                        <FileUploader
-                            v-model="thumbnail"
-                            :upload-multiple="false"
-                            auto-process-queue
-                            accepted-files="image/*"
+                        <AttachFiles
+                            v-model="thumbanile"
+                            sidebar
                         />
+                        <template v-if="thumbanile">
+                            <FilesPreview
+                                :files="[thumbanile]"
+                                closable
+                                @close="detachThumb"
+                            />
+                        </template>
                     </div>
                     <div class="form-group">
                         <label for="short-text">Short Text</label>
@@ -168,15 +173,18 @@
                         v-if="lesson.type !== '1'"
                         class="form-group"
                     >
-                        <label for="object&quot;">Object</label>
-                        <input
-                            id="object&quot;"
-                            v-model="lesson.object"
-                            type="object&quot;"
-                            class="form-control"
-                            aria-describedby="object&quot;"
-                            placeholder="lesson object"
-                        >
+                        <label for="object&quot;">Object File</label>
+                        <AttachFiles
+                            v-model="objectFile"
+                            sidebar
+                        />
+                        <template v-if="objectFile">
+                            <FilesPreview
+                                :files="[objectFile]"
+                                closable
+                                @close="detachObject"
+                            />
+                        </template>
                     </div>
                     <button
                         type="submit"
@@ -191,10 +199,13 @@
 </template>
 <script>
 import Multiselect from 'vue-multiselect'
-
+import AttachFiles from '@c/common/dropzone/AttachFiles.vue'
+import FilesPreview from '@c/common/dropzone/FilesPreview.vue'
 export default {
     components: {
-        Multiselect
+        Multiselect,
+        AttachFiles,
+        FilesPreview
     },
     props: {
         lesson: {
@@ -205,9 +216,9 @@ export default {
                     slug: '',
                     short_text: '',
                     full_text: '',
-                    thumbnail: '',
+                    thumbnail: null,
                     type: '1',
-                    object: '',
+                    object: null,
                     status: '1',
                     course_id: ''
 
@@ -227,15 +238,35 @@ export default {
             topics: [],
             selectTopics: [],
             isLoading: false,
-            topicTimeout: null
+            topicTimeout: null,
+            thumbanile: null,
+            objectFile: null
         }
+    },
+    mounted () {
+        this.thumbanile = this.lesson.thumbnail
+        this.objectFile = this.lesson.object
     },
     methods: {
         submit () {
             var params = this.lesson
+
+            if (this.thumbanile) {
+                params.thumbnail = this.thumbanile.id
+            } else {
+                params.thumbnail = null
+            }
+
+            if (this.objectFile) {
+                params.object = this.objectFile.id
+            } else {
+                params.object = null
+            }
+
             params.course_id = this.$route.params.id
             params.session = this.session
             params.topics = this.selectTopics.map(t => t.id)
+
             if (!this.lesson.id) {
                 axios.post(`/api/lessons`, params)
                     .then(response => {
@@ -303,6 +334,16 @@ export default {
                 .then(res => {
                     this.selectTopics.push(res.data.data)
                 })
+        },
+        detachThumb (file) {
+            if (this.thumbanile.id === file.id) {
+                this.thumbanile = null
+            }
+        },
+        detachObject (file) {
+            if (this.objectFile.id === file.id) {
+                this.objectFile = null
+            }
         }
 
     }
