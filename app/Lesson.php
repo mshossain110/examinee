@@ -26,9 +26,34 @@ class Lesson extends Model
         'updated_by'
     ];
 
-    protected $casts = [
-        'object' => 'array'
-    ];
+     /*
+    |--------------------------------------------------------------------------
+    | ACCESORS Variables
+    |--------------------------------------------------------------------------
+    */
+    // protected $casts = [
+    //     'object' => 'array'
+    // ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['object', 'full_text'];
+
+
+
+     /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    public function getObjectAttribute($value)
+    {
+        return $this->files->where('id', $value)->first();
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +76,7 @@ class Lesson extends Model
 
     public function students()
     {
-        return $this->belongsToMany('App\User', 'lesson_student')->withTimestamps();
+        return $this->belongsToMany( User::class, 'lesson_student')->withTimestamps();
     }
 
     public function sessionable()
@@ -63,6 +88,17 @@ class Lesson extends Model
     {
         return $this->morphToMany(Session::class, 'sessionable');
     }
+
+    public function objectFile()
+    {
+        return $this->belongsTo(File::class, 'object');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | OVERWRITE FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

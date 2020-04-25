@@ -22,7 +22,8 @@
         "moment": true,
         "Popper": true,
         "Examinee": true,
-        "Echo": true
+        "Echo": true,
+        "Plyr": true
     },
     "rules": {
         "indent": ["warn", 4],

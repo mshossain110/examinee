@@ -74,7 +74,8 @@ class LessonController extends Controller
      */
     public function show(Request $request,  Lesson $lesson)
     {
-        $lesson->load(['courses']);
+        $lesson->load(['courses', 'files']);
+        $lesson->makeVisible('object', 'full_text');
         $resource = new JsonResource($lesson);
 
         return $resource;
