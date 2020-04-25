@@ -2,13 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\Topicable;
 use Auth;
+use App\File;
+use App\Traits\Topicable;
+use Illuminate\Database\Eloquent\Model;
+use App\Traits\Fileable;
 
 class Lesson extends Model
 {
-    use Topicable;
+    use Topicable, Fileable;
     
     protected $fillable = [
         'title',
@@ -60,5 +62,27 @@ class Lesson extends Model
     public function sessions()
     {
         return $this->morphToMany(Session::class, 'sessionable');
+    }
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    public function setLessonObject(File $file = null) {
+        if ($file && $file->id !== $this->object) {
+            $this->object = $file->id;
+            $this->save();
+        }else {
+            $file = File::find($this->object);
+        }
+
+        if (!$file) {
+            return;
+        }
+
+        $this->files()->sync($file);
+        
+        $file->setPermission('public', false)->setPermission('lesson', true)->save();
     }
 }

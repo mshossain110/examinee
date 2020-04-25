@@ -120,9 +120,15 @@
                                 >
                                 <div class="bar">
                                     <img
+                                        v-if="f.type === 'image'"
                                         :src="f.public_path"
                                         alt="f.name"
                                     >
+                                    <i
+                                        v-else
+                                        class="fas fa-file-video fa-5x"
+                                        :class="`fa-file-${f.type}`"
+                                    />
                                 </div>
                                 <div class="name">
                                     {{ f.name }}

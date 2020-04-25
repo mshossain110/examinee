@@ -32,6 +32,15 @@
                     flex-grow: 0;
                     flex-shrink: 0;
                     margin: 5px;
+                
+                    .bar {
+                        .fas {
+                            text-align: center;
+                            display: block;
+                            color: #ff0124;
+                            background: #333;
+                        }
+                    }
                     .name {
                         width: 100%;
                         text-align: center;

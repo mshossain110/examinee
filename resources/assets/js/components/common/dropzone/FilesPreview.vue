@@ -23,7 +23,6 @@
                     <a
                         :href="file.public_path"
                         :title="file.name"
-                        download
                     >
                         <strong>file.name</strong>
                     </a>

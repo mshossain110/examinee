@@ -120,11 +120,6 @@ class File extends Model
         return $this->belongsTo(static::class, 'folder_id');
     }
 
-    public function projects()
-    {
-        return $this->belongsToMany(Project::class, 'fileables', 'file_id', 'project_id');
-    }
-
     public function uploader()
     {
         return $this->hasOne(User::class, 'id', 'uploaded_by');
@@ -141,10 +136,12 @@ class File extends Model
 
     public function setPermission($permission, $value)
     {
-        $permissions = $this->meta['permissions'];
+        $meta = $this->meta;
+        $permissions = $meta['permissions'];
         $permissions[$permission] = $value;
-
-        $this->save();
+        $meta['permissions'] = $permissions;
+        $this->meta = $meta;
+        return $this;
     }
 
     public function getPermission($permission = null)
@@ -171,7 +168,8 @@ class File extends Model
         $sizes = $this->meta['sizes'];
         $sizes[$size] = false;
 
-        $this->save();
+        $this->meta['sizes'] = $sizes;
+        return $this;
     }
 
     public function getImageSizes()

@@ -56,6 +56,11 @@ class LessonController extends Controller
             $lesson->load(['sessionable']);
         }
 
+        if ($request->has('object')) {
+            $lesson->setLessonObject();
+        }
+        
+
         $resource = new JsonResource($lesson);
 
         return $resource;
@@ -84,7 +89,26 @@ class LessonController extends Controller
      */
     public function update(Request $request, Lesson $lesson)
     {
+        $courseId = $request->get('course_id');
+        $topics = $request->get('topics');
+        
         $lesson->update($request->all());
+
+        if ($topics) {
+            $lesson->topics()->attach($topics);
+        }
+
+        if ($request->session) {
+            $lesson->sessions()->attach($request->session, [
+                'course_id' => $courseId,
+            ]);
+
+            $lesson->load(['sessionable']);
+        }
+        
+        if ($request->has('object')) {
+            $lesson->setLessonObject();
+        }
         
         $resource = new JsonResource($lesson);
 
