@@ -1,0 +1,65 @@
+/**
+* @doc:
+*   Exam and Session design for single scholar page.
+* @Components:
+*   /components/exam
+*       [SinglExam,SingleQuestion,NewExam,NewQuestion]
+*
+* @browser path:
+*   /instructor/courses/{course id}/exams
+*
+* @verssion 0.0.1
+*/
+
+
+.exam-lists{
+    overflow: hidden;
+    position: relative;
+    display: block;
+
+    .e-action{
+        position: absolute;
+        top: -25px;
+        right: 4px;
+        -webkit-transition: top .2s;
+        transition: top .2s;
+        a {
+            font-size: 10px;
+            background: #563d7c;
+            color: #fff;
+            padding: 2px 5px;
+            text-align: center;
+            line-height: 1;
+            text-decoration: none;
+            &.ea-icon {
+                background: transparent;
+                color: #777;
+                font-size: 12px;
+                padding: 1px 2px;
+            }
+        }
+
+    }
+    &:hover .e-action {
+        top: 0px;
+    }
+    .question-list {
+        
+        .q-action {
+            display: none;
+            position: relative;
+            a {
+                background: transparent;
+                color: #777;
+                font-size: 12px;
+                padding: 1px 2px;
+            }
+        }
+        
+        
+        &:hover .q-action {
+            display: inline;
+        }
+    }
+
+}

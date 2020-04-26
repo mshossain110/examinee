@@ -1,5 +1,18 @@
+/**
+* @doc:
+*   Lesson and Session design for single scholar page.
+* @Components:
+*   /components/course/lessons
+*       [SinglSession,Resources,SingleResource]
+*
+* @browser path:
+*   /instructor/courses/{course}/lessons
+*
+* @verssion 0.0.1
+*/
 
-// lesson style
+
+// SingleSession from lessons
 .singel-session {
     overflow: hidden;
     position: relative;
@@ -31,6 +44,7 @@
         top: 0px;
     }
 
+    // SingleResource from lesson
     .singel-resource {
         
         .r-action {
@@ -49,55 +63,25 @@
     }
 }
 
-// exam style
-.exam-lists{
-    overflow: hidden;
-    position: relative;
-    display: block;
 
-    .e-action{
+//type to search topic from NewLesson
+.multiselect {
+    .custom__tag {
+        background: #1fa1b8;
+        padding: 3px 8px 3px 5px;
+        color: #fff;
+        position: relative;
+        border-radius: 5px;
+        display: inline-block;
+        margin-right: 9px;
+    }
+    .custom__remove {
         position: absolute;
-        top: -25px;
-        right: 4px;
-        -webkit-transition: top .2s;
-        transition: top .2s;
-        a {
-            font-size: 10px;
-            background: #563d7c;
-            color: #fff;
-            padding: 2px 5px;
-            text-align: center;
-            line-height: 1;
-            text-decoration: none;
-            &.ea-icon {
-                background: transparent;
-                color: #777;
-                font-size: 12px;
-                padding: 1px 2px;
-            }
-        }
-
+        background: red;
+        border-radius: 50%;
+        padding: 1px 5px;
+        color: #fff;
+        top: -7px;
+        font-size: 10px;
     }
-    &:hover .e-action {
-        top: 0px;
-    }
-    .question-list {
-        
-        .q-action {
-            display: none;
-            position: relative;
-            a {
-                background: transparent;
-                color: #777;
-                font-size: 12px;
-                padding: 1px 2px;
-            }
-        }
-        
-        
-        &:hover .q-action {
-            display: inline;
-        }
-    }
-
 }
