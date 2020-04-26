@@ -4,14 +4,14 @@
             v-if="loading"
             spinner
         />
-        <!-- <section
-            v-if=" == 'video'"
+        <section
+            v-if=" lesson.type == 'Video'"
             class="video"
         >
             <VideoPreview
                 :file="lesson.object"
             />
-        </section> -->
+        </section>
 
         <section class="details">
             <div class="row">

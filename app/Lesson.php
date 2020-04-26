@@ -42,13 +42,40 @@ class Lesson extends Model
      */
     protected $hidden = ['object', 'full_text'];
 
-
-
+    public static $types = [
+        'text' => 1,
+        'video'   => 2,
+        'audio' => 3,
+        'pdf' => 4
+    ];
+    
      /*
     |--------------------------------------------------------------------------
     | ACCESORS
     |--------------------------------------------------------------------------
     */
+
+
+    public function getTypeAttribute($value)
+    {
+        $key = array_search($value, self::$types);
+       
+        if ($key) {
+            return ucfirst($key);
+        }
+    }
+
+    public function setTypeAttribute($value)
+    {
+        $value = strtolower($value);
+        $key = array_search($value, self::$types);
+
+       if ($key) {
+            $this->attributes['status'] = $value;
+       } else {
+            $this->attributes['status'] = self::$types[$value];
+       }
+    }
 
     public function getObjectAttribute($value)
     {
