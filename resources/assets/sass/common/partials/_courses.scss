@@ -1,0 +1,82 @@
+/**
+* @doc:
+*   courses desgin for all
+* @Components:
+*   
+*
+* @browser path:
+*  
+*
+* @verssion 0.0.1
+*/
+.course {
+    text-decoration: none;
+    color: rgb(100, 100, 100);
+    .card {
+        
+        box-shadow: 1px 1px 1px #d0cccc;
+        .card_img {
+            position: relative;
+            overflow: hidden;
+            max-width: 300px;
+            max-height: 137px;
+            .fa-play-circle {
+                display: none;
+            }
+            
+        }
+        .card-body {
+                
+            padding: 7px;
+            margin-left: 8px;
+
+            p.card-text {
+                height: 39px;
+                white-space: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 12px;
+                -webkit-line-clamp: 2;
+                display: -webkit-box !important;
+                -webkit-box-orient: vertical;
+            }
+            
+        }
+        .card-title {
+            margin: 0px;
+            margin-bottom: 8px;
+            font-size: 17px;
+            overflow: hidden;
+            white-space: nowrap;
+            display: block;
+            text-overflow: ellipsis;
+        }
+
+        .card-footer {
+            background: #FFFFFF;
+            border-top: none;
+        }
+        
+    }
+    &:hover {
+        box-shadow: 1px 1px 1px  1px #eae5e5;
+        .card_img::before{
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(25,25,25,0.4);
+        }
+        .card_img .fa-play-circle {
+            left: 32%;
+            display: block;
+            position: absolute;
+            font-size: 85px;
+            top: 20%;
+            color: #9e9c9c;
+            background-color: #464646;
+            border-radius: 50%;
+        }
+    
+    }
+}

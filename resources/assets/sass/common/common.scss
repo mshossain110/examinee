@@ -1,0 +1,16 @@
+@import '~bootstrap/scss/bootstrap';
+
+@import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+//Include at least one of the below, depending on what icons you want.
+@import "node_modules/@fortawesome/fontawesome-free/scss/brands";
+@import "node_modules/@fortawesome/fontawesome-free/scss/regular";
+@import "node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
+@import "node_modules/vue-multiselect/dist/vue-multiselect.min";
+
+@import 'partials/dropzone.scss';
+@import 'partials/filemanager.scss';
+
+
+//all courses
+@import "partials/courses"

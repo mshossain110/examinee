@@ -1,5 +1,5 @@
 <template>
-    <div class="card border-0 d-flex flex-row align-items-center justify-content-center">
+    <div class="lesson card border-0 d-flex flex-row align-items-center justify-content-center">
         <div class="card-icon px-2 rounded-circle">
             <i class="fas fa-eye fa-2x" />
         </div>
