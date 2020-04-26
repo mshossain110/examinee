@@ -122,9 +122,9 @@ export default {
         },
         clickOnCourse (course) {
             this.$router.push({
-                name: 'singelcourse',
+                name: 'singleResource',
                 params: {
-                    course: course.slug
+                    course: course.id
                 }
             })
         }

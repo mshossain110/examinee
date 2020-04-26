@@ -18,7 +18,7 @@
 
                         <div class="start_button pt-3">
                             <RouterLink
-                                :to="{name: 'singellesson', params: {course: course.slug}}"
+                                :to="{name: 'singlelesson', params: {course: course.slug}}"
                                 class="btn btn-primary mr-4"
                             >
                                 Start Learning

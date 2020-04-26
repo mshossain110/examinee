@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import routs from './routs'
+import routes from './routes'
 export default {
     data () {
         return {
@@ -39,7 +39,7 @@ export default {
 
     },
     created () {
-        this.$router.addRoutes(routs)
+        this.$router.addRoutes(routes)
     },
     methods: {
 

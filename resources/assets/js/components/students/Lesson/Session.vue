@@ -20,7 +20,14 @@
                 class="list-group-item list-group-item-action"
             >
                 <RouterLink
-                    :to="{name: 'singellesson', params: { course: $route.params.course, lesson: resource.id}}"
+                    v-if="isLesson(resource)"
+                    :to="{name: 'singleLesson', params: { course: $route.params.course, lesson: resource.id}}"
+                >
+                    {{ resource.title }}
+                </RouterLink>
+                <RouterLink
+                    v-if="isExam(resource)"
+                    :to="{name: 'singleExam', params: { course: $route.params.course, exam: resource.id}}"
                 >
                     {{ resource.title }}
                 </RouterLink>
@@ -39,7 +46,18 @@ export default {
     },
     data: () => ({
         collapse: true
-    })
+    }),
+    computed: {
+
+    },
+    methods: {
+        isLesson (resource) {
+            return resource.pivot.sessionable_type === 'App\\Lesson'
+        },
+        isExam (resource) {
+            return resource.pivot.sessionable_type === 'App\\Exam'
+        }
+    }
 
 }
 </script>

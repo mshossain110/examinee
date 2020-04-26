@@ -8,6 +8,7 @@ const VueRouter = require('vue-router').default
 
 window.EventBus = new Vue()
 
+Vue.component('Loading', require('./components/common/Loading.vue').default)
 Vue.component('PageScholar', require('./components/course/PageScholar.vue').default)
 Vue.component('PageStudent', require('./components/students/PageStudent.vue').default)
 

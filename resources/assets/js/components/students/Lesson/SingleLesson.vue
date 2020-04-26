@@ -1,18 +1,17 @@
 <template>
-    <div class="lesson-single sidebar">
-        <section
-            v-if="!loading"
+    <div class="single-lesson">
+        <Loading
+            v-if="loading"
+            spinner
+        />
+        <!-- <section
+            v-if=" == 'video'"
             class="video"
         >
             <VideoPreview
                 :file="lesson.object"
             />
-        </section>
-
-        <Sessions
-            v-if="!loading && lesson.courses.length"
-            :course="lesson.courses[0]"
-        />
+        </section> -->
 
         <section class="details">
             <div class="row">
@@ -53,18 +52,23 @@
         </section>
     </div>
 </template>
+
 <script>
-import Sessions from './Sessions'
+
 import VideoPreview from './../../common/dropzone/VideoPreview'
 export default {
     components: {
-        Sessions,
         VideoPreview
     },
     data: () => ({
         loading: false,
         lesson: {}
     }),
+    watch: {
+        '$route' () {
+            this.getLessson()
+        }
+    },
     created () {
         this.getLessson()
     },
@@ -86,5 +90,10 @@ export default {
                 })
         }
     }
+
 }
 </script>
+
+<style>
+
+</style>
