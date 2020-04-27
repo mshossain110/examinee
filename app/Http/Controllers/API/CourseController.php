@@ -18,9 +18,8 @@ class CourseController extends Controller
     {
         $user = $request->user();
         $courses = $user->instructCourses;
-        $collection = JsonResource::collection($courses);
 
-        return $collection->response();
+        return JsonResource::collection($courses);
     }
 
     /**
@@ -41,9 +40,7 @@ class CourseController extends Controller
         $course->files()->sync($request->input('files', []));
         
 
-        $resource = new JsonResource($course);
-
-        return $resource;
+        return new JsonResource($course);
     }
 
     /**
@@ -97,4 +94,16 @@ class CourseController extends Controller
 
         return response(['Course delete successfully']);
     }
+
+
+    /**
+     * get course students 
+     */
+
+     public function students(Request $request, Course $course)
+     {
+         $students = $course->students;
+
+         return JsonResource::collection($students);
+     }
 }

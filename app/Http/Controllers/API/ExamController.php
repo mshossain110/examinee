@@ -20,7 +20,7 @@ class ExamController extends Controller
         $user = $request->user();
         $courseId = $request->get('course_id');
 
-        $exams = Exam::with(['subjects','questions']);
+        $exams = Exam::with(['subjects','questions', 'topics']);
 
         if ($courseId) {
             $exams = $exams->whereHas('courses', function ($q) use ($courseId) {

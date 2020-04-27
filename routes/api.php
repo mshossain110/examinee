@@ -17,6 +17,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function 
 
     Route::get('courses/{course}/sessions', 'SessionableController@lessons');
 
+    Route::get('courses/{course}/students', 'CourseController@students');
     Route::apiResource('course', 'CourseController');
     Route::apiResource('lessons', 'LessonController');
     Route::apiResource('topics', 'TopicController');
