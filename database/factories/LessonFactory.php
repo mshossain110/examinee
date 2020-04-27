@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -21,7 +23,7 @@ $factory->define(App\Lesson::class, function (Faker\Generator $faker) {
         'short_text' => $faker->paragraph(),
         'full_text' => $faker->text(1000),
         'position' => rand(1, 10),
-        'status' => rand(0, 1),
+        'status' => rand(1, 3),
         'created_by' => rand(1, 5),
         'updated_by' => rand(1, 5),
     ];

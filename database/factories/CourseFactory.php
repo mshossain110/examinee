@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -13,7 +15,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Course::class, function (Faker\Generator $faker) {
-    $name = $faker->name;
+    $name = $faker->sentence(6);
     return [
         'title' => $name,
         'slug' => Str::slug($name),

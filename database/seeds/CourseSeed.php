@@ -18,8 +18,12 @@ class CourseSeed extends Seeder
     public function run()
     {
         factory(Course::class, 15)->create()->each(function ($course) {
+            $course->teachers()->sync(rand(1, 3));
             $course->teachers()->sync(rand(1, 10));
-            $course->students()->sync(rand(1, 2));
+
+            $course->students()->sync(rand(1, 3));
+            $course->students()->sync(rand(1, 10));
+
             $course->subjects()->attach(rand(1, 5));
             $course->topics()->attach([rand(1, 5), rand(1, 10), rand(1, 10), rand(1, 10)]);
             $sessions = factory(Session::class, 5)->create(['course_id'=> $course->id]);

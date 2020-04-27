@@ -48,18 +48,22 @@ class ExamController extends Controller
     {
         $user = $request->user();
         $subject_id = $request->input('subject_id');
+        $data = $request->all();
+        $data['examiner'] = $user->id;
 
-        $exam = Exam::create([
-            'examiner'       => $user->id,
-            'title'         => $request->title,
-            'description'   => $request->description
-        ]);
+        $exam = Exam::create($data);
+
+
+        $topics = $request->get('topics');
+
+        if ($topics) {
+            $exam->topics()->attach($topics);
+        }
 
         $exam->subjects()->attach($subject_id);
 
-        $resource = new JsonResource($exam);
 
-        return $resource;
+        return new JsonResource($exam);
     }
 
   
@@ -73,16 +77,18 @@ class ExamController extends Controller
      */
     public function update(ExamRequest $request, Exam $exam)
     {
-        // dd($request->all());
-
-        $exam->title = $request->title;
-        $exam->description = $request->description;
+        $exam->fill($request->all());
         $exam->save();
         $exam->subjects()->detach();
         $exam->subjects()->attach($request->subject_id);
-        $resource = new JsonResource($exam);
 
-        return $resource;
+        $topics = $request->get('topics');
+
+        if ($topics) {
+            $exam->topics()->attach($topics);
+        }
+
+        return new JsonResource($exam);
     }
 
     /**
@@ -95,6 +101,7 @@ class ExamController extends Controller
     {
         $exam->subjects()->detach();
         $exam->questions()->delete();
+        $exam->topics()->detach();
         $exam->delete();
         return response()->json(['success' => true, 'message'=> 'Exam Deleted successfully.']);
     }

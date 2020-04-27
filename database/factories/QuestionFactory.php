@@ -19,7 +19,7 @@ $factory->define(App\Question::class, function (Faker\Generator $faker) {
         'question' => $faker->sentence(10),
         'options' => ['true', 'false', 'both', 'non'],
         'answer' => 'true',
-        'hint' => 'Answer alweas true',
+        'hint' => 'Answer always true',
         'explanation' => 'you are giving answer form faker generate question',
         'exam_id' => rand(1, 10),
     ];

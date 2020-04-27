@@ -19,7 +19,17 @@ class Exam extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'examiner'
+        'title',
+        'description',
+        'examiner',
+        'status',
+        'duration',
+        'pass_mark',
+        'number_of_questions',
+        'random_questions',
+        'certification',
+        'difficulty',
+
     ];
 
     public function subjects() {

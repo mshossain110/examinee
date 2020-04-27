@@ -13,10 +13,16 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Exam::class, function (Faker\Generator $faker) {
-    
+
     return [
-        'title' => $faker->title,
+        'title' => $faker->sentence(6),
         'description' => $faker->paragraph(),
-        'examiner' => rand(1, 10)
+        'examiner' => rand(1, 10),
+        'status' => rand(1, 4),
+        'price' => 100,
+        'duration' => rand(30, 150),
+        'pass_mark' => 20,
+        'number_of_questions'=> 10,
+        'certification' => false,
     ];
 });

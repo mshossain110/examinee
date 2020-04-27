@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
@@ -43,7 +44,9 @@ class UserSeed extends Seeder
         ];
 
         foreach ($items as $key => $item) {
-            $user = \App\User::create($item);
+            $user = User::create($item);
         }
+
+        factory(User::class, 10)->create();
     }
 }

@@ -18,7 +18,17 @@ class CreateExamsTable extends Migration
             $table->bigInteger('examiner')->unsigned();
             $table->string('title');
             $table->text("description")->nullable();
+            $table->unsignedTinyInteger('status')->default(1)->index()->comment("1=>free, 2=>course, 3=>course & paid, 4=>paid");
+            $table->integer("price")->nullable();
+            $table->unsignedTinyInteger('duration')->default(0);
+            $table->unsignedTinyInteger('pass_mark')->default(0);
+            $table->unsignedTinyInteger('number_of_questions')->default(0);
+            $table->boolean('random_questions')->default(true);
+            $table->boolean('certification')->default(false);
+            $table->unsignedTinyInteger("difficulty")->default(1);
+            $table->json('meta')->nullable();
             $table->timestamps();
+
             $table->softDeletes()->index();
 
 
