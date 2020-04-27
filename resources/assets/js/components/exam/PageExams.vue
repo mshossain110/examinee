@@ -31,7 +31,7 @@
                 v-if="newExam"
                 class="card-body"
             >
-                <NewExam />
+                <NewExam @save="saveExam"/>
             </div>
         </div>
 
@@ -71,6 +71,10 @@ export default {
                 .then(res => {
                     this.exams = res.data.data
                 })
+        },
+        saveExam (exam) {
+            this.exams.unshift(exam);
+            this.newExam = false;
         }
     }
 }

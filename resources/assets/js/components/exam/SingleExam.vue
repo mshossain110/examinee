@@ -41,7 +41,7 @@
         >
             <NewExam
                 :exam="exam"
-                @edit-exam="editExam = false"
+                @update="editExam = false"
             />
         </div>
         <div

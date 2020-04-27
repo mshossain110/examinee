@@ -17,7 +17,7 @@ class CourseSeed extends Seeder
      */
     public function run()
     {
-        factory(Course::class, 15)->create()->each(function ($course) {
+        factory(Course::class, 5)->create()->each(function ($course) {
             $course->teachers()->sync(rand(1, 3));
             $course->teachers()->sync(rand(1, 10));
 
@@ -36,7 +36,7 @@ class CourseSeed extends Seeder
                 ]);
             });
 
-            factory(Exam::class, rand(5, 15))->create()->each(function ($exam) use($sessions, $course) {
+            factory(Exam::class, rand(5, 10))->create()->each(function ($exam) use($sessions, $course) {
             
                 $exam->topics()->attach([rand(1, 5), rand(1, 10), rand(1, 10), rand(1, 10)]);
     
