@@ -9,10 +9,11 @@ use App\Traits\FileStorage;
 use App\Observers\FileObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class File extends Model
 {
-    use HashesId, FileStorage;
+    use HashesId, FileStorage, SoftDeletes;
 
     protected $fillable = [
         'name',

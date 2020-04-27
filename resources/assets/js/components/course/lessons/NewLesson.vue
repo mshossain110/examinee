@@ -138,13 +138,10 @@
                                 Free
                             </option>
                             <option value="2">
-                                Subscribers
+                                Subscriber
                             </option>
                             <option value="3">
-                                Hidden
-                            </option>
-                            <option value="4">
-                                Archived
+                                Paid
                             </option>
                         </select>
                     </div>

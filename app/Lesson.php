@@ -4,13 +4,14 @@ namespace App;
 
 use Auth;
 use App\File;
+use App\Traits\Fileable;
 use App\Traits\Topicable;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\Fileable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lesson extends Model
 {
-    use Topicable, Fileable;
+    use Topicable, Fileable, SoftDeletes;
     
     protected $fillable = [
         'title',
@@ -48,6 +49,12 @@ class Lesson extends Model
         'audio' => 3,
         'pdf' => 4
     ];
+
+    public static $status = [
+        'free' => 1,
+        'subscriber' => 2,
+        'paid' => 3,
+    ];
     
      /*
     |--------------------------------------------------------------------------
@@ -71,9 +78,30 @@ class Lesson extends Model
         $key = array_search($value, self::$types);
 
        if ($key) {
+            $this->attributes['type'] = $value;
+       } else {
+            $this->attributes['type'] = self::$types[$value];
+       }
+    }
+
+    public function getStatusAttribute($value)
+    {
+        $key = array_search($value, self::$status);
+       
+        if ($key) {
+            return ucfirst($key);
+        }
+    }
+
+    public function setStatusAttribute($value)
+    {
+        $value = strtolower($value);
+        $key = array_search($value, self::$status);
+
+       if ($key) {
             $this->attributes['status'] = $value;
        } else {
-            $this->attributes['status'] = self::$types[$value];
+            $this->attributes['status'] = self::$status[$value];
        }
     }
 

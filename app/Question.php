@@ -2,13 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Exam;
-use App\Subject;
 use App\Topic;
+use App\Subject;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *

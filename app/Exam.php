@@ -3,14 +3,16 @@
 namespace App;
 
 use App\User;
+use App\Course;
 use App\Result;
 use App\Subject;
 use App\Question;
-use App\Course;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Exam extends Model
 {
+    use SoftDeletes;
         /**
      * The attributes that are mass assignable.
      *
