@@ -1,5 +1,5 @@
 <template>
-    <div class="resource-single lesson sidebar">
+    <div class="resource-single sidebar">
         <div
             v-if="!loading"
             class="session"
