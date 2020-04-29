@@ -24,7 +24,6 @@ class CreateQuestionsTable extends Migration
             $table->integer("mark")->default(1);
             $table->integer("nmark")->default(0);
             $table->string("explanation")->nullable();
-            $table->integer("defficulty")->default(1);
             $table->bigInteger('exam_id')->unsigned()->index();
 
             $table->timestamps();

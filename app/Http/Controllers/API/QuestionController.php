@@ -47,8 +47,7 @@ class QuestionController extends Controller
             'hint'          => $request->hint,
             'mark'          => $request->mark,
             'nmark'         => $request->nmark,
-            'explanation'   => $request->explanation,
-            'defficulty'    => $request->defficulty
+            'explanation'   => $request->explanation
         ]);
        
         $resource = New JsonResource($question);

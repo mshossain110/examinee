@@ -17,13 +17,50 @@ class Question extends Model
      * @var array
      */
     protected $fillable = [
-        'qtype', 'question', 'options', 'answers', 'hint', 'mark', 'nmark', 'explanation', 'defficulty', 'created_by' 
+        'qtype', 'question', 'options', 'answers', 'hint', 'mark', 'nmark', 'explanation', 'created_by' 
     ];
 
     protected $casts = [
         'answers' => 'array',
         'options' => 'array'
     ];
+
+     /*
+    |--------------------------------------------------------------------------
+    | ACCESORS Variables
+    |--------------------------------------------------------------------------
+    */
+    public static $qtypes = [
+        'Objective' => 0,
+        'TrueFalse'   => 1,
+    ];
+
+     /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
+
+    public function getQtypeAttribute($value)
+    {
+        $key = array_search($value, self::$qtypes);
+       
+        if ($key) {
+            return ucfirst($key);
+        }
+    }
+
+    public function setTypeAttribute($value)
+    {
+        $value = strtolower($value);
+        $key = array_search($value, self::$qtypes);
+
+       if ($key) {
+            $this->attributes['qtype'] = $value;
+       } else {
+            $this->attributes['qtype'] = self::$qtypes[$value];
+       }
+    }
     
     public function topics() {
         return $this->morphToMany( Topic::class, 'topicable' );
