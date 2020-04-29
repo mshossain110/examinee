@@ -41,6 +41,41 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mt-5">
+            <div class="col">
+                <div class="next-button">
+                    <button
+                        type="button"
+                        class="btn btn-outline-success"
+                        @click="previous"
+                    >
+                        previous
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-success"
+                        @click="next"
+                    >
+                        Next
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-dark"
+                        @click="clearAns"
+                    >
+                        Clear Ans
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-danger"
+                        @click="finish"
+                    >
+                        Finish
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -54,7 +89,28 @@ export default {
     },
     data: () => ({
         answer: []
-    })
+    }),
+    methods: {
+        clearAns () {
+            this.answer = []
+        },
+        previous () {
+            const ans = {}
+            ans[this.question.id] = this.answer
+            this.$emit('previous', ans)
+        },
+        next () {
+            const ans = {}
+            ans[this.question.id] = this.answer
+            this.$emit('next', ans)
+        },
+        finish () {
+            const ans = {}
+            ans[this.question.id] = this.answer
+            this.$emit('finish', ans)
+        }
+
+    }
 }
 </script>
 

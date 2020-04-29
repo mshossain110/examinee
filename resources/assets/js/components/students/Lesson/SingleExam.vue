@@ -17,46 +17,11 @@
                     v-show="showQuestionNumber === question.id"
                     :key="question.id"
                     :question="question"
+                    @previous="answer"
+                    @next="answer"
+                    @finish="finish"
                 />
 
-                <div class="card-body">
-                    <div class="row mt-5">
-                        <div class="col">
-                            <div class="next-button">
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-success"
-                                >
-                                    Preview
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-dark"
-                                >
-                                    Mark For Review
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-success"
-                                >
-                                    Next
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-dark"
-                                >
-                                    Clear Ans
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-danger"
-                                >
-                                    Finish
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card-body">
                     <div class="row mt-5">
                         <div class="col-12">
@@ -180,8 +145,8 @@ export default {
 
             axios.get(`/api/take-exam/${params.id}`, { params })
                 .then(res => {
-                    this.exam = res.data.data.exam
-                    this.startTime = res.data.data.time
+                    this.exam = res.data.exam
+                    this.startTime = res.data.time
 
                     this.loading = false
                     if (this.startTime) {
@@ -199,11 +164,11 @@ export default {
                 id: this.$route.params.exam
             }
 
-            axios.get(`/api/start-exam/${params.id}`, { params })
+            axios.post(`/api/start-exam/${params.id}`, { params })
                 .then(res => {
-                    this.questions = res.data.data.questions
-                    this.startTime = res.data.data.time
-                    this.showQuestionNumber = res.data.data.questions[0].id
+                    this.questions = res.data.questions
+                    this.startTime = res.data.time
+                    this.showQuestionNumber = res.data.questions[0].id
                     this.loading = false
                 })
         },
@@ -218,6 +183,35 @@ export default {
             setTimeout(() => {
                 this.remainingTime()
             }, 1000)
+        },
+        answer (ans) {
+            // if (this.loading) {
+            //     return
+            // }
+            // this.loading = true
+
+            const params = {
+                id: this.$route.params.exam
+            }
+            axios.post(`/api/answer/${params.id}`, ans)
+                .then(res => {
+                    this.nextQuestion()
+                })
+        },
+        finish () {
+            axios.post(`/api/complete-exam/${params.id}`, ans)
+                .then(res => {
+
+                })
+        },
+        nextQuestion () {
+            const i = this.questions.find(q => this.showQuestionNumber === q.id)
+
+            if (i + 1 === this.questions.length) {
+                this.showQuestionNumber = this.questions[0].id
+            } else {
+                this.showQuestionNumber = this.questions[i + 1].id
+            }
         }
     }
 }

@@ -31,8 +31,8 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function 
     Route::apiResource('exams', 'ExamController');
     Route::apiResource('questions', 'QuestionController');
     Route::get('take-exam/{exam}', 'TakeExamController@show');
-    Route::get('start-exam/{exam}', 'TakeExamController@start');
-    Route::get('answer/{exam}', 'TakeExamController@show');
+    Route::post('start-exam/{exam}', 'TakeExamController@start');
+    Route::post('answer/{exam}', 'TakeExamController@answer');
 
     
     Route::apiResource('/files', 'FileController');
