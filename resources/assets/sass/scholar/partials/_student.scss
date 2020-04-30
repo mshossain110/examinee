@@ -1,0 +1,15 @@
+/**
+* @doc:
+*   Student page design for scholar page.
+* @Components:
+*   /components/course/PageMyStudent
+*       [students]
+*
+* @browser path:
+*   /instructor/courses/{course.id}/students
+*
+* @verssion 0.0.1
+*/
+span.student-name {
+    padding: 10px 40px;
+}
