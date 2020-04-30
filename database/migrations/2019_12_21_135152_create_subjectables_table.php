@@ -15,7 +15,7 @@ class CreateSubjectablesTable extends Migration
     {
         Schema::create('subjectables', function( Blueprint $table ){
             $table->bigInteger('subject_id')->unsigned();
-            $table->morphs('subjectable');
+            $table->morphs('subjectables');
 
             
             $table->foreign('subject_id')

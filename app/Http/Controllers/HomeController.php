@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
+use App\Subject;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -16,10 +18,9 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {   
-        if (Auth::check()) {
-            return view('home');
-        }
-
-        return view('guest');
+        $subjects = Subject::with(['courses', 'exams'])
+            ->whereHas('courses')
+            ->get();
+        return view('home')->with(compact('subjects'));
     }
 }

@@ -122,7 +122,7 @@ class Course extends Model
     }
 
     public function subjects() {
-    	return $this->morphToMany( Subject::class, 'subjectable' );
+    	return $this->morphToMany( Subject::class, 'subjectables' );
     }
 
     

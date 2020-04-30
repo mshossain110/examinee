@@ -14,7 +14,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController')->name('home');
-Route::get('/course/{course:slug}', 'CourseController')->name('course.show');
+Route::get('/courses/{course:slug}', 'CourseController')->name('course.show');
 
 Route::group(['middleware' => ['auth']], function(){
 

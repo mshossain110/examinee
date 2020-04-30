@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function 
     Route::get('courses/my-courses', 'MyCourseController@index');
     Route::get('courses/my-courses/{course:slug}', 'MyCourseController@show');
 
-    Route::get('courses/{course}/sessions', 'SessionableController@lessons');
+    
 
     Route::get('courses/{course}/students', 'CourseController@students');
     Route::apiResource('course', 'CourseController');
@@ -37,3 +37,6 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function 
     
     Route::apiResource('/files', 'FileController');
 });
+
+
+Route::get('courses/{course}/sessions', 'API\SessionableController@lessons');

@@ -15,7 +15,19 @@ class Subject extends Model
         'title', 'description'
     ];
 
-    public function subject() {
-    	return $this->belongsToMany( Exam::class, 'exam_subject', 'subject_id', 'exam_id' );
+    /**
+     * Get all of the courses that are assigned this tag.
+     */
+    public function courses()
+    {
+        return $this->morphedByMany(Course::class, 'subjectables');
+    }
+
+    /**
+     * Get all of the exams that are assigned this tag.
+     */
+    public function exams()
+    {
+        return $this->morphedByMany(Exam::class, 'subjectables');
     }
 }

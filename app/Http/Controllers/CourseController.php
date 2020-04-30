@@ -18,7 +18,7 @@ class CourseController extends Controller
      */
     public function __invoke(Request $request, Course $course)
     {
-
-        return $course;
+        $course->load(['subjects', 'topics']);
+        return view('course')->with(compact('course'));
     }
 }

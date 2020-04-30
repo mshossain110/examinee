@@ -80,28 +80,33 @@ export default {
     components: {
         Sessions
     },
+    props: {
+        course: {
+            type: Object,
+            required: true
+        }
+    },
     data: () => ({
-        loading: false,
-        course: {}
+        loading: false
     }),
     created () {
-        this.getCourse()
+        // this.getCourse()
     },
     methods: {
-        getCourse () {
-            if (this.loading) {
-                return
-            }
-            this.loading = true
-            const params = {
-                course: this.$route.params.course
-            }
-            axios.get(`/api/courses/my-courses/${params.course}`)
-                .then(res => {
-                    this.course = res.data.data
-                    this.loading = false
-                })
-        }
+        // getCourse () {
+        //     if (this.loading) {
+        //         return
+        //     }
+        //     this.loading = true
+        //     const params = {
+        //         course: this.$route.params.course
+        //     }
+        //     axios.get(`/api/courses/my-courses/${params.course}`)
+        //         .then(res => {
+        //             this.course = res.data.data
+        //             this.loading = false
+        //         })
+        // }
     }
 }
 </script>
