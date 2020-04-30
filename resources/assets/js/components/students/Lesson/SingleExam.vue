@@ -198,7 +198,10 @@ export default {
                     this.nextQuestion()
                 })
         },
-        finish () {
+        finish (ans) {
+            const params = {
+                id: this.$route.params.exam
+            }
             axios.post(`/api/complete-exam/${params.id}`, ans)
                 .then(res => {
 

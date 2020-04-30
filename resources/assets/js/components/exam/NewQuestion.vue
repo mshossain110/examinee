@@ -75,7 +75,7 @@
                         <tr
                             v-for="(q,index) in aoptions"
                             :key="index"
-                            class="option-input option-0"
+                            class="option-input option-o"
                         >
                             <td>
                                 <input
@@ -88,7 +88,7 @@
                                 <textarea
                                     v-model="q.option"
                                     class="form-control"
-                                    name="options[0]"
+                                    name="options[o]"
                                 />
                             </td>
                             <td>
@@ -137,7 +137,7 @@
                         v-model.number="question.nmark"
                         type="number"
                         class="form-control"
-                        value="0"
+                        value="o"
                     >
                 </div>
 
@@ -241,7 +241,7 @@ export default {
     },
     data () {
         return {
-            aoptions: [{ answer: '', option: '' }]
+            aoptions: [{ answer: '', option: '', id: this.getRandomId() }]
         }
     },
     computed: {
@@ -250,13 +250,13 @@ export default {
     mounted () {
         if (this.question.options.length) {
             this.aoptions = []
-        }
-        this.question.options.map(o => {
-            this.aoptions.push({
-                answer: this.question.answers.indexOf(o) !== -1,
-                option: o
+
+            this.question.options.map(o => {
+                const option = o
+                option.answer = this.question.answers.indexOf(o.id) !== -1
+                this.aoptions.push(option)
             })
-        })
+        }
     },
     methods: {
         submit () {
@@ -265,12 +265,12 @@ export default {
             params.options = []
             this.aoptions.map(a => {
                 if (a.answer) {
-                    params.answers.push(a.option)
+                    params.answers.push(a.id)
                 }
-                params.options.push(a.option)
+                delete a.answer
+                params.options.push(a)
             })
             if (this.exam) { params.exam_id = this.exam.id }
-
             if (!this.question.id) {
                 axios.post(`/api/questions`, params)
                     .then(res => {
@@ -284,10 +284,13 @@ export default {
             }
         },
         addMoreOption () {
-            this.aoptions.push({ answer: '', option: '' })
+            this.aoptions.push({ answer: '', option: '', id: this.getRandomId() })
         },
         removeOptin (index) {
             this.aoptions.splice(index, 1)
+        },
+        getRandomId () {
+            return `${Date.now()}-${parseInt(Math.random() * 1000)}`
         }
 
     }

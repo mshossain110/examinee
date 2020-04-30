@@ -6,16 +6,22 @@
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex" v-for="(student,i) in students" :key="i">
+                    <li
+                        v-for="(student,i) in students"
+                        :key="i"
+                        class="list-group-item d-flex"
+                    >
                         <div class="avator">
-                            <img src="https://www.gravatar.com/avatar/64e1b8d34f425d19e1ee2ea7236d3028?s=40&amp;d=mp&amp;r=g" class="rounded-circle">
+                            <img
+                                src="https://www.gravatar.com/avatar/64e1b8d34f425d19e1ee2ea7236d3028?s=40&amp;d=mp&amp;r=g"
+                                class="rounded-circle"
+                            >
                         </div>
-                        <span class="student-name">{{student.firstname}} {{student.lastname}}</span>
+                        <span class="student-name">{{ student.firstname }} {{ student.lastname }}</span>
                     </li>
                 </ul>
             </div>
         </div>
-       
     </div>
 </template>
 
@@ -23,7 +29,7 @@
 export default {
     data () {
         return {
-            students:[]
+            students: []
         }
     },
     computed: {
@@ -33,11 +39,11 @@ export default {
         this.getstudent()
     },
     methods: {
-        getstudent(){
+        getstudent () {
             axios.get(`/api/courses/${this.$route.params.id}/students`)
-            .then(res => {
-                this.students = res.data.data
-            })
+                .then(res => {
+                    this.students = res.data.data
+                })
         }
 
     }
