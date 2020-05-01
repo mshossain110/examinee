@@ -186,52 +186,155 @@
                         </label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <Multiselect
-                    id="ajax"
-                    v-model="selectTopics"
-                    label="title"
-                    track-by="id"
-                    placeholder="Type to search Topic"
-                    open-direction="bottom"
-                    :options="topics"
-                    :multiple="true"
-                    :searchable="true"
-                    :loading="isLoading"
-                    :internal-search="false"
-                    :clear-on-select="true"
-                    :close-on-select="false"
-                    :max-height="600"
-                    :show-no-results="true"
-                    :taggable="true"
-                    :hide-selected="true"
-                    @tag="createTopic"
-                    @search-change="loadTopics"
-                >
-                    <template
-                        slot="tag"
-                        slot-scope="{ option, remove }"
-                    >
-                        <span class="custom__tag"><span>{{ option.title }}</span><span
-                            class="custom__remove"
-                            @click="remove(option)"
-                        >x</span></span>
-                    </template>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label
+                            for="retake"
+                            class="control-label"
+                        >Retake After</label>
 
-                    <template
-                        slot="clear"
-                        slot-scope="props"
-                    >
-                        <div
-                            v-if="selectTopics.length"
-                            class="multiselect__clear"
-                            @mousedown.prevent.stop="clearAll(props.search)"
-                        />
-                    </template>
+                        <input
+                            id="retake"
+                            v-model="exam.meta.retake"
+                            type="number"
+                            class="form-control"
+                            name="retake"
+                            min="0"
+                        >
+                        <small
 
-                    <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
-                </Multiselect>
+                            class="form-text text-muted"
+                        >
+                            Examinee can retake the exam after {{ exam.meta.retake }} days
+
+                        </small>
+                    </div>
+                </div>
+                <div class="col-6 mt-4">
+                    <div class="form-group">
+                        <Multiselect
+                            id="ajax"
+                            v-model="selectTopics"
+                            label="title"
+                            track-by="id"
+                            placeholder="Type to search Topic"
+                            open-direction="bottom"
+                            :options="topics"
+                            :multiple="true"
+                            :searchable="true"
+                            :loading="isLoading"
+                            :internal-search="false"
+                            :clear-on-select="true"
+                            :close-on-select="false"
+                            :max-height="600"
+                            :show-no-results="true"
+                            :taggable="true"
+                            :hide-selected="true"
+                            @tag="createTopic"
+                            @search-change="loadTopics"
+                        >
+                            <template
+                                slot="tag"
+                                slot-scope="{ option, remove }"
+                            >
+                                <span class="custom__tag"><span>{{ option.title }}</span><span
+                                    class="custom__remove"
+                                    @click="remove(option)"
+                                >x</span></span>
+                            </template>
+
+                            <template
+                                slot="clear"
+                                slot-scope="props"
+                            >
+                                <div
+                                    v-if="selectTopics.length"
+                                    class="multiselect__clear"
+                                    @mousedown.prevent.stop="clearAll(props.search)"
+                                />
+                            </template>
+
+                            <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+                        </Multiselect>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check">
+                        <input
+                            id="show_hint"
+                            v-model="exam.meta.show_hint"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                        >
+                        <label
+                            class="form-check-label"
+                            for="show_hint"
+                        >
+                            Show Hint
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                            id="show_question"
+                            v-model="exam.meta.show_question"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                        >
+                        <label
+                            class="form-check-label"
+                            for="show_question"
+                        >
+                            Show Question
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                            id="show_explanation"
+                            v-model="exam.meta.show_explanation"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                        >
+                        <label
+                            class="form-check-label"
+                            for="show_explanation"
+                        >
+                            Show Explanation
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                            id="negative_mark"
+                            v-model="exam.meta.negative_mark"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                        >
+                        <label
+                            class="form-check-label"
+                            for="negative_mark"
+                        >
+                            Negative Mark
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input
+                            id="show_answer"
+                            v-model="exam.meta.show_answer"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                        >
+                        <label
+                            class="form-check-label"
+                            for="show_answer"
+                        >
+                            Show Answer
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -269,7 +372,8 @@ export default {
                     random_questions: true,
                     difficulty: 1,
                     price: 0,
-                    certification: false
+                    certification: false,
+                    meta: {}
 
                 }
             }
@@ -288,7 +392,17 @@ export default {
 
     },
     created () {
+        if (!this.exam.meta) {
+            this.exam.meta = {
+                retake: 0,
+                show_hint: false,
+                show_question: false,
+                show_explanation: false,
+                negative_mark: false,
+                show_answer: false
 
+            }
+        }
     },
     methods: {
         submit () {
@@ -303,6 +417,7 @@ export default {
                 difficulty: this.exam.difficulty,
                 certification: this.exam.certification,
                 price: this.exam.price,
+                meta: this.exam.meta,
                 course_id: this.$route.params.id ? this.$route.params.id : null
             }
 

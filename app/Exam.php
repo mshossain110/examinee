@@ -25,6 +25,7 @@ class Exam extends Model
         'status',
         'duration',
         'pass_mark',
+        'meta',
         'number_of_questions',
         'random_questions',
         'certification',
