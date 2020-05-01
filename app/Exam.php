@@ -25,6 +25,7 @@ class Exam extends Model
         'status',
         'duration',
         'pass_mark',
+        'meta',
         'number_of_questions',
         'random_questions',
         'certification',
@@ -33,7 +34,7 @@ class Exam extends Model
     ];
 
     public function subjects() {
-    	return $this->morphToMany( Subject::class, 'subjectable' );
+    	return $this->morphToMany( Subject::class, 'subjectables' );
     }
 
     public function courses() {
