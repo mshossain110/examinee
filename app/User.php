@@ -30,18 +30,42 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $appends = [
+        'full_name'
+    ];
+
     public function getFullNameAttribute()
     {
         return "$this->firstname $this->lastname";
     }
 
-    public function setAvatarAttribute($value)
+    public function getAvatarAttribute($value)
     {
-        if (empty($value)) {
-            return get_gravatar($this->emial);
+        if (!is_array($value)) {
+            $value = json_decode($value);
+        }
+
+        if (empty($value) && empty($value->avatar)) {
+            $value = new \STDClass();
+            $value->avatar = $this->get_gravatar($this->email, 200);
         }
 
         return $value;
+    }
+
+    protected function get_gravatar($email, $s = 40, $d = 'mp', $r = 'g', $img = false, $atts = array())
+    {
+        $url = 'https://www.gravatar.com/avatar/';
+        $url .= md5(strtolower(trim($email)));
+        $url .= "?s=$s&d=$d&r=$r";
+        if ($img) {
+            $url = '<img src="' . $url . '"';
+            foreach ($atts as $key => $val) {
+                $url .= ' ' . $key . '="' . $val . '"';
+            }
+            $url .= ' />';
+        }
+        return $url;
     }
 
     public function results()
