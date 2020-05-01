@@ -174,11 +174,16 @@ class TakeExamController extends Controller
 
     private function userCanTakeExam(User $user, Exam $exam)
     {
+        $time = Session::get("exam");
+        if ($time && empty($time[$exam->id])){
+            throw  new Exception(__("Exam id :key running", ["key" => array_keys($time)[0]]));
+        }
+        
         $result = $exam->results()->where('examinee', $user->id)->orderBy('created_at', "DESC")->first();
         if ($result) {
             $differ = ((intval($exam->meta['retake'])?: 0 )- Carbon::parse($result->created_at)->diffInDays(Carbon::now()) );
             if ( $differ > 0){
-                throw  new Exception(__("You can retry after :day days", [$differ]));
+                throw  new Exception(__("You can retry after :day days", ["day" => $differ]));
             }
         }
         

@@ -217,6 +217,8 @@ export default {
                     this.startTime = res.data.time
                     this.showQuestionNumber = res.data.questions[0].id
                     this.answers = res.data.answers
+                })
+                .finally(() => {
                     this.loading = false
                 })
         },
