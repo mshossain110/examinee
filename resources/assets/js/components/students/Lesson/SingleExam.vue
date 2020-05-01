@@ -9,7 +9,7 @@
                     <h4>REASONING : QUESTION 1 OF 16</h4>
                     <div
                         v-if="startTime"
-                        class="time"
+                        class="time d-flex flex-column"
                     >
                         <strong>Rmaining Time: {{ parseInt(examRemainingTime/60) }}: {{ parseInt(examRemainingTime%60) }}</strong>
                         <strong>Total Time : {{ exam.duration }}</strong>
@@ -76,14 +76,54 @@
                                     ABOUT THIS EXAM
                                 </h5>
                                 <strong>{{ exam.title }}</strong>
-
-                                <ul class="list-unstyled mt-3">
-                                    <li><strong>Total Time</strong> {{ exam.duration }}</li>
-                                    <li><strong>Number of Questions</strong> {{ exam.number_of_questions }}</li>
-                                    <li><strong>Pass Mark</strong> {{ exam.pass_mark }}</li>
-                                    <li><strong>Difficulty</strong> {{ exam.difficulty }}</li>
-                                    <li><strong>Cirtificate</strong> {{ exam.certification }}</li>
-                                </ul>
+                                <table class="table table-bordered mt-4">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">
+                                                Total Time
+                                            </th>
+                                            <td>{{ exam.duration }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                Number of Questions
+                                            </th>
+                                            <td>{{ exam.number_of_questions }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                Pass Mark
+                                            </th>
+                                            <td>
+                                                {{ exam.pass_mark }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                Difficulty
+                                            </th>
+                                            <td>
+                                                {{ exam.difficulty }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                Cirtificate
+                                            </th>
+                                            <td>
+                                                {{ exam.certification }}
+                                            </td>
+                                        </tr>
+                                        <tr v-if="exam.meta">
+                                            <th scope="row">
+                                                Retake After
+                                            </th>
+                                            <td>
+                                                {{ exam.meta.retake }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
                                 <h5 class="text-uppercase mt-3">
                                     Details

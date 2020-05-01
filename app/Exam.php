@@ -33,6 +33,11 @@ class Exam extends Model
 
     ];
 
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
+
     public function subjects() {
     	return $this->morphToMany( Subject::class, 'subjectables' );
     }

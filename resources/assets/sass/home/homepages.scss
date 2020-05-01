@@ -1,11 +1,2 @@
-.jumbotron {
-    background-image: url(https://cdn.pixabay.com/photo/2016/03/09/11/56/globes-1246245_1280.jpg);
-    color: #18a2b8;
-    min-height: 500px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    .container {
-        padding-top: 200px;
-    }
-}
 
+@import "partials/homeCourseSingle.scss"

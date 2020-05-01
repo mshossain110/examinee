@@ -1,0 +1,120 @@
+//home page top design
+.jumbotron {
+    background-image: url(https://cdn.pixabay.com/photo/2016/03/09/11/56/globes-1246245_1280.jpg);
+    color: #18a2b8;
+    min-height: 500px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .container {
+        padding-top: 200px;
+    }
+}
+/**
+* @doc:
+*  single course desgin for home single course
+* @Components:
+*   /components/SingleCourse
+*       [SinglCourse,Resources,Lesson]
+*
+* @browser path:
+*   /learning/my-courses/{course}
+*
+* @verssion 0.0.1
+*/
+
+//singel course nav-var
+.navbar-nav li.nav-item {
+    display: flex;
+    align-items: center;
+}
+
+.nav.text-light a.nav-link {
+    color: #f8f9fa !important
+}
+
+.is-link {
+    cursor: pointer;
+}
+
+//single course-head 
+.course_head{
+    
+    background-color: #b4e2f5;
+    
+    padding-bottom: 25px;
+
+.course_text h5{
+    
+    font-size: 30px;
+    color: #563d7c;
+    
+
+}
+.course_logo img{
+    width: 243px;
+    height: 275px;
+    border-radius: 100%;
+}
+.course_logo h5{
+    padding-left: 45px;
+}
+
+}
+// single course lesson-part
+.lesson_part{
+    .back{
+        background-color: #f4f4f5;
+        padding: 10px;
+    }
+    .lessons{
+        .card-icon i {
+            background-color: #e4e4e8;
+            padding: 7px;
+            border-radius: inherit;
+
+        }  
+    }
+}
+
+.lesson-list{
+    overflow: scroll;
+    height: 300px;
+    width: 100%;
+}
+
+//homeSingleCourse icon
+.lesson-exam .icon {
+    font-size: 30px;
+    padding-bottom: 30px;
+}
+.lesson-exam a {
+    color: #2f3235;
+    text-decoration: none !important;
+    h5{
+        font-weight: normal;
+    }
+}
+
+//session title
+
+.session .s {
+    strong {
+        font-size: 24px;
+        position: relative;
+        background: #FFF;
+        z-index: 1;
+        padding: 5px 30px;
+        color: #777;
+        font-weight: normal;
+    }
+    
+    &::after {
+        content: '';
+        border-bottom: 1px solid #cac7c78a;
+        width: 100%;
+        display: block;
+        position: absolute;
+        top: 21px;
+    }
+}
+

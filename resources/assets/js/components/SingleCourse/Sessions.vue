@@ -1,12 +1,12 @@
 <template>
     <div class="session container">
-        <div class="row">
+        <div class="row mt-5 justify-content-center">
             <div
                 v-for="session in sessions"
                 :key="session.id"
-                class="col-12"
+                class="col-10"
             >
-                <div>
+                <div class="s">
                     <strong>{{ session.title }}</strong>
                 </div>
                 <div

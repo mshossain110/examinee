@@ -1,14 +1,14 @@
 <template>
-    <div class="lesson card border-0 d-flex flex-row align-items-center justify-content-center">
-        <div class="card-icon px-2 rounded-circle">
-            <i class="fas fa-eye fa-2x" />
+    <div class="lesson-exam card border-0 d-flex flex-row align-items-center justify-content-center">
+        <div class="icon">
+            <i class="fas fa-book-reader" />
         </div>
-        <div class="card-body">
-            <div class="card-title d-flex align-items-center">
+        <div class="card-body py-0">
+            <div class="card-title d-flex align-items-center m-0">
                 <RouterLink
                     :to="{name: 'singellesson', params: { course: $route.params.course, lesson: lesson.id}}"
                 >
-                    <h4>{{ lesson.title }}</h4>
+                    <h5>{{ lesson.title }}</h5>
                 </RouterLink>
                 <p class="text-secondary mt-2 ml-3">
                     <i class="far fa-clock" />

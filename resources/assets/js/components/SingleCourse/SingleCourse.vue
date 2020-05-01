@@ -23,12 +23,7 @@
                             >
                                 Start Learning
                             </RouterLink>
-                            <button
-                                type="button"
-                                class="btn btn-primary mr-4"
-                            >
-                                Add to watchlist
-                            </button>
+
                             <button
                                 type="button"
                                 class="btn btn-info"
@@ -48,26 +43,7 @@
                 </div>
             </div>
         </section>
-        <section class="lesson_part">
-            <div class="back">
-                <div class="row">
-                    <div class="col-2">
-                        <a href="#"><i class="fas fa-arrow-left mr-2" />Back To Main</a>
-                    </div>
-                    <div class="col-6">
-                        <p>Latest Episode: <a href="#">Two-Way Databinding Review</a></p>
-                    </div>
-                    <div class="col-2">
-                        <i class="fab fa-facebook-f mr-2" />
-                        <i class="fab fa-twitter" />
-                    </div>
-                    <div class="col-2 d-flex justify-content-around">
-                        <p>43% Complete</p>
-                        <i class="fas fa-eye-slash" />
-                    </div>
-                </div>
-            </div>
-        </section>
+
         <Sessions
             v-if="!loading"
             :course="course"
