@@ -7,7 +7,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h4>REASONING : QUESTION 1 OF 16</h4>
-                    <div class="time">
+                    <div
+                        v-if="startTime"
+                        class="time"
+                    >
                         <strong>Rmaining Time: {{ parseInt(examRemainingTime/60) }}: {{ parseInt(examRemainingTime%60) }}</strong>
                         <strong>Total Time : {{ exam.duration }}</strong>
                     </div>
@@ -17,9 +20,10 @@
                     v-show="showQuestionNumber === question.id"
                     :key="question.id"
                     :question="question"
-                    @previous="answer"
-                    @next="answer"
-                    @finish="finish"
+                    :answers="answers"
+                    @previous="previousQuestion"
+                    @next="nextQuestion"
+                    @finish="finishExam"
                 />
 
                 <div class="card-body">
@@ -40,6 +44,7 @@
                                     :key="question.id"
                                     type="button"
                                     class="btn btn-primary mr-1"
+                                    :class="{'answered': hasAnswer(question.id), 'active': showQuestionNumber === question.id}"
                                     @click.prevent="showQuestionNumber = question.id"
                                 >
                                     {{ i + 1 }}
@@ -111,7 +116,9 @@ export default {
         exam: {},
         questions: [],
         examRemainingTime: null,
-        showQuestionNumber: null
+        showQuestionNumber: null,
+        answers: [],
+        result: null
     }),
     computed: {
         isExamRunning () {
@@ -169,14 +176,14 @@ export default {
                     this.questions = res.data.questions
                     this.startTime = res.data.time
                     this.showQuestionNumber = res.data.questions[0].id
+                    this.answers = res.data.answers
                     this.loading = false
                 })
         },
         remainingTime () {
-            this.examRemainingTime = moment.utc().diff(moment.utc(this.startTime).add(this.exam.duration, 'minutes'), 'seconds')
-            this.examRemainingTime = Math.abs(this.examRemainingTime)
-
-            if (this.examRemainingTime / 60 > this.exam.duration) {
+            this.examRemainingTime = moment.utc(this.startTime).add(this.exam.duration, 'minutes').diff(moment.utc(), 'seconds')
+            if (this.examRemainingTime / 60 <= 0) {
+                this.complete()
                 return
             }
 
@@ -184,37 +191,58 @@ export default {
                 this.remainingTime()
             }, 1000)
         },
-        answer (ans) {
-            // if (this.loading) {
-            //     return
-            // }
-            // this.loading = true
-
-            const params = {
-                id: this.$route.params.exam
-            }
-            axios.post(`/api/answer/${params.id}`, ans)
+        storeAnswer (ans) {
+            return new Promise((resolve, reject) => {
+                axios.post(`/api/answer/${this.exam.id}`, ans)
+                    .then(res => {
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        reject(error)
+                    })
+            })
+        },
+        nextQuestion (ans) {
+            this.storeAnswer(ans)
                 .then(res => {
-                    this.nextQuestion()
+                    this.answers = res.answers
+                    const i = this.questions.findIndex(q => this.showQuestionNumber === q.id)
+                    if (i + 1 === this.questions.length) {
+                        this.showQuestionNumber = this.questions[0].id
+                    } else {
+                        this.showQuestionNumber = this.questions[i + 1].id
+                    }
                 })
         },
-        finish (ans) {
-            const params = {
-                id: this.$route.params.exam
-            }
-            axios.post(`/api/complete-exam/${params.id}`, ans)
+        previousQuestion (ans) {
+            this.storeAnswer(ans)
                 .then(res => {
-
+                    this.answers = res.answers
+                    const i = this.questions.findIndex(q => this.showQuestionNumber === q.id)
+                    if (i === 0) {
+                        this.showQuestionNumber = this.questions[this.questions.length - 1].id
+                    } else {
+                        this.showQuestionNumber = this.questions[i - 1].id
+                    }
                 })
         },
-        nextQuestion () {
-            const i = this.questions.find(q => this.showQuestionNumber === q.id)
-
-            if (i + 1 === this.questions.length) {
-                this.showQuestionNumber = this.questions[0].id
-            } else {
-                this.showQuestionNumber = this.questions[i + 1].id
-            }
+        finishExam (ans) {
+            this.storeAnswer(ans)
+                .then(res => {
+                    this.complete()
+                })
+        },
+        complete () {
+            axios.post(`/api/complete-exam/${this.exam.id}`)
+                .then(res => {
+                    this.result = res.data.result
+                    this.startTime = null
+                    window.location.reload()
+                })
+        },
+        hasAnswer (id) {
+            const answer = this.answers.find(a => a.id === id)
+            return answer && typeof answer.answer !== 'undefined'
         }
     }
 }
