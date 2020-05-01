@@ -16,10 +16,26 @@ class TakeExamController extends Controller
     public function show(Request $request, Exam $exam)
     {
         $user = $request->user();
+        $questions= collect();
         $time = Session::get("exam.$exam->id");
+        $exam->load('topics', 'subjects');
         $result = $exam->results()->where('examinee', $user->id)->orderBy('created_at', "DESC")->first();
+
+        if ($result && !empty($exam->meta['show_questions']) &&  $exam->meta['show_questions']) {
+            $q = $exam->questions;
+            
+            
+
+            $result->answers->map(function($qi) use($q, $questions){
+                $questions->push($q->firstWhere('id', $qi['id']));
+            });
+
+            // $questions = $questions->map(function($q) use($questionFields){
+            //     return collect($q->toArray())->only($questionFields)->all();
+            // })->values()->all();
+        }
         
-        return response()->json(compact(['exam', 'time', 'result']));
+        return response()->json(compact(['exam', 'time', 'result',  'questions']));
     }
 
 
@@ -41,10 +57,16 @@ class TakeExamController extends Controller
         $answers = Session::get("exam_question");
         $answers = collect($answers);
 
+        $questionFields = ['id', 'qtype', 'question', 'options' , 'mark', 'nmark'];
+
+        if (!empty($exam->meta['show_hint']) && $exam->meta['show_hint']) {
+            $questionFields[] = 'hint';
+        }
+
         if ($answers->isEmpty()) {
-            $questions = $exam->questions->shuffle()->take($exam->number_of_questions)->map(function($q) use($answers){
+            $questions = $exam->questions->shuffle()->take($exam->number_of_questions)->map(function($q) use($answers, $questionFields){
                 $answers->push(['id'=> $q->id]);
-                return collect($q->toArray())->only(['id', 'qtype', 'question', 'options', 'hint', 'mark', 'nmark'])->all();
+                return collect($q->toArray())->only($questionFields)->all();
             })->values()->all(); //
 
             Session::put("exam_question", $answers);
@@ -56,8 +78,8 @@ class TakeExamController extends Controller
                 $questions->push($q->firstWhere('id', $qi['id']));
             });
 
-            $questions = $questions->map(function($q){
-                return collect($q->toArray())->only(['id', 'qtype', 'question', 'options', 'hint', 'mark', 'nmark'])->all();
+            $questions = $questions->map(function($q) use($questionFields){
+                return collect($q->toArray())->only($questionFields)->all();
             })->values()->all();
         }
 
@@ -65,10 +87,7 @@ class TakeExamController extends Controller
     }
 
     public function answer(Request $request, Exam $exam)
-    {
-        // Session::forget("exam_question");
-        // Session::forget("exam_time");
-        
+    {        
         $user = $request->user();
         $time = Session::get("exam.$exam->id");
 
@@ -156,10 +175,13 @@ class TakeExamController extends Controller
     private function userCanTakeExam(User $user, Exam $exam)
     {
         $result = $exam->results()->where('examinee', $user->id)->orderBy('created_at', "DESC")->first();
-        $differ = ((intval($exam->meta['retake'])?: 0 )- Carbon::parse($result->created_at)->diffInDays(Carbon::now()) );
-        if ( $differ > 0){
-            throw  new Exception(__("You can retry after :day days", [$differ]));
+        if ($result) {
+            $differ = ((intval($exam->meta['retake'])?: 0 )- Carbon::parse($result->created_at)->diffInDays(Carbon::now()) );
+            if ( $differ > 0){
+                throw  new Exception(__("You can retry after :day days", [$differ]));
+            }
         }
+        
 
         return true;
     }
