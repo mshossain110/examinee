@@ -94,7 +94,6 @@
                         >
                     </div>
                 </div>
-
                 <div class="col-6">
                     <div class="form-group">
                         <label
@@ -385,16 +384,7 @@ export default {
             topics: [],
             selectTopics: [],
             isLoading: false,
-            topicTimeout: null,
-            meta: {
-                retake: 0,
-                show_hint: false,
-                show_question: false,
-                show_explanation: false,
-                negative_mark: false,
-                show_answer: false
-
-            }
+            topicTimeout: null
 
         }
     },
@@ -403,7 +393,15 @@ export default {
     },
     created () {
         if (!this.exam.meta) {
-            this.exam.meta = this.meta
+            this.exam.meta = {
+                retake: 0,
+                show_hint: false,
+                show_question: false,
+                show_explanation: false,
+                negative_mark: false,
+                show_answer: false
+
+            }
         }
     },
     methods: {

@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'API'], function 
     Route::apiResource('questions', 'QuestionController');
     Route::get('take-exam/{exam}', 'TakeExamController@show');
     Route::post('start-exam/{exam}', 'TakeExamController@start');
+    Route::post('complete-exam/{exam}', 'TakeExamController@complete');
     Route::post('answer/{exam}', 'TakeExamController@answer');
 
     

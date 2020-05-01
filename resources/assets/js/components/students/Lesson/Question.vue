@@ -23,21 +23,21 @@
         >
             <div class="col">
                 <div
-                    v-for="(o, i) in question.options"
-                    :key="i"
+                    v-for="option in question.options"
+                    :key="option.id"
                     class="custom-control custom-checkbox"
                 >
                     <input
-                        :id="`ans-${i}`"
+                        :id="option.id"
                         v-model="answer"
-                        :value="o"
+                        :value="option.id"
                         type="checkbox"
                         class="custom-control-input"
                     >
                     <label
                         class="custom-control-label"
-                        :for="`ans-${i}`"
-                    >{{ o }}</label>
+                        :for="option.id"
+                    >{{ option.option }}</label>
                 </div>
             </div>
         </div>
@@ -85,11 +85,18 @@ export default {
         question: {
             type: Object,
             required: true
+        },
+        answers: {
+            type: Array,
+            required: true
         }
     },
     data: () => ({
         answer: []
     }),
+    mounted () {
+        this.answer = this.answers.find(a => a.id === this.question.id).answer || []
+    },
     methods: {
         clearAns () {
             this.answer = []

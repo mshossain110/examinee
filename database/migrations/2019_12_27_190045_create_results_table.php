@@ -18,9 +18,9 @@ class CreateResultsTable extends Migration
             $table->bigInteger('examinee');
             $table->bigInteger('exam_id');
             $table->json('answers');
-            $table->float('obtain');
+            $table->float('obtain_mark');
+            $table->boolean('is_pass')->default(false);
             $table->float('time_taken');
-            $table->char('grade');
             $table->timestamps();
         });
     }
