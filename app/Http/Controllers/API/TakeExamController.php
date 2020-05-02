@@ -32,7 +32,16 @@ class TakeExamController extends Controller
             // $questions = $questions->map(function($q) use($questionFields){
             //     return collect($q->toArray())->only($questionFields)->all();
             // })->values()->all();
+
+            if (!(!empty($exam->meta['show_answer']) &&  $exam->meta['show_answer'])) {
+                $questions = $questions->map(function($ques) {
+                    unset($ques->answers);
+                    return $ques;
+                });
+            }
         }
+
+        
         
         return response()->json(compact(['exam', 'time', 'result',  'questions']));
     }

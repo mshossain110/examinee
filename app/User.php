@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Result;
+use App\Pivots\StudentCasting;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -78,8 +79,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'course_teachers');
     }
 
-    public function enrollCourses()
+    public function enrolledCourses()
     {
-        return $this->belongsToMany(Course::class, 'course_students');
+        return $this->belongsToMany(Course::class, 'course_students')->using(StudentCasting::class)->withPivot(['rating', 'progress', 'created_at', 'updated_at' ]);
+    }
+
+    public function enrolledLessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_student')->using(StudentCasting::class)->withPivot(['status', 'created_at', 'updated_at' ]);
     }
 }

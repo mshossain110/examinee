@@ -17,15 +17,17 @@
                         </div>
 
                         <div class="start_button pt-3">
-                            <RouterLink
-                                :to="{name: 'singlelesson', params: {course: course.slug}}"
-                                class="btn btn-primary mr-4"
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click.prevent="startLearning"
                             >
                                 Start Learning
-                            </RouterLink>
+                            </button>
 
                             <button
                                 type="button"
+                                disabled
                                 class="btn btn-info"
                             >
                                 Add To Subcribe
@@ -51,26 +53,28 @@
                                         ${{ course.price }}
                                     </h5>
                                     <button
+                                        disabled
                                         type="button"
-                                        class="btn btn-primary"
+                                        class="btn btn-info"
                                     >
                                         Add to cart
                                     </button>
                                     <button
                                         type="button"
-                                        class="btn btn-info"
+                                        class="btn btn-primary"
+                                        @click.prevent="startLearning"
                                     >
-                                        Buy Now
+                                        Start Learning
                                     </button>
                                 </div>
-                                <Card class="detail">
+                                <div class="detail">
                                     <ul>
                                         <li>full life time acces</li>
                                         <li>90 articles</li>
                                         <li>28.5 hours on-demand video</li>
                                         <li>Access on mobile and TV</li>
                                     </ul>
-                                </Card>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -143,24 +147,27 @@ export default {
             return 'https://tricksinfo.net/wp-content/uploads/2019/07/533430_ce1e_3-750x405.jpg'
         }
     },
-    created () {
-        // this.getCourse()
-    },
     methods: {
-        // getCourse () {
-        //     if (this.loading) {
-        //         return
-        //     }
-        //     this.loading = true
-        //     const params = {
-        //         course: this.$route.params.course
-        //     }
-        //     axios.get(`/api/courses/my-courses/${params.course}`)
-        //         .then(res => {
-        //             this.course = res.data.data
-        //             this.loading = false
-        //         })
-        // }
+        startLearning () {
+            if (this.loading) {
+                return
+            }
+
+            this.loading = true
+
+            axios.post(`/subscribe/${this.course.id}`)
+                .then((res) => {
+                    window.location.replace('/learning/my-courses')
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        window.location.replace('/login')
+                    }
+                })
+                .finally(() => {
+                    this.loading = false
+                })
+        }
     }
 }
 </script>

@@ -14,7 +14,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController')->name('home');
-Route::get('/courses/{course:slug}', 'CourseController')->name('course.show');
+Route::get('/courses/{course:slug}', 'CourseController@show')->name('course.show');
 
 Route::group(['middleware' => ['auth']], function(){
 
@@ -24,4 +24,5 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/download', 'DownloadController@download');
     Route::get('/uploads/{id}/{any?}', 'UploadController')->where('any', '.*');
 
+	Route::post("/subscribe/{course}", 'CourseController@subscribe')->name('course.subscribe');
 });
