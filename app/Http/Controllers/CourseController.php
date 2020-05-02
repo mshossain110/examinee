@@ -18,6 +18,7 @@ class CourseController extends Controller
      */
     public function __invoke(Request $request, Course $course)
     {
+        $course->loadCount(['lessons', 'exams', 'sessions', 'students']);
         $course->load(['subjects', 'topics', 'teachers']);
         return view('course')->with(compact('course'));
     }
