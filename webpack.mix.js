@@ -1,5 +1,6 @@
 const mix = require('laravel-mix')
 const path = require('path')
+const webpack = require('webpack')
 require('laravel-mix-eslint-config')
 
 /*
@@ -30,7 +31,10 @@ mix.webpackConfig({
             '@c': assetsPath('js/components'),
             '@src': assetsPath('js')
         }
-    }
+    },
+    plugins: [
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    ]
 })
 
 mix.copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', publicPath('fonts/fontawesome'))
