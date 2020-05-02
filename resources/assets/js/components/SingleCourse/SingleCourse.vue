@@ -33,12 +33,46 @@
                         </div>
                     </div>
 
-                    <div class="col-4 course_logo pt-3 pl-5">
-                        <img
-                            src="https://www.isasa.org/wp-content/uploads/2018/05/systemic-evaluation.jpg"
-                            alt=""
+                    <div class="col-4">
+                        <div
+                            class="card payment"
                         >
-                        <h5>Let's get started!</h5>
+                            <div class="card-img">
+                                <img
+                                    class="card-img-top"
+                                    :src="thumbnail"
+                                    alt="Card image cap"
+                                >
+                            </div>
+
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h5>
+                                        ${{ course.price }}
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                    >
+                                        Add to cart
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-info"
+                                    >
+                                        Buy Now
+                                    </button>
+                                </div>
+                                <Card class="detail">
+                                    <ul>
+                                        <li>full life time acces</li>
+                                        <li>90 articles</li>
+                                        <li>28.5 hours on-demand video</li>
+                                        <li>Access on mobile and TV</li>
+                                    </ul>
+                                </Card>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,19 +82,34 @@
             v-if="!loading"
             :course="course"
         />
-        <section>
-            <div class="row justify-content-center">
+        <section class="teacher-details container">
+            <div class="row justify-content-center teacher-header">
+                <div col-10>
+                    <h4> About Teacher</h4>
+                </div>
+            </div>
+
+            <div class="row justify-content-center teacher-body mx-3">
                 <div
-                    class="col-10"
+                    v-for="teacher in course.teachers"
+                    :key="teacher.id"
+                    class="col-6"
                 >
                     <div
-                        class="card"
+
+                        class="card mb-5"
                     >
-                        <img
-                            class="card-img-top"
-                            src="/"
-                            alt="Card image cap"
-                        >
+                        <div class="card-header d-flex border-0">
+                            <img
+                                class="teacher-img"
+                                src="https://www.gravatar.com/avatar/79318fe1c6a4c441a937e9deef8a716e?s=200&d=mp&r=g"
+                                alt="Card image cap"
+                            >
+                            <div class="card-title">
+                                <strong>{{ teacher.full_name }}</strong>
+                            </div>
+                        </div>
+
                         <div class="card-body">
                             <p class="card-text">
                                 Some quick example text to build on the card title and make up the bulk of the card's content.
@@ -87,6 +136,13 @@ export default {
     data: () => ({
         loading: false
     }),
+    computed: {
+        thumbnail () {
+            if (this.course.thumbnail) return this.course.thumbnail.public_path
+
+            return 'https://tricksinfo.net/wp-content/uploads/2019/07/533430_ce1e_3-750x405.jpg'
+        }
+    },
     created () {
         // this.getCourse()
     },

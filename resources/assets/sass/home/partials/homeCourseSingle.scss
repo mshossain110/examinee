@@ -50,15 +50,6 @@
     
 
 }
-.course_logo img{
-    width: 243px;
-    height: 275px;
-    border-radius: 100%;
-}
-.course_logo h5{
-    padding-left: 45px;
-}
-
 }
 // single course lesson-part
 .lesson_part{
@@ -118,3 +109,26 @@
     }
 }
 
+// teacher-details desgin
+.teacher-details{
+    h4{
+
+        padding: 20px;
+        border-top: 1px solid #ada9a9;
+        color: #312d2d;
+        
+    }
+    img.teacher-img {
+        width: 64px;
+        height: 64px;
+        border-radius: 100%;
+    }
+    .card-title {
+        padding-top: 15px;
+        margin-left: 25px;
+    }
+}
+// payment desgin
+.course_head .payment{
+    box-shadow: 2px 3px #dedcdc;
+}
