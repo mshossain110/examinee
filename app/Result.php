@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Result extends Model
 {
-	protected $fillable = ['answer','obtain'];
+	protected $fillable = ['answers','obtain'];
 
+    protected $casts = [
+        'answers' => 'array',
+    ];
 
 	public function exam()
 	{

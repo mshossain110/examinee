@@ -21,12 +21,11 @@ class TakeExamController extends Controller
         $exam->load('topics', 'subjects');
         $result = $exam->results()->where('examinee', $user->id)->orderBy('created_at', "DESC")->first();
 
-        if ($result && !empty($exam->meta['show_questions']) &&  $exam->meta['show_questions']) {
+        if ($result && !empty($exam->meta['show_answer']) &&  $exam->meta['show_answer']) {
             $q = $exam->questions;
             
             
-
-            $result->answers->map(function($qi) use($q, $questions){
+            collect($result->answers)->map(function($qi) use($q, $questions){
                 $questions->push($q->firstWhere('id', $qi['id']));
             });
 

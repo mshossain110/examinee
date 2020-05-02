@@ -132,6 +132,7 @@
                                 <div>{{ exam.description }}</div>
 
                                 <a
+                                    v-if="canStartExam"
                                     href="#"
                                     class="btn btn-primary mt-5"
                                     @click.prevent="start"
@@ -163,6 +164,18 @@ export default {
     computed: {
         isExamRunning () {
             return this.startTime
+        },
+        canStartExam () {
+            if (!this.examRetakeRemainingDays) {
+                return true
+            }
+            if (this.exam.meta && parseInt(this.exam.meta.retake) < this.examRetakeRemainingDays) {
+                return true
+            }
+            return false
+        },
+        examRetakeRemainingDays () {
+            return this.result && moment.utc().diff(moment.utc(this.result.created_at), 'days', true)
         }
     },
     watch: {
@@ -194,6 +207,7 @@ export default {
                 .then(res => {
                     this.exam = res.data.exam
                     this.startTime = res.data.time
+                    this.result = res.data.result
 
                     this.loading = false
                     if (this.startTime) {
