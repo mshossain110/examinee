@@ -1,5 +1,8 @@
 <template>
-    <div class="single-exam exam">
+    <div
+        v-if="!loading"
+        class="single-exam exam"
+    >
         <section
             v-if="startTime"
             class="exam-bord"
@@ -100,7 +103,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">
-                                                Difficulty
+                                                Difficulty Level
                                             </th>
                                             <td>
                                                 {{ exam.difficulty }}
@@ -119,11 +122,62 @@
                                                 Retake After
                                             </th>
                                             <td>
-                                                {{ exam.meta.retake }}
+                                                {{ exam.meta.retake }} Days
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="card border-0">
+                                    <div class="card-header border-0">
+                                        <h4>Result</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered mt-4">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">
+                                                        Obtain Mark
+                                                    </th>
+                                                    <td>
+                                                        {{ result.obtain_mark }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        Pass Mark
+                                                    </th>
+                                                    <td>
+                                                        {{ result.is_pass }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        Time Taken
+                                                    </th>
+                                                    <td>
+                                                        {{ result.time_taken }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">
+                                                        Exam Date
+                                                    </th>
+                                                    <td>
+                                                        {{ fromNow(result.created_at ) }}
+                                                    </td>
+                                                </tr>
+                                                <tr v-if="exam.meta">
+                                                    <th scope="row">
+                                                        Retry After
+                                                    </th>
+                                                    <td>
+                                                        {{ timeToHeldExam }} Days
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
                                 <h5 class="text-uppercase mt-3">
                                     Details
@@ -176,6 +230,9 @@ export default {
         },
         examRetakeRemainingDays () {
             return this.result && moment.utc().diff(moment.utc(this.result.created_at), 'days', true)
+        },
+        timeToHeldExam () {
+            return Math.ceil(this.exam.meta && parseInt(this.exam.meta.retake) - this.examRetakeRemainingDays)
         }
     },
     watch: {
