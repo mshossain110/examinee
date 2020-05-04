@@ -127,7 +127,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="card border-0">
+                                <div
+                                    v-if="result"
+                                    class="card border-0"
+                                >
                                     <div class="card-header border-0">
                                         <h4>Result</h4>
                                     </div>
@@ -166,7 +169,7 @@
                                                         {{ fromNow(result.created_at ) }}
                                                     </td>
                                                 </tr>
-                                                <tr v-if="exam.meta">
+                                                <tr v-if="timeToHeldExam>0">
                                                     <th scope="row">
                                                         Retry After
                                                     </th>

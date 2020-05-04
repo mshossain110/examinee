@@ -52,29 +52,22 @@
                         </div>
                     </div>
                     <div class="col">
-                        <form
-                            class=""
-                            _lpchecked="1"
-                        >
-                            <label
-                                for="search-courses-input"
-                                class="control-label sr-only"
-                            >Search my courses</label><span class="input-group"><input
-                                id="search-courses-input"
-                                placeholder="Search my courses"
-                                required=""
-                                autocomplete="off"
+                        <div class="input-group mb-3">
+                            <input
+                                v-model="searchChourse"
+                                type="text"
                                 class="form-control"
-                                value=""
-                            ><span class="input-group-btn"><button
-                                aria-label="Search my courses"
-                                type="submit"
-                                class="btn btn-secondary"
-                                disabled=""
-                            ><span class="fas fa-search" /></button>
-                            </span>
-                            </span>
-                        </form>
+                                placeholder="search"
+                                aria-label="search"
+                                aria-describedby="basic-addon2"
+                            >
+                            <div class="input-group-append">
+                                <span
+                                    id="basic-addon2"
+                                    class="input-group-text"
+                                ><i class="fas fa-search" /></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col">
                         <a
@@ -96,7 +89,7 @@
         </div>
         <div class="row course-list">
             <div
-                v-for="course in courses"
+                v-for="course in displayCourses"
                 :key="course.id"
                 class="col col-3"
             >
@@ -123,10 +116,20 @@ export default {
     data () {
         return {
             create: false,
-            courses: []
+            courses: [],
+            searchChourse: ''
         }
     },
     computed: {
+        displayCourses () {
+            let c = this.courses.slice()
+            if (this.searchChourse) {
+                c = c.filter(co => {
+                    return co.title.toLowerCase().indexOf(this.searchChourse) !== -1
+                })
+            }
+            return c
+        }
 
     },
     created () {

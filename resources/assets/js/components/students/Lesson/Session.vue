@@ -23,12 +23,14 @@
                     v-if="isLesson(resource)"
                     :to="{name: 'singleLesson', params: { course: $route.params.course, lesson: resource.id}}"
                 >
+                    <i class="fas fa-book-reader" />
                     {{ resource.title }}
                 </RouterLink>
                 <RouterLink
                     v-if="isExam(resource)"
                     :to="{name: 'singleExam', params: { course: $route.params.course, exam: resource.id}}"
                 >
+                    <i class="fas fa-graduation-cap" />
                     {{ resource.title }}
                 </RouterLink>
             </li>

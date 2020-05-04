@@ -41,6 +41,14 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="hint">
+                    <strong>Hint:</strong>
+                    <p>{{ question.hint }}.</p>
+                </div>
+            </div>
+        </div>
 
         <div class="row mt-5">
             <div class="col">
