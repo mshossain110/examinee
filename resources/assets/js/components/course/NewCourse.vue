@@ -61,13 +61,7 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea
-                            id="description"
-                            v-model="course.description"
-                            placeholder=""
-                            name="description"
-                            class="form-control "
-                        />
+                        <Editor v-model="course.description" />
                     </div>
                     <div class="form-group">
                         <label for="features">Features</label>
@@ -200,10 +194,12 @@
 <script>
 import AttachFiles from '@c/common/dropzone/AttachFiles.vue'
 import FilesPreview from '@c/common/dropzone/FilesPreview.vue'
+import Editor from '@c/common/editor/Editor.vue'
 export default {
     components: {
         AttachFiles,
-        FilesPreview
+        FilesPreview,
+        Editor
     },
     props: {
         course: {

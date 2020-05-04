@@ -3,19 +3,17 @@
 import Dropzone from './components/common/dropzone'
 import Vuex from 'vuex'
 import mixin from './mixin/mixin'
-
 const VueRouter = require('vue-router').default
 
 window.EventBus = new Vue()
+Vue.use(Dropzone)
+Vue.use(Vuex)
 
 Vue.component('Loading', require('./components/common/Loading.vue').default)
 Vue.component('PageScholar', require('./components/course/PageScholar.vue').default)
 Vue.component('PageStudent', require('./components/students/PageStudent.vue').default)
 Vue.component('Course', require('./components/common/Course.vue').default)
 Vue.component('SingleCourse', require('./components/SingleCourse/SingleCourse.vue').default)
-
-Vue.use(Dropzone)
-Vue.use(Vuex)
 
 const store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production'
