@@ -10,6 +10,33 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@ckeditor/ckeditor5-basic-styles": "^19.0.0",
+        "@ckeditor/ckeditor5-build-classic": "^19.0.0",
+        "@ckeditor/ckeditor5-dev-utils": "^13.0.1",
+        "@ckeditor/ckeditor5-dev-webpack-plugin": "^9.0.1",
+        "@ckeditor/ckeditor5-editor-balloon": "^19.0.0",
+        "@ckeditor/ckeditor5-editor-classic": "^19.0.0",
+        "@ckeditor/ckeditor5-essentials": "^19.0.0",
+        "@ckeditor/ckeditor5-image": "^19.0.0",
+        "@ckeditor/ckeditor5-link": "^19.0.0",
+        "@ckeditor/ckeditor5-markdown-gfm": "^19.0.0",
+        "@ckeditor/ckeditor5-paragraph": "^19.0.0",
+        "@ckeditor/ckeditor5-theme-lark": "^19.0.0",
+        "@ckeditor/ckeditor5-vue": "^1.0.1",
+        "@ckeditor/ckeditor5-adapter-ckfinder": "^19.0.0",
+        "@ckeditor/ckeditor5-autoformat": "^19.0.0",
+        "@ckeditor/ckeditor5-block-quote": "^19.0.0",
+        "@ckeditor/ckeditor5-easy-image": "^19.0.0",
+        "@ckeditor/ckeditor5-heading": "^19.0.0",
+        "@ckeditor/ckeditor5-list": "^19.0.0",
+        "@ckeditor/ckeditor5-upload": "^19.0.0",
+        "@ckeditor/ckeditor5-code-block": "^19.0.0",
+        "@ckeditor/ckeditor5-horizontal-line": "^19.0.0",
+        "@ckeditor/ckeditor5-media-embed": "^19.0.0",
+        "@ckeditor/ckeditor5-table": "^19.0.0",
+        "@ckeditor/ckeditor5-alignment": "^19.0.0",
+        "postcss-loader": "^3.0.0",
+        "raw-loader": "^0.5.1",
         "@fancyapps/fancybox": "^3.5.7",
         "@fortawesome/fontawesome-free": "^5.10.2",
         "axios": "^0.19",
@@ -42,5 +69,6 @@
         "vue-router": "^3.1.2",
         "vue-template-compiler": "^2.6.10",
         "vuex": "^3.1.1"
-    }
+    },
+    "dependencies": {}
 }
