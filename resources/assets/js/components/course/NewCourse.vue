@@ -107,10 +107,7 @@
                             for="course_image"
                             class="control-label"
                         >Feature image</label>
-                        <AttachFiles
-                            v-model="thumbanile"
-                            sidebar
-                        />
+
                         <template v-if="thumbanile">
                             <FilesPreview
                                 :files="[thumbanile]"
