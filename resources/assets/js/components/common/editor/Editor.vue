@@ -1,22 +1,43 @@
 <template>
-    <Ckeditor
-        v-model="editorData"
-        :editor="editor"
-        :config="editorConfig"
-    />
+    <div class="text-editor">
+        <div class="row">
+            <div class="col-3">
+                <AttachFiles
+                    sidebar
+                    @input="insetFileIntoEditor"
+                />
+            </div>
+            <div class="col-9" />
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <Ckeditor
+                    v-model="editorData"
+                    :editor="editorType"
+                    :config="editorConfig"
+                    @ready="editorReady"
+                />
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+
+// The official CKEditor 5 instance inspector. It helps understand the editor view and model.
+// import CKEditorInspector from '@ckeditor/ckeditor5-inspector'
+
 // ⚠️ NOTE: We don't use @ckeditor/ckeditor5-build-classic any more!
 // Since we're building CKEditor from source, we use the source version of ClassicEditor.
+import AttachFiles from '@c/common/dropzone/AttachFiles.vue'
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials'
 import UploadAdapterPlugin from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter'
+import EasyImagePlugin from '@ckeditor/ckeditor5-easy-image/src/easyimage'
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat'
 import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold'
 import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic'
 import BlockQuotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote'
-import EasyImagePlugin from '@ckeditor/ckeditor5-easy-image/src/easyimage'
 import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading'
 import ImagePlugin from '@ckeditor/ckeditor5-image/src/image'
 import ImageCaptionPlugin from '@ckeditor/ckeditor5-image/src/imagecaption'
@@ -43,7 +64,8 @@ function Markdown (editor) {
 
 export default {
     components: {
-        Ckeditor: ckeditor.component
+        Ckeditor: ckeditor.component,
+        AttachFiles
     },
     props: {
         value: {
@@ -53,9 +75,11 @@ export default {
     },
     data () {
         return {
-            editor: ClassicEditor,
+            editor: null,
+            editorType: ClassicEditor,
             editorData: this.value,
             editorConfig: {
+                startupMode: 'source',
                 plugins: [
                     EssentialsPlugin,
                     BoldPlugin,
@@ -103,12 +127,29 @@ export default {
                     ]
                 },
                 image: {
+                    // You need to configure the image toolbar, too, so it uses the new style buttons.
                     toolbar: [
-                        'imageStyle:full',
-                        'imageStyle:side',
+                        'imageTextAlternative',
                         '|',
-                        'imageTextAlternative'
-                    ]
+                        'imageStyle:alignLeft',
+                        'imageStyle:full',
+                        'imageStyle:alignRight',
+                        'imageStyle:side',
+                        'imageStyle:alignCenter'
+                    ],
+
+                    styles: [
+                        // This option is equal to a situation where no style is applied.
+                        'full',
+                        'side',
+                        // This represents an image aligned to the left.
+                        'alignLeft',
+                        'alignCenter',
+
+                        // This represents an image aligned to the right.
+                        'alignRight'
+                    ],
+                    resizeUnit: 'px'
                 },
                 codeBlock: {
                     languages: [
@@ -145,6 +186,17 @@ export default {
             if (val !== this.value) {
                 this.$emit('input', val)
             }
+        }
+    },
+
+    methods: {
+        editorReady (editor) {
+            this.editor = editor
+
+            // CKEditorInspector.attach(editor)
+        },
+        insetFileIntoEditor (file) {
+            this.editor.execute('imageInsert', { source: file.public_path })
         }
     }
 }
