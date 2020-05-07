@@ -132,3 +132,16 @@
 .course_head .payment{
     box-shadow: 2px 3px #dedcdc;
 }
+//feature
+.feature{
+    ul{
+
+        display: flex;
+        flex-wrap: wrap;
+        li {
+            flex: 1 0 50%;
+            margin-bottom: 15px;
+        }
+
+    } 
+}

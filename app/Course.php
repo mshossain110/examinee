@@ -21,6 +21,7 @@ class Course extends Model
         'thumbnail',
         'start_date',
         'status',
+        'features',
         'certified',
         'created_by',
         'updated_by'
@@ -36,6 +37,10 @@ class Course extends Model
 
     protected $appends = [
         'permalink',
+    ];
+
+    protected $casts = [
+        'features' => 'array'
     ];
 
     /*

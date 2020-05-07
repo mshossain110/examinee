@@ -62,9 +62,20 @@
                 <h4>Description</h4>
                 <p>{{ course.description }}</p>
             </div>
-            <div v-if="course.features">
+            <div
+                v-if="course.features"
+                class="feature"
+            >
                 <h4>Features</h4>
-                <p>{{ course.features }}</p>
+
+                <ul class="list-unstyled">
+                    <li
+                        v-for="(feature,i) in course.features"
+                        :key="i"
+                    >
+                        <i class="fas fa-check mr-2 text-success" /> {{ feature }}
+                    </li>
+                </ul>
             </div>
             <div v-if="course.requirements">
                 <h4>Requirements</h4>

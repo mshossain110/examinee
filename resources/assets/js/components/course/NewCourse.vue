@@ -65,125 +65,117 @@
                     </div>
                     <div class="form-group">
                         <label for="features">Features</label>
-                        <textarea
-                            id="features"
+                        <Feature
                             v-model="course.features"
-                            placeholder=""
-                            name="features"
-                            class="form-control "
                         />
-                        <small
-                            id="features"
-                            class="form-text text-muted"
-                        >Separate by New Line</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="requirements">Pre Requirements</label>
-                        <textarea
-                            id="requirements"
-                            v-model="course.requirements"
-                            placeholder=""
-                            name="requirements"
-                            class="form-control "
-                        />
-                        <small
-                            id="requirements"
-                            class="form-text text-muted"
-                        >Separate by New Line</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input
-                            id="price"
-                            v-model="course.price"
-                            type="number"
-                            class="form-control"
-                            aria-describedby="priceHelp"
-                            placeholder="Course Price"
-                        >
-                    </div>
-                    <div class="form-group">
-                        <label
-                            for="course_image"
-                            class="control-label"
-                        >Feature image</label>
-                        <AttachFiles
-                            v-model="thumbanile"
-                            sidebar
-                        />
-                        <template v-if="thumbanile">
-                            <FilesPreview
-                                :files="[thumbanile]"
-                                closable
-                                @close="detachThumb"
+                        <div class="form-group">
+                            <label for="requirements">Pre Requirements</label>
+                            <textarea
+                                id="requirements"
+                                v-model="course.requirements"
+                                placeholder=""
+                                name="requirements"
+                                class="form-control "
                             />
-                        </template>
-                    </div>
-                    <div class="form-group">
-                        <label
-                            for="start_date"
-                            class="control-label"
-                        >Start date</label>
-                        <input
-                            id="start_date"
-                            v-model="course.start_date"
-                            placeholder=""
-                            name="start_date"
-                            type="date"
-                            class="form-control date"
-                        >
-                        <p class="help-block" />
-                    </div>
-                    <div class="form-group form-check">
-                        <input
-                            id="status"
-                            v-model="course.certified"
-                            name="status"
-                            type="checkbox"
-                            class="form-check-input"
-                        >
-                        <label
-                            for="status"
-                            class="control-label"
-                        >Certified Course</label>
-                    </div>
-                    <div class="form-group form-check">
-                        <input
-                            id="status"
-                            v-model="course.status"
-                            name="status"
-                            type="checkbox"
-                            class="form-check-input"
-                        >
-                        <label
-                            for="status"
-                            class="control-label"
-                        >Published</label>
-                    </div>
-                    <div class="form-group">
-                        <label
-                            for="course_image"
-                            class="control-label"
-                        >Course Files</label>
-                        <AttachFiles
-                            v-model="attachments"
-                            multiple
-                            sidebar
-                        />
+                            <small
+                                id="requirements"
+                                class="form-text text-muted"
+                            >Separate by New Line</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input
+                                id="price"
+                                v-model="course.price"
+                                type="number"
+                                class="form-control"
+                                aria-describedby="priceHelp"
+                                placeholder="Course Price"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label
+                                for="course_image"
+                                class="control-label"
+                            >Feature image</label>
+                            <AttachFiles
+                                v-model="thumbanile"
+                                sidebar
+                            />
+                            <template v-if="thumbanile">
+                                <FilesPreview
+                                    :files="[thumbanile]"
+                                    closable
+                                    @close="detachThumb"
+                                />
+                            </template>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                for="start_date"
+                                class="control-label"
+                            >Start date</label>
+                            <input
+                                id="start_date"
+                                v-model="course.start_date"
+                                placeholder=""
+                                name="start_date"
+                                type="date"
+                                class="form-control date"
+                            >
+                            <p class="help-block" />
+                        </div>
+                        <div class="form-group form-check">
+                            <input
+                                id="status"
+                                v-model="course.certified"
+                                name="status"
+                                type="checkbox"
+                                class="form-check-input"
+                            >
+                            <label
+                                for="status"
+                                class="control-label"
+                            >Certified Course</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input
+                                id="status"
+                                v-model="course.status"
+                                name="status"
+                                type="checkbox"
+                                class="form-check-input"
+                            >
+                            <label
+                                for="status"
+                                class="control-label"
+                            >Published</label>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                for="course_image"
+                                class="control-label"
+                            >Course Files</label>
+                            <AttachFiles
+                                v-model="attachments"
+                                multiple
+                                sidebar
+                            />
 
-                        <FilesPreview
-                            :files="attachments"
-                            closable
-                            @close="detachFile"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-                            Create
-                        </button>
+                            <FilesPreview
+                                :files="attachments"
+                                closable
+                                @close="detachFile"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Create
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -195,11 +187,13 @@
 import AttachFiles from '@c/common/dropzone/AttachFiles.vue'
 import FilesPreview from '@c/common/dropzone/FilesPreview.vue'
 import Editor from '@c/common/editor/Editor.vue'
+import Feature from './Feature'
 export default {
     components: {
         AttachFiles,
         FilesPreview,
-        Editor
+        Editor,
+        Feature
     },
     props: {
         course: {
@@ -210,7 +204,7 @@ export default {
                     subtitle: '',
                     description: '',
                     thumbnail: null,
-                    features: '',
+                    features: [],
                     requirements: '',
                     start_date: '',
                     certified: 1,

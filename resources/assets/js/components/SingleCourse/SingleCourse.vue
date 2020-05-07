@@ -7,7 +7,21 @@
                         <div class="start_text">
                             <h5>{{ course.title }}</h5>
                             <p>{{ course.subtitle }}</p>
-                            <p>{{ course.description }}</p>
+                            <div
+                                v-if="course.features"
+                                class="feature"
+                            >
+                                <h4>Features</h4>
+
+                                <ul class="list-unstyled">
+                                    <li
+                                        v-for="(feature,i) in course.features"
+                                        :key="i"
+                                    >
+                                        <i class="fas fa-check mr-2 text-success" /> {{ feature }}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
                         <div class="icon pt-3">
@@ -81,7 +95,15 @@
                 </div>
             </div>
         </section>
-
+        <section>
+            <div class="container">
+                <div class="row justify-content-center m-5">
+                    <div class="col-10">
+                        <div v-html="course.description" />
+                    </div>
+                </div>
+            </div>
+        </section>
         <Sessions
             v-if="!loading"
             :course="course"

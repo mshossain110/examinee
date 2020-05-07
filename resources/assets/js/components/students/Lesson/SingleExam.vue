@@ -134,7 +134,7 @@
                                     <div class="card-header border-0">
                                         <h4>Result</h4>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body p-0">
                                         <table class="table table-bordered mt-4">
                                             <tbody>
                                                 <tr>
@@ -179,6 +179,14 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <div class="question-button">
+                                            <a
+                                                v-if="questions.length"
+                                                href="#"
+                                                class="btn btn-primary"
+                                                @click.prevent="showAnswerdQuestion = !showAnswerdQuestion"
+                                            >Show Question</a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -216,12 +224,14 @@ export default {
         examRemainingTime: null,
         showQuestionNumber: null,
         answers: [],
-        result: null
+        result: null,
+        showAnswerdQuestion: false
     }),
     computed: {
         isExamRunning () {
             return this.startTime
         },
+
         canStartExam () {
             if (!this.examRetakeRemainingDays) {
                 return true
@@ -268,6 +278,7 @@ export default {
                     this.exam = res.data.exam
                     this.startTime = res.data.time
                     this.result = res.data.result
+                    this.questions = res.data.questions
 
                     this.loading = false
                     if (this.startTime) {
@@ -275,6 +286,7 @@ export default {
                     }
                 })
         },
+
         start () {
             if (this.loading) {
                 return

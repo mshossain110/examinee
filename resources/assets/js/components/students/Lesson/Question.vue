@@ -41,7 +41,10 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div
+            v-if="question.hint"
+            class="row mt-3"
+        >
             <div class="col">
                 <div class="hint">
                     <strong>Hint:</strong>
