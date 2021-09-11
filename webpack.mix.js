@@ -55,10 +55,7 @@ mix.webpackConfig({
         }
     },
     plugins: [
-        new CKEditorWebpackPlugin({
-            language: 'en',
-            addMainLanguageTranslationsToAllAssets: true
-        }),
+        new CKEditorWebpackPlugin(),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     module: {

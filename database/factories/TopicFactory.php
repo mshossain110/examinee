@@ -1,21 +1,30 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| Here you may define all of your model factories. Model factories give
-| you a convenient way to create models for testing and seeding your
-| database. Just tell the factory how a default model should look.
-|
-*/
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Topic::class, function (Faker\Generator $faker) {
-    $name = ['Web Design', 'Laravel', 'Vuejs', 'Javascript', 'Java', 'Angular', 'Mobile Application', 'C#', 'C++', 'Web Application'];
-    return [
-        'title' => $name[rand(0, 9)],
-        'description' => $faker->paragraph(),
-    ];
-});
+use App\Models\Topic;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class TopicFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Topic::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $name = ['Web Design', 'Laravel', 'Vuejs', 'Javascript', 'Java', 'Angular', 'Mobile Application', 'C#', 'C++', 'Web Application'];
+        return [
+            'title' => $name[rand(0, 9)],
+            'description' => $this->faker->paragraph(),
+        ];
+    }
+}

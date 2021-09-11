@@ -1,6 +1,9 @@
 <?php
 
-use App\Subject;
+namespace Database\Seeders;
+
+use App\Models\Subject;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class SubjectSeed extends Seeder
@@ -173,22 +176,21 @@ class SubjectSeed extends Seeder
             ],
 
         ];
-        
+
 
         foreach ($subjects as $key => $value) {
             $p = Subject::create([
                 "title" => $key,
-                'slug' => \Str::slug($key)
+                'slug' => Str::slug($key)
             ]);
 
             foreach ($value as $subject) {
                 Subject::create([
                     "title" => $subject,
                     'parent' => $p->id,
-                    'slug' => \Str::slug($subject)
+                    'slug' => Str::slug($subject)
                 ]);
             }
         }
-        
     }
 }

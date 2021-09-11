@@ -1,19 +1,20 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\User;
-use App\Course;
-use App\Result;
-use App\Subject;
-use App\Question;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Result;
+use App\Models\Subject;
+use App\Models\Question;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Exam extends Model
 {
-    use SoftDeletes;
-        /**
+    use SoftDeletes, HasFactory;
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -38,19 +39,23 @@ class Exam extends Model
     ];
 
 
-    public function subjects() {
-    	return $this->morphToMany( Subject::class, 'subjectables' );
+    public function subjects()
+    {
+        return $this->morphToMany(Subject::class, 'subjectables');
     }
 
-    public function courses() {
-        return $this->belongsToMany( Course::class, 'sessionables', 'sessionable_id', 'course_id' )->wherePivot('sessionable_type', Exam::class);
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'sessionables', 'sessionable_id', 'course_id')->wherePivot('sessionable_type', Exam::class);
     }
 
-    public function questions() {
-        return $this->hasMany( Question::class);
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
     }
-    public function topics() {
-        return $this->morphToMany( Topic::class, 'topicable' );
+    public function topics()
+    {
+        return $this->morphToMany(Topic::class, 'topicable');
     }
 
     public function results()

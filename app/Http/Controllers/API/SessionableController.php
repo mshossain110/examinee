@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\User;
-use App\Course;
-use App\Session;
-use App\Sessionable;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Session;
+use App\Models\Sessionable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

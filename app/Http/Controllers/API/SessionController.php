@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
-use App\Session;
-use App\Exam;
+use App\Models\Session;
+use App\Models\Exam;
 
 class SessionController extends Controller
 {

@@ -1,18 +1,20 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Result;
+use App\Models\Result;
+use Laravel\Sanctum\HasApiTokens;
 use App\Pivots\StudentCasting;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles, SoftDeletes;
+    use Notifiable, HasRoles, SoftDeletes, HasApiTokens, HasFactory, Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -81,11 +83,11 @@ class User extends Authenticatable
 
     public function enrolledCourses()
     {
-        return $this->belongsToMany(Course::class, 'course_students')->using(StudentCasting::class)->withPivot(['rating', 'progress', 'created_at', 'updated_at' ]);
+        return $this->belongsToMany(Course::class, 'course_students')->using(StudentCasting::class)->withPivot(['rating', 'progress', 'created_at', 'updated_at']);
     }
 
     public function enrolledLessons()
     {
-        return $this->belongsToMany(Lesson::class, 'lesson_student')->using(StudentCasting::class)->withPivot(['status', 'created_at', 'updated_at' ]);
+        return $this->belongsToMany(Lesson::class, 'lesson_student')->using(StudentCasting::class)->withPivot(['status', 'created_at', 'updated_at']);
     }
 }

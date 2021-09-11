@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Traits;
+namespace App\Models\Traits;
 
 
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
-use App\File;
+use App\Models\File;
 
 
 trait FileStorage

@@ -4,7 +4,7 @@ namespace App\Response;
 
 use Storage;
 use Response;
-use App\File;
+use App\Models\File;
 
 class FileContentResponseCreator
 {

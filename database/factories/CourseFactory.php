@@ -1,29 +1,37 @@
 <?php
 
+namespace Database\Factories;
+
+use App\Models\Course;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| Here you may define all of your model factories. Model factories give
-| you a convenient way to create models for testing and seeding your
-| database. Just tell the factory how a default model should look.
-|
-*/
+class CourseFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Course::class;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Course::class, function (Faker\Generator $faker) {
-    $name = $faker->sentence(6);
-    return [
-        'title' => $name,
-        'slug' => Str::slug($name),
-        'description' => $faker->text(),
-        'price' => $faker->randomFloat(2, 0, 199),
-        'thumbnail' => $faker->imageUrl($width = 640, $height = 480),
-        'status' => 1,
-        'created_by' => rand(1, 5),
-        'updated_by' => rand(1, 5),
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $name = $this->faker->sentence(6);
+        return [
+            'title' => $name,
+            'slug' => Str::slug($name),
+            'description' => $this->faker->text(),
+            'price' => $this->faker->randomFloat(2, 0, 199),
+            'thumbnail' => $this->faker->imageUrl($width = 640, $height = 480),
+            'status' => 1,
+            'created_by' => rand(1, 5),
+            'updated_by' => rand(1, 5),
+        ];
+    }
+}

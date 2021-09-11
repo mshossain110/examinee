@@ -1,7 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use App\Topic;
+use App\Models\Topic;
 
 class TopicSeed extends Seeder
 {
@@ -12,6 +14,6 @@ class TopicSeed extends Seeder
      */
     public function run()
     {
-        factory(Topic::class, 15)->create();
+        Topic::factory()->count(15)->create();
     }
 }

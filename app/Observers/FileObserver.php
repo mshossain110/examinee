@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\File;
+use App\Models\File;
 use Illuminate\Support\Facades\Auth;
 
 class FileObserver

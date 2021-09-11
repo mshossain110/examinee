@@ -3,7 +3,7 @@
 namespace App\Response;
 
 use Storage;
-use App\File;
+use App\Models\File;
 use Symfony\Component\HttpFoundation\Response;
 
 class ImageResponse

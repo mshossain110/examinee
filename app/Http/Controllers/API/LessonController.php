@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Lesson;
-use App\Course;
+use App\Models\Lesson;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller

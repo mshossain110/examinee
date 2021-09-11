@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Exam;
+use App\Models\Exam;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;

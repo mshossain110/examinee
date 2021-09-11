@@ -3,8 +3,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Question;
-use App\Exam;
+use App\Models\Question;
+use App\Models\Exam;
 use App\Http\Requests\QuestionRequest as Request;
 
 class QuestionController extends Controller

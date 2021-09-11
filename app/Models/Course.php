@@ -1,17 +1,18 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use DB;
+use App\Models\Exam;
+use App\Models\Traits\Fileable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
-use App\Traits\Fileable;
-use DB;
-use App\Exam;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
-    use SoftDeletes, Fileable;
+    use SoftDeletes, Fileable, HasFactory;
 
     protected $fillable = [
         'title',
@@ -52,7 +53,7 @@ class Course extends Model
 
 
 
-     /*
+    /*
     |--------------------------------------------------------------------------
     | ACCESORS
     |--------------------------------------------------------------------------
@@ -64,7 +65,7 @@ class Course extends Model
 
     public function getPermalinkAttribute()
     {
-        return route('course.show', ['course' => $this->slug ]);
+        return route('course.show', ['course' => $this->slug]);
     }
     /**
      * Set attribute to money format
@@ -81,11 +82,10 @@ class Course extends Model
     */
     public function scopeOfTeacher($query)
     {
-        
-        return $query->whereHas('teachers', function($q) {
+
+        return $query->whereHas('teachers', function ($q) {
             $q->where('user_id', Auth::user()->id);
         });
-        
     }
 
     /*
@@ -118,21 +118,25 @@ class Course extends Model
         return $this->hasMany(Lesson::class)->orderBy('position')->where('status', 1);
     }
 
-    public function exams() {
-    	return $this->belongsToMany(Exam::class, 'sessionables', 'course_id', 'sessionable_id')->wherePivot('sessionable_type', Exam::class);
+    public function exams()
+    {
+        return $this->belongsToMany(Exam::class, 'sessionables', 'course_id', 'sessionable_id')->wherePivot('sessionable_type', Exam::class);
     }
 
-    public function topics() {
-        return $this->morphToMany( Topic::class, 'topicable' );
+    public function topics()
+    {
+        return $this->morphToMany(Topic::class, 'topicable');
     }
 
-    public function subjects() {
-    	return $this->morphToMany( Subject::class, 'subjectables' );
+    public function subjects()
+    {
+        return $this->morphToMany(Subject::class, 'subjectables');
     }
 
-    
 
-    public function thumbnail() {
+
+    public function thumbnail()
+    {
         return $this->belongsTo(File::class, 'thumbnail');
     }
     /*

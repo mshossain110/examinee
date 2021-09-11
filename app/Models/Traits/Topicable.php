@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Traits;
+namespace App\Models\Traits;
 
-use App\Topic;
+use App\Models\Topic;
 
 trait Topicable
 {

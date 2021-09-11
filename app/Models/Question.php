@@ -1,23 +1,23 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Exam;
-use App\Topic;
-use App\Subject;
+use App\Models\Exam;
+use App\Models\Topic;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Question extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'qtype', 'question', 'options', 'answers', 'hint', 'mark', 'nmark', 'explanation', 'created_by' 
+        'qtype', 'question', 'options', 'answers', 'hint', 'mark', 'nmark', 'explanation', 'created_by'
     ];
 
     protected $casts = [
@@ -25,7 +25,7 @@ class Question extends Model
         'options' => 'array'
     ];
 
-     /*
+    /*
     |--------------------------------------------------------------------------
     | ACCESORS Variables
     |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class Question extends Model
         'TrueFalse'   => 1,
     ];
 
-     /*
+    /*
     |--------------------------------------------------------------------------
     | ACCESORS
     |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ class Question extends Model
     public function getQtypeAttribute($value)
     {
         $key = array_search($value, self::$qtypes);
-       
+
         if ($key) {
             return ucfirst($key);
         }
@@ -55,22 +55,25 @@ class Question extends Model
         $value = strtolower($value);
         $key = array_search($value, self::$qtypes);
 
-       if ($key) {
+        if ($key) {
             $this->attributes['qtype'] = $value;
-       } else {
+        } else {
             $this->attributes['qtype'] = self::$qtypes[$value];
-       }
-    }
-    
-    public function topics() {
-        return $this->morphToMany( Topic::class, 'topicable' );
+        }
     }
 
-    public function exam() {
-        return $this->belongsTo( Exam::class );
+    public function topics()
+    {
+        return $this->morphToMany(Topic::class, 'topicable');
     }
 
-    public function setAnswerAttribute( $value ) {
-    	$this->attributes['answers'] = json_encode( $value );
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
+
+    public function setAnswerAttribute($value)
+    {
+        $this->attributes['answers'] = json_encode($value);
     }
 }

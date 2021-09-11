@@ -1,18 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Auth;
-use App\File;
-use App\Traits\Fileable;
-use App\Traits\Topicable;
+use App\Models\File;
+use App\Models\Traits\Fileable;
+use App\Models\Traits\Topicable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Lesson extends Model
 {
-    use Topicable, Fileable, SoftDeletes;
-    
+    use Topicable, Fileable, SoftDeletes, HasFactory;
+
     protected $fillable = [
         'title',
         'slug',
@@ -27,7 +28,7 @@ class Lesson extends Model
         'updated_by'
     ];
 
-     /*
+    /*
     |--------------------------------------------------------------------------
     | ACCESORS Variables
     |--------------------------------------------------------------------------
@@ -55,8 +56,8 @@ class Lesson extends Model
         'subscriber' => 2,
         'paid' => 3,
     ];
-    
-     /*
+
+    /*
     |--------------------------------------------------------------------------
     | ACCESORS
     |--------------------------------------------------------------------------
@@ -66,7 +67,7 @@ class Lesson extends Model
     public function getTypeAttribute($value)
     {
         $key = array_search($value, self::$types);
-       
+
         if ($key) {
             return ucfirst($key);
         }
@@ -77,17 +78,17 @@ class Lesson extends Model
         $value = strtolower($value);
         $key = array_search($value, self::$types);
 
-       if ($key) {
+        if ($key) {
             $this->attributes['type'] = $value;
-       } else {
+        } else {
             $this->attributes['type'] = self::$types[$value];
-       }
+        }
     }
 
     public function getStatusAttribute($value)
     {
         $key = array_search($value, self::$status);
-       
+
         if ($key) {
             return ucfirst($key);
         }
@@ -98,11 +99,11 @@ class Lesson extends Model
         $value = strtolower($value);
         $key = array_search($value, self::$status);
 
-       if ($key) {
+        if ($key) {
             $this->attributes['status'] = $value;
-       } else {
+        } else {
             $this->attributes['status'] = self::$status[$value];
-       }
+        }
     }
 
     public function getObjectAttribute($value)
@@ -115,7 +116,8 @@ class Lesson extends Model
     | Scopes
     |--------------------------------------------------------------------------
     */
-    public function scopePublished($query) {
+    public function scopePublished($query)
+    {
         return $query->where('status', 1);
     }
 
@@ -126,12 +128,12 @@ class Lesson extends Model
     */
     public function courses()
     {
-        return $this->belongsToMany( Course::class, 'sessionables', 'sessionable_id', 'course_id' )->wherePivot('sessionable_type', Lesson::class);
+        return $this->belongsToMany(Course::class, 'sessionables', 'sessionable_id', 'course_id')->wherePivot('sessionable_type', Lesson::class);
     }
 
     public function students()
     {
-        return $this->belongsToMany( User::class, 'lesson_student')->withTimestamps();
+        return $this->belongsToMany(User::class, 'lesson_student')->withTimestamps();
     }
 
     public function sessionable()
@@ -160,11 +162,12 @@ class Lesson extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function setLessonObject(File $file = null) {
+    public function setLessonObject(File $file = null)
+    {
         if ($file && $file->id !== $this->object) {
             $this->object = $file->id;
             $this->save();
-        }else {
+        } else {
             $file = File::find($this->object);
         }
 
@@ -173,7 +176,7 @@ class Lesson extends Model
         }
 
         $this->files()->sync($file);
-        
+
         $file->setPermission('public', false)->setPermission('lesson', true)->save();
     }
 }

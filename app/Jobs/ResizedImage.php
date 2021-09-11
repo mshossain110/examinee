@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File as FileAdapdar;
-use App\File;
+use App\Models\File;
 
 class ResizedImage implements ShouldQueue
 {
@@ -19,7 +19,7 @@ class ResizedImage implements ShouldQueue
     /**
      * App\File object.
      *
-     * @var App\File;
+     * @var App\Models\File;
      */
     protected $file;
 

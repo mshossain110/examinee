@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
-use App\Topic;
+use App\Models\Topic;
 use App\Http\Requests\TopicRequest;
 
 class TopicController extends Controller

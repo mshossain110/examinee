@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\User;
-use App\Traits\HashesId;
+use App\Models\User;
+use App\Models\Traits\HashesId;
 use App\Jobs\ResizedImage;
-use App\Traits\FileStorage;
+use App\Models\Traits\FileStorage;
 use App\Observers\FileObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -106,8 +106,8 @@ class File extends Model
     */
 
     /**
-    * @return \Illuminate\Database\Eloquent\Relations\HasMany
-    */
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function children()
     {
         return $this->hasMany(static::class, 'folder_id');
@@ -126,7 +126,7 @@ class File extends Model
         return $this->hasOne(User::class, 'id', 'uploaded_by');
     }
 
-    
+
 
 
     /*

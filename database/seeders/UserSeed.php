@@ -1,6 +1,8 @@
 <?php
 
-use App\User;
+namespace Database\Seeders;
+
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
@@ -15,30 +17,30 @@ class UserSeed extends Seeder
     {
         $items = [
             [
-                'firstname'      => 'admin' ,
+                'firstname'      => 'admin',
                 'lastname'       => null,
                 'avatar'         => 'http://lorempixel.com/80/60/',
                 'name'           => 'admin',
                 'email'          => 'admin@admin.com',
-                'password'       => '$2y$10$l4MghrLnKXTRUDlR07XQeesKHRIaAe7WzDf90g751BEf70AwnJ5m.',// password
+                'password'       => '$2y$10$l4MghrLnKXTRUDlR07XQeesKHRIaAe7WzDf90g751BEf70AwnJ5m.', // password
                 'remember_token' => Str::random(10)
             ],
             [
-                'firstname'      => 'Teacher' ,
+                'firstname'      => 'Teacher',
                 'lastname'       => null,
                 'avatar'         => 'http://lorempixel.com/80/60/',
                 'name'           => 'teacher',
                 'email'          => 'teacher@admin.com',
-                'password'       => '$2y$10$l4MghrLnKXTRUDlR07XQeesKHRIaAe7WzDf90g751BEf70AwnJ5m.',// password
+                'password'       => '$2y$10$l4MghrLnKXTRUDlR07XQeesKHRIaAe7WzDf90g751BEf70AwnJ5m.', // password
                 'remember_token' => Str::random(10)
             ],
             [
-                'firstname'      => 'Student' ,
+                'firstname'      => 'Student',
                 'lastname'       => null,
                 'avatar'         => 'http://lorempixel.com/80/60/',
                 'name'           => 'student',
                 'email'          => 'student@admin.com',
-                'password'       => '$2y$10$l4MghrLnKXTRUDlR07XQeesKHRIaAe7WzDf90g751BEf70AwnJ5m.',// password
+                'password'       => '$2y$10$l4MghrLnKXTRUDlR07XQeesKHRIaAe7WzDf90g751BEf70AwnJ5m.', // password
                 'remember_token' => Str::random(10)
             ]
         ];
@@ -47,6 +49,6 @@ class UserSeed extends Seeder
             $user = User::create($item);
         }
 
-        factory(User::class, 10)->create();
+        User::factory()->count(10)->create();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\File;
+use App\Models\File;
 use App\Response\FileContentResponseCreator;
 
 class UploadController extends Controller

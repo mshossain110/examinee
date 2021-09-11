@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Course;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\JsonResource;

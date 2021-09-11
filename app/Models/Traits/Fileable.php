@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Traits;
+namespace App\Models\Traits;
 
-use App\File;
+use App\Models\File;
 
 trait Fileable
 {

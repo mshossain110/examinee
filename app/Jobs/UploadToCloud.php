@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File as FileAdapdar;
-use App\File;
+use App\Models\File;
 
 class UploadToCloud implements ShouldQueue
 {
@@ -17,7 +17,7 @@ class UploadToCloud implements ShouldQueue
     /**
      * App\File object.
      *
-     * @var App\File;
+     * @var App\Models\File;
      */
     protected $file;
 

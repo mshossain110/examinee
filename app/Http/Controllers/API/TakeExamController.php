@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Exam;
-use App\User;
-use App\Result;
+use App\Models\Exam;
+use App\Models\User;
+use App\Models\Result;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

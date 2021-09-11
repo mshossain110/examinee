@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\File;
+use App\Models\File;
 use App\Http\Controllers\Controller;
 use App\Jobs\UploadToCloud;
 use Illuminate\Support\Arr;

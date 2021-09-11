@@ -1,12 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\Exam;
 use Illuminate\Database\Eloquent\Model;
-use App\Question;
-use App\Exam;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Topic extends Model
 {
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
