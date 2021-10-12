@@ -17,19 +17,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Cloud Filesystem Disk
-    |--------------------------------------------------------------------------
-    |
-    | Many applications store files both locally and in the cloud. For this
-    | reason, you may specify a default "cloud" driver here. This driver
-    | will be bound as the Cloud disk implementation in the container.
-    |
-    */
-
-    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
@@ -37,7 +24,7 @@ return [
     | may even configure multiple disks of the same driver. Defaults have
     | been setup for each driver as an example of the required options.
     |
-    | Supported Drivers: "local", "ftp", "s3", "rackspace"
+    | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
     */
 
@@ -46,7 +33,6 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
-            'url' => env('APP_URL').'/uploads',
         ],
 
         'public' => [
@@ -62,31 +48,9 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
-        ],
-        
-        'uploads_ftp' => [
-            'driver' => 'ftp',
-            'root' => env('UPLOADS_FTP_ROOT', '/'),
-            'host' => env('UPLOADS_FTP_HOST'),
-            'username' => env('UPLOADS_FTP_USERNAME'),
-            'password' => env('UPLOADS_FTP_PASSWORD'),
-            'port' => env('UPLOADS_FTP_PORT', 21),
-            'passive' => env('UPLOADS_FTP_PASSIVE'),
-            'ssl' => env('UPLOADS_FTP_SSL'),
-        ],
-
-        'uploads_dropbox' => [
-            'driver' => 'dropbox',
-            'root' => env('UPLOADS_DROPBOX_ROOT', '/'),
-            'access_token' => env('UPLOADS_DROPBOX_ACCESS_TOKEN')
-        ],
-
-        'uploads_digitalocean' => [
-            'driver' => 'digitalocean',
-            'key' => env('UPLOADS_DIGITALOCEAN_KEY'),
-            'secret' => env('UPLOADS_DIGITALOCEAN_SECRET'),
-            'region' => env('UPLOADS_DIGITALOCEAN_REGION'),
-            'bucket' => env('UPLOADS_DIGITALOCEAN_BUCKET'),
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
         'uploads_rackspace' => [
