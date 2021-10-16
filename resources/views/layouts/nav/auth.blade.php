@@ -1,6 +1,7 @@
 
 <!-- Main menu -->
-<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-info text-white">
+<nav class="navbar navbar-expand-lg sticky-top bg-primary bg-dark">
+    <div class="container">
         <!-- Branding Image -->
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
@@ -38,12 +39,13 @@
                     <a class="nav-link" href="{{route('learning.courses')}}">Student</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+               
+                    <a class="nav-link dropdown-toggle" id="usermenu" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{ get_gravatar(Auth::user()->email) }}" class="rounded-circle"/>
                         {{ Auth::user()->name }}
                         
                     </a>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu" aria-labelledby="usermenu">
                         <a href="{{ url('/logout') }}" 
                             class="dropdown-item"
                             onclick="event.preventDefault();
@@ -59,22 +61,6 @@
                 
             </ul>
         </div>
-    </nav> <!-- Nav main menu -->
 
-    <!-- <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/exam') }}">Exam</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/subject') }}">Subject</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/topic') }}">Topic</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/question') }}">Question</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/courses') }}">coursed</a>
-                </li>
-            </ul> -->
+    </div>
+</nav>

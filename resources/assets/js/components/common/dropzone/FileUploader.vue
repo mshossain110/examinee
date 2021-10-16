@@ -22,7 +22,6 @@
 
 <script>
 import Dropzone from './Dropzone'
-import { Promise } from 'q'
 
 export default {
     components: {
@@ -67,7 +66,7 @@ export default {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
-                    Authorization: 'Bearer ' + window.localStorage['auth_token']
+                    Authorization: 'Bearer ' + window.localStorage.auth_token
                 },
                 chunking: true,
                 forceChunking: true,
@@ -114,7 +113,7 @@ export default {
         filesAdded (files) {
             this.filesAddedpoppu = true
             // loop through files
-            for (var i = 0; i < files.length; i++) {
+            for (let i = 0; i < files.length; i++) {
                 files[i].ldporgress = 0
                 this.fileList.push(files[i])
             }

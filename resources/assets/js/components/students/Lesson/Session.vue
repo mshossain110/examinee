@@ -54,10 +54,10 @@ export default {
     },
     methods: {
         isLesson (resource) {
-            return resource.pivot.sessionable_type === 'App\\Lesson'
+            return resource.pivot.sessionable_type === 'App\\Models\\Lesson'
         },
         isExam (resource) {
-            return resource.pivot.sessionable_type === 'App\\Exam'
+            return resource.pivot.sessionable_type === 'App\\Models\\Exam'
         }
     }
 

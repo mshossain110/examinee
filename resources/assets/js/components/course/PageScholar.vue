@@ -55,7 +55,7 @@ export default {
 
     },
     created () {
-        this.$router.addRoutes(router)
+        this.$router.addRoute(router)
         this.$store.registerModule('Course', store)
     },
     methods: {

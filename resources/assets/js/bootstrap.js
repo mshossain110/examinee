@@ -19,7 +19,7 @@ window.moment = require('moment')
  */
 
 try {
-    window.Popper = require('popper.js').default
+    // window.Popper = require('popper.js')
     window.$ = window.jQuery = require('jquery')
 
     require('bootstrap')

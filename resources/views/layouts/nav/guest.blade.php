@@ -1,5 +1,6 @@
 <!-- Main menu -->
-<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-info text-white">
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary text-white">
+    <div class="container">
         <!-- Branding Image -->
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
@@ -39,4 +40,6 @@
                 
             </ul>
         </div>
+    </div>
+        
     </nav> <!-- Nav main menu -->

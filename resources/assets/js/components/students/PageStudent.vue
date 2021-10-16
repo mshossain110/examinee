@@ -39,7 +39,7 @@ export default {
 
     },
     created () {
-        this.$router.addRoutes(routes)
+        this.$router.addRoute(routes)
     },
     methods: {
 

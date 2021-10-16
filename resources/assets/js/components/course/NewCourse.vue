@@ -61,7 +61,7 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <Editor v-model="course.description" />
+                        <!-- <Editor v-model="course.description" /> -->
                     </div>
                     <div class="form-group">
                         <label for="features">Features</label>
@@ -177,13 +177,13 @@
 <script>
 import AttachFiles from '@c/common/dropzone/AttachFiles.vue'
 import FilesPreview from '@c/common/dropzone/FilesPreview.vue'
-import Editor from '@c/common/editor/Editor.vue'
+// import Editor from '@c/common/editor/Editor.vue'
 import Feature from './Feature'
 export default {
     components: {
         AttachFiles,
         FilesPreview,
-        Editor,
+        // Editor,
         Feature
     },
     props: {
@@ -225,7 +225,7 @@ export default {
     },
     methods: {
         submit () {
-            var params = this.course
+            const params = this.course
             delete params.files
             delete params.thumbnail
 

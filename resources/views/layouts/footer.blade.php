@@ -1,5 +1,5 @@
 
-<div class="footer bg-info text-light">
+<div class="footer bg-primary text-white">
     <div class="row">
         <div class="col-6">
             <div class="footer-left">

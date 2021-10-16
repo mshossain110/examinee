@@ -4,8 +4,7 @@ import SingleResource from './Lesson/SingleResource'
 import SingleLesson from './Lesson/SingleLesson'
 import SingleExam from './Lesson/SingleExam'
 
-export default [
-    {
+export default {
         path: '/learning/my-courses',
         redirect: { name: 'my-courses' },
         component: {
@@ -44,4 +43,4 @@ export default [
 
         ]
     }
-]
+
