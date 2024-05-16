@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SubjectResource;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,7 +22,7 @@ class HomeController extends Controller
             ->whereHas('courses')
             ->get();
         return Inertia::render('Home/Home', [
-            'subjects' => $subjects
+            'subjects' => SubjectResource::collection($subjects) 
         ]);
     }
 }

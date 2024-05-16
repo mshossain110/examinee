@@ -17,7 +17,7 @@ class ExamSession extends Model
         'title', 'description', 'course_id'
     ];
 
-    public function sessions()
+    public function examSessions()
     {
         return $this->hasMany(ExamSessionable::class, 'session_id')->orderBy('order', 'asc');
     }

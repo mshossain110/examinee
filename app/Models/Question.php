@@ -50,7 +50,7 @@ class Question extends Model
         }
     }
 
-    public function setTypeAttribute($value)
+    public function setQtypeAttribute($value)
     {
         $value = strtolower($value);
         $key = array_search($value, self::$qtypes);

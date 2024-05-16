@@ -103,7 +103,7 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_students')->withTimestamps()->withPivot(['rating', 'progress']);
     }
 
-    public function sessions()
+    public function examSessions()
     {
         return $this->hasMany(ExamSession::class);
     }
