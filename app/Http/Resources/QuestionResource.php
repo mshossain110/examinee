@@ -24,7 +24,6 @@ class QuestionResource extends JsonResource
             'mark' => $this->mark,
             'nmark' => $this->nmark,
             'explanation' => $this->explanation,
-            'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'topics' => TopicResource::collection($this->whenLoaded('topics')),

@@ -3,33 +3,36 @@ import { Head, Link, usePage } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import { PaperClipIcon } from "@heroicons/vue/20/solid";
 import { computed } from "vue";
+import { Course } from "@/types";
+import { ref } from 'vue'
 
 const page = usePage();
 
 const user = computed(() => page.props.auth.user);
 
 const props = defineProps<{
-    course: any;
+    course: Course;
 }>();
 
 const stats = [
     { name: "Number of student", value: props.course.students_count },
-    { name: "Number of sessions", value: props.course.sessions_count },
+    { name: "Number of sessions", value: props.course.exam_sessions_count },
     { name: "Number of exams", value: props.course.exams_count },
     { name: "Number of lessons", value: props.course.lessons_count },
 ];
 
+let loading = ref(false);
 function startLearning() {
     if (!user) {
         return;
     }
-    if (this.loading) {
+    if (loading) {
         return;
     }
 
-    this.loading = true;
+    loading = ref(true);
 
-    axios
+    window.axios
         .post(route(`course.subscribe`, { course: props.course.id }))
         .then((res) => {
             window.location.replace("/learning/my-courses");
@@ -40,7 +43,7 @@ function startLearning() {
             }
         })
         .finally(() => {
-            this.loading = false;
+            loading = ref(false);
         });
 }
 </script>
@@ -124,14 +127,14 @@ function startLearning() {
                 </div>
 
                 <div class="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
-                    <Link
+                    <button
                         class="block py-3 px-6 text-center rounded-md text-white font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                        as="button"
+                        type="button"
                         @click.prevent="startLearning"
                         v-if="user"
                     >
                         Start Learning
-                    </Link>
+                    </button>
                     <dl
                         class="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4"
                     >
@@ -644,14 +647,14 @@ function startLearning() {
                                 <span>Certificate of completion</span>
                             </li>
                         </ul>
-                        <Link
+                        <button
                             class="block w-full py-3 px-6 text-center rounded-md text-white font-medium bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                            as="button"
+                            type="button"
                             @click.prevent="startLearning"
                             v-if="user"
                         >
                             Start Learning
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>

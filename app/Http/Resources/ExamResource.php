@@ -18,7 +18,7 @@ class ExamResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'examiner' => $this->examiner,
+            'permalink' => $this->permalink,
             'status' => $this->status,
             'duration' => $this->duration,
             'pass_mark' => $this->pass_mark,

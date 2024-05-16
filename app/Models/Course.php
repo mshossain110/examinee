@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use DB;
 use App\Models\Exam;
 use App\Models\Traits\Fileable;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
@@ -18,6 +18,7 @@ class Course extends Model
         'title',
         'slug',
         'description',
+        'requirements',
         'price',
         'thumbnail',
         'start_date',
@@ -60,7 +61,7 @@ class Course extends Model
     */
     public function getRatingAttribute()
     {
-        return number_format(DB::table('course_student')->where('course_id', $this->attributes['id'])->average('rating'), 2);
+        return number_format(DB::table('course_students')->where('course_id', $this->attributes['id'])->average('rating'), 2);
     }
 
     public function getPermalinkAttribute()

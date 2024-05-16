@@ -19,6 +19,7 @@ class CourseResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'description' => $this->desdescription,
+            'requirements' => $this->desdescription,
             'price' => $this->price,
             'status' => $this->status,
             'thumbnail' => $this->thumbnail,
@@ -36,6 +37,10 @@ class CourseResource extends JsonResource
             'exams' => ExamResource::collection($this->whenLoaded('exams')),
             'topics' => TopicResource::collection($this->whenLoaded('topics')),
             'subjects' => SubjectResource::collection($this->whenLoaded('subjects')),
+            'lessons_count' => $this->whenCounted('lessons'),
+            'students_count' => $this->whenCounted('students'),
+            'exam_sessions_count' => $this->whenCounted('examSessions'),
+            'exams_count' => $this->whenCounted('exams'),
         ];
     }
 }

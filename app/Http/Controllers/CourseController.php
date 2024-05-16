@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Auth;
 use Illuminate\Http\Request;
@@ -19,11 +20,11 @@ class CourseController extends Controller
      */
     public function show(Request $request, Course $course)
     {
-        $course->loadCount(['lessons', 'exams', 'sessions', 'students']);
+        $course->loadCount(['lessons', 'exams', 'examSessions', 'students']);
         $course->load(['subjects', 'topics', 'teachers']);
-        
+
         return Inertia::render('Course/Course', [
-            'course' => $course
+            'course' => new CourseResource($course)
         ]);
     }
 
