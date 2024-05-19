@@ -18,7 +18,7 @@ Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('c
 Route::group(['middleware' => ['auth']], function(){
 
 	Route::get("/learning/my-courses/{any?}", [LearningController::class,  'myCourses' ])->name("learning.courses")->where('any', '.*');
-	Route::get("/instructor/courses/{any?}", [InstructorController::class, 'courses'])->name("instructor.courses")->where('any', '.*');
+	Route::get("/instructor", [InstructorController::class, 'courses'])->name("instructor.courses")->where('any', '.*');
 
 	Route::post('/download', [DownloadController::class, 'download']);
     Route::get('/uploads/{id}/{any?}', UploadController::class)->where('any', '.*');

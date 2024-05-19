@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class InstructorController extends Controller
 {
@@ -14,7 +15,7 @@ class InstructorController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function courses(Request $request)
-    {   
-        return view('scholar.index');
+    {
+        return Inertia::render('Instructor/Courses');
     }
 }
