@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Actions\GetInstratorCousesAction;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class InstructorController extends Controller
 {
@@ -16,6 +18,19 @@ class InstructorController extends Controller
      */
     public function courses(Request $request)
     {
-        return Inertia::render('Instructor/Courses');
+        if ($request->has('user'))
+        {
+            $user = User::find($request->user);
+        }else {
+            $user = $request->user();
+        }
+        
+        if(!$user) {
+            return to_route('home');
+        }
+
+        return Inertia::render('Instructor/Courses', [
+            'courses' => GetInstratorCousesAction::getCourses($user)
+        ]);
     }
 }

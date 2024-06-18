@@ -1,8 +1,41 @@
 <script setup lang="ts">
 import { Course } from '@/types'
+import { computed, ref } from "vue";
+import { usePage } from "@inertiajs/vue3";
+
+const page = usePage();
+
+const user = computed(() => page.props.auth.user);
+
 const props = defineProps<{
     course: Course
 }>()
+
+let loading = ref(false);
+function startLearning():void {
+    if (!user) {
+        return;
+    }
+    if (loading) {
+        return;
+    }
+
+    loading = ref(true);
+
+    window.axios
+        .post(route(`course.subscribe`, { course: props.course.id }))
+        .then((res) => {
+            window.location.replace("/learning/my-courses");
+        })
+        .catch((error) => {
+            if (error.response.status === 401) {
+                window.location.replace("/login");
+            }
+        })
+        .finally(() => {
+            loading = ref(false);
+        });
+}
 
 </script>
 

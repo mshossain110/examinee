@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { User } from "@/types";
 import {
     Disclosure,
     DisclosureButton,
@@ -16,11 +17,11 @@ import {
 } from "@heroicons/vue/24/outline";
 import { Link } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
-import { computed } from "vue";
+
 
 const page = usePage();
 
-const user = computed(() => page.props.auth.user);
+const user = page.props.auth.user;
 
 const navigation = [
     { name: "Home", href: route("home"), current: route().current("home") },
@@ -29,10 +30,15 @@ const navigation = [
     { name: "Calendar", href: "#", current: false },
     { name: "Reports", href: "#", current: false },
 ];
+
 const userNavigation = [
     { name: "Your Profile", href: route("profile.edit") },
     { name: "Settings", href: "#" },
 ];
+
+if (user) {
+    userNavigation.splice(1, 0, { name: "Courses", href: route("instructor.courses", {user: user.name}) })
+}
 </script>
 
 <template>
@@ -148,14 +154,14 @@ const userNavigation = [
                         <div class="ml-10 flex items-baseline space-x-4">
                             <Link
                                 :href="route('login')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="rounded-md px-3 py-2 text-gray-300 ring-1 ring-transparent transition hover:bg-gray-700 hover:text-white focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Log in
                             </Link>
 
                             <Link
                                 :href="route('register')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="rounded-md px-3 py-2 text-gray-300 ring-1 ring-transparent transition hover:bg-gray-700 hover:text-white focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Register
                             </Link>

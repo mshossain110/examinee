@@ -23,7 +23,7 @@ const stats = [
 ];
 
 let loading = ref(false);
-function startLearning() {
+function startLearning():void {
     if (!user) {
         return;
     }
