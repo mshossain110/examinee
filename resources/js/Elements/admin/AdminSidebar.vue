@@ -89,8 +89,8 @@ export default {
     const { user, roles, authenticated } = useAuth();
     const { sideBarOpen, fullScreenSideBarOpen } = useSidebarState()
     const navigation = [
-        { name: "Admin", icon: BuildingLibraryIcon,  href: route('dashboard'), current: route().current("dashboard") },
-        { name: "Users", icon: UsersIcon,  href: '#', current: false },
+        { name: "Admin", icon: BuildingLibraryIcon,  href: route('admin.dashboard'), current: route().current("admin.dashboard") },
+        { name: "Users", icon: UsersIcon,  href: route('admin.users.index'), current: route().current("admin.users.index") },
         { name: "Roles", icon: ShieldCheckIcon, href: "#", current: false },
         { name: "Permissions", icon: ShieldExclamationIcon, href: "#", current: false },
         { name: "Server Info", icon: ServerStackIcon, href: "#", current: false },

@@ -42,13 +42,6 @@ export default {
     const { sideBarOpen, fullScreenSideBarOpen } = useSidebarState()
     return {sideBarOpen, fullScreenSideBarOpen}
   },
-  data() {
-    return {
-      //
-    };
-  },
-  computed: {
-  },
   watch: {},
   created() {},
   mounted() {},
@@ -57,6 +50,3 @@ export default {
   methods: {},
 };
 </script>
-
-<style scoped></style>
-<style lang="scss" scoped></style>

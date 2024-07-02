@@ -1,96 +1,170 @@
-<script setup lang="ts">
-import { computed, onMounted, onUnmounted, watch } from 'vue';
-
-const props = withDefaults(
-    defineProps<{
-        show?: boolean;
-        maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-        closeable?: boolean;
-    }>(),
-    {
-        show: false,
-        maxWidth: '2xl',
-        closeable: true,
-    }
-);
-
-const emit = defineEmits(['close']);
-
-watch(
-    () => props.show,
-    () => {
-        if (props.show) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'visible';
-        }
-    }
-);
-
-const close = () => {
-    if (props.closeable) {
-        emit('close');
-    }
-};
-
-const closeOnEscape = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && props.show) {
-        close();
-    }
-};
-
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
-
-onUnmounted(() => {
-    document.removeEventListener('keydown', closeOnEscape);
-    document.body.style.overflow = 'visible';
-});
-
-const maxWidthClass = computed(() => {
-    return {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
-        '2xl': 'sm:max-w-2xl',
-    }[props.maxWidth];
-});
-</script>
-
 <template>
-    <Teleport to="body">
-        <Transition leave-active-class="duration-200">
-            <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region>
-                <Transition
-                    enter-active-class="ease-out duration-300"
-                    enter-from-class="opacity-0"
-                    enter-to-class="opacity-100"
-                    leave-active-class="ease-in duration-200"
-                    leave-from-class="opacity-100"
-                    leave-to-class="opacity-0"
-                >
-                    <div v-show="show" class="fixed inset-0 transform transition-all" @click="close">
-                        <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75" />
-                    </div>
-                </Transition>
+    <TransitionRoot :appear="appear" :show="isOpen" as="template" @after-leave="onAfterLeave">
+      <HDialog :class="ui.wrapper" v-bind="attrs" @close="close">
+        <TransitionChild v-if="overlay" as="template" :appear="appear" v-bind="ui.overlay.transition">
+          <div :class="[ui.overlay.base, ui.overlay.background]" />
+        </TransitionChild>
+  
+        <div :class="ui.inner">
+          <div :class="[ui.container, !fullscreen && ui.padding]">
+            <TransitionChild as="template" :appear="appear" v-bind="transitionClass">
+              <HDialogPanel
+                :class="[
+                  ui.base,
+                  ui.background,
+                  ui.ring,
+                  ui.shadow,
+                  fullscreen ? ui.fullscreen : [ui.width, ui.height, ui.rounded, ui.margin],
+                ]"
+              >
+                <slot />
+              </HDialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </HDialog>
+    </TransitionRoot>
+  </template>
+  
+  <script lang="ts">
+  import { computed, toRef, defineComponent } from 'vue'
+  import type { PropType } from 'vue'
+  import { Dialog as HDialog, DialogPanel as HDialogPanel, TransitionRoot, TransitionChild, provideUseId } from '@headlessui/vue'
+  import { useUI } from '@/Services/useUI';
+  import type { Strategy } from '@/types';
 
-                <Transition
-                    enter-active-class="ease-out duration-300"
-                    enter-from-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    enter-to-class="opacity-100 translate-y-0 sm:scale-100"
-                    leave-active-class="ease-in duration-200"
-                    leave-from-class="opacity-100 translate-y-0 sm:scale-100"
-                    leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                >
-                    <div
-                        v-show="show"
-                        class="mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
-                        :class="maxWidthClass"
-                    >
-                        <slot v-if="show" />
-                    </div>
-                </Transition>
-            </div>
-        </Transition>
-    </Teleport>
-</template>
+
+  
+  const config = {
+  wrapper: 'relative z-50',
+  inner: 'fixed inset-0 overflow-y-auto',
+  container: 'flex min-h-full items-end sm:items-center justify-center text-center',
+  padding: 'p-4 sm:p-0',
+  margin: 'sm:my-8',
+  base: 'relative text-left rtl:text-right flex flex-col',
+  overlay: {
+    base: 'fixed inset-0 transition-opacity',
+    background: 'bg-gray-200/75 dark:bg-gray-800/75',
+    // Syntax for `<TransitionRoot>` component https://headlessui.com/vue/transition#basic-example
+    transition: {
+      enter: 'ease-out duration-300',
+      enterFrom: 'opacity-0',
+      enterTo: 'opacity-100',
+      leave: 'ease-in duration-200',
+      leaveFrom: 'opacity-100',
+      leaveTo: 'opacity-0'
+    }
+  },
+  background: 'bg-white dark:bg-gray-900',
+  ring: '',
+  rounded: 'rounded-lg',
+  shadow: 'shadow-xl',
+  width: 'w-full sm:max-w-lg',
+  height: '',
+  fullscreen: 'w-screen h-screen',
+  // Syntax for `<TransitionRoot>` component https://headlessui.com/vue/transition#basic-example
+  transition: {
+    enter: 'ease-out duration-300',
+    enterFrom: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
+    enterTo: 'opacity-100 translate-y-0 sm:scale-100',
+    leave: 'ease-in duration-200',
+    leaveFrom: 'opacity-100 translate-y-0 sm:scale-100',
+    leaveTo: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+  }
+}
+  
+  export default defineComponent({
+    components: {
+      HDialog,
+      HDialogPanel,
+      TransitionRoot,
+      TransitionChild
+    },
+    inheritAttrs: false,
+    props: {
+      modelValue: {
+        type: Boolean,
+        default: false
+      },
+      appear: {
+        type: Boolean,
+        default: false
+      },
+      overlay: {
+        type: Boolean,
+        default: true
+      },
+      transition: {
+        type: Boolean,
+        default: true
+      },
+      preventClose: {
+        type: Boolean,
+        default: false
+      },
+      fullscreen: {
+        type: Boolean,
+        default: false
+      },
+      class: {
+        type: [String, Object, Array] as PropType<any>,
+        default: () => ''
+      },
+      ui: {
+        type: Object as PropType<Partial<typeof config> & { strategy?: Strategy }>,
+        default: () => ({})
+      }
+    },
+    emits: ['update:modelValue', 'close', 'close-prevented', 'after-leave'],
+    setup (props, { emit }) {
+      const { ui, attrs } = useUI('modal', toRef(props, 'ui'), config, toRef(props, 'class'))
+  
+      const isOpen = computed({
+        get () {
+          return props.modelValue
+        },
+        set (value) {
+          emit('update:modelValue', value)
+        }
+      })
+  
+      const transitionClass = computed(() => {
+        if (!props.transition) {
+          return {}
+        }
+  
+        return {
+          ...ui.value.transition
+        }
+      })
+  
+      function close (value: boolean) {
+        if (props.preventClose) {
+          emit('close-prevented')
+  
+          return
+        }
+  
+        isOpen.value = value
+  
+        emit('close')
+      }
+  
+      const onAfterLeave = () => {
+        emit('after-leave')
+      }
+  
+    //   provideUseId(() => useId())
+  
+      return {
+        // eslint-disable-next-line vue/no-dupe-keys
+        ui,
+        attrs,
+        isOpen,
+        transitionClass,
+        onAfterLeave,
+        close
+      }
+    }
+  })
+  </script>
