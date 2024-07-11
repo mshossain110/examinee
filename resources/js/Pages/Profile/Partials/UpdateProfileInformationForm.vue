@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/Form/Label.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import Label from '@/Components/Form/Label.vue';
+import Button from '@/Components/Button.vue';
+import Input from '@/Components/Form/Input.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 defineProps<{
@@ -30,9 +29,9 @@ const form = useForm({
 
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="name" value="Name" />
+                <Label label="Name" required :error="form.errors.name" >
 
-                <TextInput
+                <Input
                     id="name"
                     type="text"
                     class="mt-1 block w-full"
@@ -42,13 +41,13 @@ const form = useForm({
                     autocomplete="name"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                </Label>
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <Label label="Email" required :error="form.errors.email">
 
-                <TextInput
+                <Input
                     id="email"
                     type="email"
                     class="mt-1 block w-full"
@@ -57,7 +56,7 @@ const form = useForm({
                     autocomplete="username"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                </Label>
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
@@ -82,7 +81,7 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <Button :disabled="form.processing">Save</Button>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
