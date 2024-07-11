@@ -17,15 +17,12 @@ class RoleSeed extends Seeder
      */
     public function run()
     {
-        Role::create(['name' => 'Administrator']);
-        Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'Instructor']);
+        Role::create(['name' => 'superadmin']);
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'instructor']);
 
 
 
-
-        Permission::create(['name' => 'Administrator']);
-        Permission::create(['name' => 'Admin']);
         Permission::create(['name' => 'course.create ']);
         Permission::create(['name' => 'course.edit']);
         Permission::create(['name' => 'course.delete']);
@@ -58,12 +55,6 @@ class RoleSeed extends Seeder
         Permission::create(['name' => 'file.make.private']);
         Permission::create(['name' => 'file.view.private']);
 
-
-        DB::table('role_has_permissions')->insert([
-            'role_id'             => '1',
-            'permission_id'     => '1',
-
-        ]);
         DB::table('model_has_roles')->insert([
             'role_id'             => '1',
             'model_id'             => '1',

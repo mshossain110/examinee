@@ -56,8 +56,8 @@
     '2xs': 'text-xs',
     xs: 'text-xs',
     sm: 'text-sm',
-    md: 'text-sm',
-    lg: 'text-sm',
+    md: 'text-md',
+    lg: 'text-lg',
     xl: 'text-base'
   },
   gap: {
@@ -149,8 +149,8 @@
     }
   },
   default: {
-    size: 'sm',
-    color: 'white',
+    size: 'md',
+    color: 'blue',
     variant: 'outline',
     loadingIcon: 'i-heroicons-arrow-path-20-solid'
   }
@@ -231,7 +231,7 @@
       },
       size: {
         type: String as PropType<Sizes>,
-        default: null,
+        default: config.default.size,
         validator (value: string) {
           return Object.keys(config.size).includes(value)
         }
@@ -340,8 +340,7 @@
       })
   
       const inputClass = computed(() => {
-        const variant = ui.value.color?.white?.outline || ui.value.variant[props.variant]
-        // const variant = ui.value.color?.[color.value as string]?.[props.variant as string] || ui.value.variant[props.variant]
+        const variant = ui.value.color?.[color.value as string]?.[props.variant as string] || ui.value.variant[props.variant]
   
         return twMerge(twJoin(
           ui.value.base,

@@ -11,7 +11,7 @@
         "
       >
         <AdminNavBar />
-        <div class="mb-20 bg-white dark:bg-slate-800">
+        <div class="mb-20 p-4 bg-white dark:bg-slate-800 dark:text-gray-200">
           <slot />
         </div>
         <AdminFooter

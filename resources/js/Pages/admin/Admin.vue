@@ -1,6 +1,6 @@
 <template>
   <AdminLayout>
-  <div id="admin" class="bg-white p-3 dark:bg-slate-800 dark:text-gray-200">
+  <div id="admin">
     <div v-if="roles" class="float-right mb-6 text-center">
       <RolesBadges :roles="roles" />
     </div>

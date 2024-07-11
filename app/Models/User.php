@@ -53,6 +53,7 @@ class User extends Authenticatable
         ];
     }
 
+    /** --------------------Attributes--------------------------- */
     public function getFullNameAttribute()
     {
         return "$this->firstname $this->lastname";
@@ -72,20 +73,7 @@ class User extends Authenticatable
         return $value;
     }
 
-    protected function get_gravatar($email, $s = 40, $d = 'mp', $r = 'g', $img = false, $atts = array())
-    {
-        $url = 'https://www.gravatar.com/avatar/';
-        $url .= md5(strtolower(trim($email)));
-        $url .= "?s=$s&d=$d&r=$r";
-        if ($img) {
-            $url = '<img src="' . $url . '"';
-            foreach ($atts as $key => $val) {
-                $url .= ' ' . $key . '="' . $val . '"';
-            }
-            $url .= ' />';
-        }
-        return $url;
-    }
+    /** --------------------Relations--------------------------- */
 
     public function results()
     {
@@ -105,5 +93,32 @@ class User extends Authenticatable
     public function enrolledLessons()
     {
         return $this->belongsToMany(Lesson::class, 'lesson_student')->using(StudentCasting::class)->withPivot(['status', 'created_at', 'updated_at']);
+    }
+
+    /** --------------------Methods--------------------------- */
+
+    protected function get_gravatar($email, $s = 40, $d = 'mp', $r = 'g', $img = false, $atts = array())
+    {
+        $url = 'https://www.gravatar.com/avatar/';
+        $url .= md5(strtolower(trim($email)));
+        $url .= "?s=$s&d=$d&r=$r";
+        if ($img) {
+            $url = '<img src="' . $url . '"';
+            foreach ($atts as $key => $val) {
+                $url .= ' ' . $key . '="' . $val . '"';
+            }
+            $url .= ' />';
+        }
+        return $url;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole(Role::SUPERADMIN);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasAnyRole(Role::SUPERADMIN, Role::ADMIN);
     }
 }

@@ -1,59 +1,47 @@
 <template>
   <AdminLayout>
-    <div id="users" class="bg-white p-3 dark:bg-slate-800 dark:text-gray-200">
+    <div id="users">
       <Breadcrumb :items="breadcrumb" />
 
       <div>
         <DataTable v-model="selected" :rows="response.data" :columns="columns">
-            <template #name-data="{ row }">
-                <div class="flex">
-                    <div class="avatar">
-                      <img
-                          class="relative inline-block h-12 w-12 rounded-2xl object-cover object-center mr-4"
-                          alt="Image placeholder"
-                          :src="row.avatar.avatar"
-                      />
-                    </div>
-                    <div class="">
-                        <div> {{ row.full_name }} </div>
-                        <div> {{ row.email }} </div>
-                    </div>
-                </div>
-            </template>
+          <template #name-data="{ row }">
+            <div class="flex">
+              <div class="avatar">
+                <img class="relative inline-block h-12 w-12 rounded-2xl object-cover object-center mr-4"
+                  alt="Image placeholder" :src="row.avatar.avatar" />
+              </div>
+              <div class="">
+                <div> {{ row.full_name }} </div>
+                <div> {{ row.email }} </div>
+              </div>
+            </div>
+          </template>
 
-            <template #actions-data="{ row }">
-                <div class="flex">
-                  <Link
-                    @click="deleteUser(row)"
-                    as="button"
-                    href=""
-                >
-                  <TrashIcon
-                    class="mr-2 h-6 w-6"
-                  ></TrashIcon>
-                </Link>
-
-                </div>
-            </template>
-
+          <template #actions-data="{ row }">
+            <div class="flex">
+              <Link :href="route('admin.users.edit', row)">
+                <PencilIcon class="mr-2 h-6 w-6"></PencilIcon>
+              </Link>
+              <Link @click="deleteUser(row)" as="button" href="">
+                <TrashIcon class="mr-2 h-6 w-6"></TrashIcon>
+              </Link>
+            </div>
+          </template>
         </DataTable>
       </div>
-
-      
-      {{ selected }}
-
     </div>
   </AdminLayout>
 </template>
 
 <script lang="ts">
-import { ChevronRightIcon, UserPlusIcon, TrashIcon  } from '@heroicons/vue/24/outline';
+import { ChevronRightIcon, UserPlusIcon, TrashIcon, PencilIcon } from '@heroicons/vue/24/outline';
 
 import CircleSvg from '@/Components/CircleSvg.vue';
 import { LinkType, JsonResponse, User } from "@/types";
-import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { PropType } from "vue";
 import { Link } from "@inertiajs/vue3";
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import DataTable from "@/Components/Datatable/Table.vue";
 import Checkbox from '@/Components/Form/Checkbox.vue';
@@ -74,6 +62,7 @@ export default {
     DataTable,
     Checkbox,
     TrashIcon,
+    PencilIcon,
     Modal,
     Card
 
@@ -136,10 +125,10 @@ export default {
   beforeUnmount() { },
   updated() { },
   methods: {
-    deleteUser (user: User) {
-        if (confirm('Are you sure you want to delete this item?')) {
-          router.delete(route('admin.users.destroy', user.id))
-        }
+    deleteUser(user: User) {
+      if (confirm('Are you sure you want to delete this item?')) {
+        router.delete(route('admin.users.destroy', user.id))
+      }
     },
   },
 };

@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "noImplicitAny": false,
+        "strictNullChecks": false,
         "allowJs": true,
         "module": "ESNext",
         "moduleResolution": "bundler",
