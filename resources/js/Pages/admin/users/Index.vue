@@ -1,9 +1,13 @@
 <template>
   <AdminLayout>
     <div id="users">
-      <Breadcrumb :items="breadcrumb" />
 
-      <div>
+      <Card>
+        <template #header>
+          <h3>Users</h3>
+          <Breadcrumb :items="breadcrumb" />
+        </template>
+
         <DataTable v-model="selected" :rows="response.data" :columns="columns">
           <template #name-data="{ row }">
             <div class="flex">
@@ -29,7 +33,10 @@
             </div>
           </template>
         </DataTable>
-      </div>
+        <Pagination :paginate="response.meta" class="justify-end" />
+      </Card>
+
+
     </div>
   </AdminLayout>
 </template>
@@ -48,6 +55,7 @@ import Checkbox from '@/Components/Form/Checkbox.vue';
 import Modal from '@/Components/Modal.vue';
 import Card from '@/Components/Card.vue';
 import { router } from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue';
 
 
 export default {
@@ -64,7 +72,8 @@ export default {
     TrashIcon,
     PencilIcon,
     Modal,
-    Card
+    Card,
+    Pagination
 
   },
   props: {

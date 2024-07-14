@@ -1,98 +1,200 @@
 <template>
-  <div class="vue-pagination">
-    <ul
-      v-if="showPagination"
-      class="list-reset border-grey-light mb-2 flex w-auto rounded border font-sans"
-    >
-      <li>
-        <span
-          class="hover:bg-blue text-blue border-grey-light block cursor-pointer border-r px-3 py-1 hover:text-white"
-          :class="pagination.current_page == 1 ? 'disabled opacity-50' : ''"
-          @click.prevent="change(pagination.current_page - 1)"
-        >
-          <ChevronLeftIcon class="ml-2 mr-2 h-6 w-6" />
-          <span class="sr-only">Previous</span>
-        </span>
-      </li>
-      <li v-for="page in pages" :key="page">
-        <span
-          class="block cursor-pointer rounded px-3 py-1"
-          :class="
-            page == pagination.current_page
-              ? 'border-blue disabled border-r bg-slate-900 text-white'
-              : 'text-blue-400 hover:bg-slate-600 hover:text-white'
-          "
-          @click.stop="change(page)"
-        >
-          {{ page }}
-        </span>
-      </li>
-      <li>
-        <span
-          class="hover:bg-blue text-blue block cursor-pointer px-3 py-1 hover:text-white"
-          :class="
-            pagination.current_page == pagination.last_page
-              ? 'disabled opacity-50'
-              : ''
-          "
-          @click.prevent="change(pagination.current_page + 1)"
-        >
-          <ChevronRightIcon class="ml-2 mr-2 h-6 w-6" />
-          <span class="sr-only">Next</span>
-        </span>
-      </li>
-    </ul>
-    <div class="mb-2 text-center text-xs">
-      Showing page {{ pagination.current_page }} of {{ pagination.last_page }}
-      <br />
-      (Total Records: {{ pagination.total }})
-    </div>
+
+  <div :class="ui.wrapper" v-bind="attrs">
+    <nav aria-label="pagination"  class="inline-flex -space-x-px text-sm">
+          <Link 
+            v-for="(page, index) of pages" 
+            :key="`page-${index}`"
+            :href="page.url"
+            :class="[buttonClass, {'!bg-blue-500 !text-white': page.active}]"
+            v-html="page.label"
+            >
+          </Link>
+    </nav>
   </div>
 </template>
 
-<script>
-import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline';
+<script lang="ts">
+import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/vue/24/outline';
+import { Link } from '@inertiajs/vue3';
+import { computed, toRef, defineComponent } from 'vue'
+import type { PropType } from 'vue'
+import Button from '@/Components/Button.vue'
+import { useUI } from '@/Services/useUI'
+import type { LaravelPagination, PaginationLink } from '@/types'
+import { twMerge, twJoin } from 'tailwind-merge'
 
-export default {
-  name: 'Pagination',
+const config = {
+  wrapper: 'flex items-center -space-x-px',
+  base: 'flex items-center justify-center',
+  rounded: 'first:rounded-s-md last:rounded-e-md',
+  size: {
+        '2xs': 'text-xs',
+        xs: 'text-xs',
+        sm: 'text-sm',
+        md: 'text-md',
+        lg: 'text-lg',
+        xl: 'text-base'
+    },
+    padding: {
+        '2xs': 'px-2 py-1',
+        xs: 'px-2.5 py-1.5',
+        sm: 'px-2.5 py-1.5',
+        md: 'px-3 py-2',
+        lg: 'px-3.5 py-2.5',
+        xl: 'px-3.5 py-2.5'
+    },
+    color: 'text-gray-500 bg-white border border-e-0 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white',
+    default: {
+    size: 'sm',
+  }
+}
+
+// flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white
+
+
+
+
+export default defineComponent({
   components: {
-    ChevronRightIcon,
-    ChevronLeftIcon,
+    Button,
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+    Link
   },
+  inheritAttrs: false,
   props: {
-    pagination: { type: Object, required: true },
-    offset: { type: Number, default: 4 },
-  },
-  computed: {
-    pages() {
-      if (!this.pagination.to) {
-        return null;
-      }
-      let from = this.pagination.current_page - this.offset;
-      if (from < 1) {
-        from = 1;
-      }
-      let to = from + this.offset * 2;
-      if (to >= this.pagination.last_page) {
-        to = this.pagination.last_page;
-      }
-      const pages = [];
-      for (let page = from; page <= to; page++) {
-        pages.push(page);
-      }
-      return pages;
+    paginate: {
+      type: Object as PropType<LaravelPagination>,
+      required: true,
     },
-    showPagination() {
-      if (this.pages.length > 1) {
-        return true;
+    pagename: {
+      type: String,
+      default: () => 'page'
+    },
+    max: {
+      type: Number,
+      default: 7,
+      validate(value) {
+        return value >= 5 && value < Number.MAX_VALUE
       }
-      return false;
     },
-  },
-  methods: {
-    change(page) {
-      this.$emit('paginate', page);
+
+    size: {
+      type: String,
+      default: () => config.default.size,
+      validator(value: string) {
+
+        //return Object.keys(buttonConfig.size).includes(value)
+        return true
+      }
     },
+
+    showFirst: {
+      type: Boolean,
+      default: false
+    },
+    showLast: {
+      type: Boolean,
+      default: false
+    },
+    divider: {
+      type: String,
+      default: '…'
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => ''
+    },
+    ui: {
+      type: Object as PropType<Partial<typeof config>>,
+      default: () => ({})
+    }
   },
-};
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const { ui, attrs } = useUI('pagination', toRef(props, 'ui'), config, toRef(props, 'class'))
+
+    const currentPage = computed({
+      get() {
+        return props.paginate.current_page
+      },
+      set(value) {
+        emit('update:modelValue', value)
+      }
+    })
+
+    const pages = computed(() => props.paginate.links)
+
+    const buttonClass = computed(() => {
+
+          return twMerge(twJoin(
+              ui.value.base,
+              ui.value.rounded,
+              ui.value.size[props.size],
+              ui.value.padding[props.size],
+              ui.value.color
+          ), props.class)
+      })
+
+    const canGoFirstOrPrev = computed(() => currentPage.value > 1)
+    const canGoLastOrNext = computed(() => currentPage.value < pages.value.length)
+
+    function onClickFirst() {
+      if (!canGoFirstOrPrev.value) {
+        return
+      }
+
+      currentPage.value = 1
+    }
+
+    function onClickLast() {
+      if (!canGoLastOrNext.value) {
+        return
+      }
+
+      currentPage.value = pages.value.length
+    }
+
+    function onClickPage(page: number | string) {
+      if (typeof page === 'string') {
+        return
+      }
+
+      currentPage.value = page
+    }
+
+    function onClickPrev() {
+      if (!canGoFirstOrPrev.value) {
+        return
+      }
+
+      currentPage.value--
+    }
+
+    function onClickNext() {
+      if (!canGoLastOrNext.value) {
+        return
+      }
+
+      currentPage.value++
+    }
+
+    return {
+      // eslint-disable-next-line vue/no-dupe-keys
+      ui,
+      attrs,
+      buttonClass,
+      currentPage,
+      pages,
+      canGoLastOrNext,
+      canGoFirstOrPrev,
+      onClickPrev,
+      onClickNext,
+      onClickPage,
+      onClickFirst,
+      onClickLast
+    }
+  }
+})
 </script>

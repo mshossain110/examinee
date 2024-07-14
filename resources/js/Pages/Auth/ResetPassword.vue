@@ -2,7 +2,6 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import Label from '@/Components/Form/Label.vue';
 import Button from '@/Components/Button.vue';
-import Input from '@/Components/From/Input.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 const props = defineProps<{

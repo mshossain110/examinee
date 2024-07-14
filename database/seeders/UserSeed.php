@@ -49,6 +49,8 @@ class UserSeed extends Seeder
             $user = User::create($item);
         }
 
-        User::factory()->count(10)->create();
+        User::factory()->count(50)->create();
+        User::factory()->unverified()->count(30)->create();
+        User::factory()->banned()->count(20)->create();
     }
 }
