@@ -49,27 +49,12 @@ class UsersController extends Controller
             'email',
             'password',
             'role',
-            'avatar',
-            'permissions'
-        ]);
-
-        $user = User::create($data);
-        $validated = $request->validated();
-
-        $data = $request->only([
-            'firstname',
-            'lastname',
-            'name',
-            'email',
-            'password',
-            'role',
-            'avatar',
-            'permissions'
+            'avatar'
         ]);
 
         $user = User::create($data);
 
-        return redirect('admin.user.index');
+        return Inertia::render('admin/users/Edit', [ 'user' => new UserResource($user) ]);
     }
 
     /**
@@ -108,8 +93,10 @@ class UsersController extends Controller
         ]);
 
         $user = $user->update($data);
+        
+        return Inertia::render('admin/users/Edit', [ 'user' => new UserResource($user) ]);
 
-        return to_route('admin.users.index');
+        
     }
 
     /**
@@ -123,6 +110,6 @@ class UsersController extends Controller
 
         $user->delete();
 
-        return $this->respondWithMessage("Successfully deleted");
+        return to_route('admin.users.index');
     }
 }

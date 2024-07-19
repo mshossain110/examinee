@@ -10,9 +10,17 @@ export interface User {
     created_at?: string;
     updated_at?: string;
     deleted_at?: string;
+    roles?: Role[];
     results?: Result[];
     instructCourses?: Course[];
     enrolledCourses?: Course[];
+}
+
+export interface Role {
+    id: number;
+    name: string;
+    guard_name: string;
+    permissions: Array
 }
 
 export interface Topic {

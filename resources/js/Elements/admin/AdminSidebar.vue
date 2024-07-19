@@ -91,7 +91,7 @@ export default {
     const navigation = [
         { name: "Admin", icon: BuildingLibraryIcon,  href: route('admin.dashboard'), current: route().current("admin.dashboard") },
         { name: "Users", icon: UsersIcon,  href: route('admin.users.index'), current: route().current("admin.users.index") },
-        { name: "Roles", icon: ShieldCheckIcon, href: "#", current: false },
+        { name: "Roles", icon: ShieldCheckIcon, href: route('admin.roles.index'), current: route().current("admin.roles.index") },
         { name: "Permissions", icon: ShieldExclamationIcon, href: "#", current: false },
         { name: "Server Info", icon: ServerStackIcon, href: route('admin.server-info'), current: route().current('admin.server-info') },
         { name: "App Settings", icon: CogIcon, href: "#", current: false },

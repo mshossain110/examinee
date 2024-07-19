@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\LearningController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -32,7 +33,9 @@ Route::group(['middleware' => ['auth']], function(){
 Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('users', UsersController::class);
+    Route::resource('roles', RolesController::class);
     Route::get('/server-info', [ServerInfoController::class, 'index'])->name('server-info');
+    Route::post('/oauth-revoke/{provider}', [SocialiteController::class, 'revokeSocialProvider']);
 });
 
 
@@ -43,3 +46,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
