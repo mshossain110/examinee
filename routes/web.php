@@ -10,12 +10,17 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\LearningController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ServerInfoController;
 
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('course.show');
 Route::get("/instructor/{user:name}/course", [InstructorController::class, 'courses'])->name("instructor.courses");
+
+Route::post('/oauth/{driver}', [SocialiteController::class, 'getSocialRedirect'])->name('oauth');
+Route::get('/oauth/{driver}/callback', [SocialiteController::class, 'handleSocialCallback'])->name('oauth.callback');
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get("/learning/my-courses/{any?}", [LearningController::class,  'myCourses' ])->name("learning.courses")->where('any', '.*');
@@ -27,6 +32,7 @@ Route::group(['middleware' => ['auth']], function(){
 Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('users', UsersController::class);
+    Route::get('/server-info', [ServerInfoController::class, 'index'])->name('server-info');
 });
 
 

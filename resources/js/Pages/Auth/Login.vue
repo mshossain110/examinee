@@ -5,6 +5,7 @@ import Label from '@/Components/Form/Label.vue';
 import Input from '@/Components/Form/Input.vue';
 import Button from '@/Components/Button.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import SocialiteLogins from '@/Components/SocialiteLogins.vue'
 
 defineProps<{
     canResetPassword?: boolean;
@@ -84,5 +85,6 @@ const submit = () => {
                 </Button>
             </div>
         </form>
+        <SocialiteLogins />
     </GuestLayout>
 </template>

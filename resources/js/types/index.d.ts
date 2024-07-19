@@ -1,6 +1,7 @@
 
 export * from './resources';
 export * from './forms';
+export * from './icons';
 
 export type Strategy = 'merge' | 'override'
 
