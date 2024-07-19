@@ -1,43 +1,53 @@
 <template>
-    <div :class="type === 'hidden' ? 'hidden' : ui.wrapper">
-        <input
+    <div :class="ui.wrapper">
+        <select
             :id="inputId"
-            ref="input"
             :name="name"
             :value="modelValue"
-            :type="type"
             :required="required"
-            :placeholder="placeholder"
             :disabled="disabled"
-            :class="inputClass"
+            :class="selectClass"
             v-bind="attrs"
             @input="onInput"
-            @blur="onBlur"
             @change="onChange"
-        />
-        <slot />
+        >
+            <template
+                v-for="(option, index) in normalizedOptionsWithPlaceholder"
+            >
+                <optgroup
+                    v-if="option.children"
+                    :key="`${option[valueAttribute]}-optgroup-${index}`"
+                    :value="option[valueAttribute]"
+                    :label="option[optionAttribute]"
+                >
+                    <option
+                        v-for="(childOption, index2) in option.children"
+                        :key="`${childOption[valueAttribute]}-${index}-${index2}`"
+                        :value="childOption[valueAttribute]"
+                        :selected="
+                            childOption[valueAttribute] === normalizedValue
+                        "
+                        :disabled="childOption.disabled"
+                        v-text="childOption[optionAttribute]"
+                    />
+                </optgroup>
+                <option
+                    v-else
+                    :key="`${option[valueAttribute]}-${index}`"
+                    :value="option[valueAttribute]"
+                    :selected="option[valueAttribute] === normalizedValue"
+                    :disabled="option.disabled"
+                    v-text="option[optionAttribute]"
+                />
+            </template>
+        </select>
 
         <span
             v-if="(isLeading && leadingIconName) || $slots.leading"
             :class="leadingWrapperIconClass"
         >
             <slot name="leading" :disabled="disabled" :loading="loading">
-                <svg
-                    width="36"
-                    height="36"
-                    :class="leadingIconClass"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-                        opacity=".25"
-                    />
-                    <path
-                        d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
-                        class="spinner_ajPY"
-                    />
-                </svg>
+                <Icon :name="loadingIcon" type="custom" :class="leadingIconClass" />
             </slot>
         </span>
 
@@ -46,29 +56,34 @@
             :class="trailingWrapperIconClass"
         >
             <slot name="trailing" :disabled="disabled" :loading="loading">
-                <UIcon :name="trailingIconName" :class="trailingIconClass" />
+                <Icon
+                    :name="trailingIconName"
+                    :class="trailingIconClass"
+                    aria-hidden="true"
+                />
             </slot>
         </span>
     </div>
 </template>
 
 <script lang="ts">
-import { ref, computed, toRef, onMounted, defineComponent } from "vue";
-import type { PropType } from "vue";
+import { computed, toRef, defineComponent } from "vue";
+import type { PropType, ComputedRef } from "vue";
 import { twMerge, twJoin } from "tailwind-merge";
-import { defu } from "defu";
+import Icon  from "@/Components/Icon.vue";
 import { useUI } from "@/Composables/useUI";
 import { useFormGroup } from "@/Composables/useFormGroup";
-import { mergeConfig, looseToNumber } from "@/Composables/utils";
+import { mergeConfig, get } from "@/Composables/utils";
 import { useInjectButtonGroup } from "@/Composables/useButtonGroup";
-import type { Sizes, InputColor, InputVariant, Strategy } from "@/types";
+import type { CustomIconName, IconName, Strategy } from '@/types'
+ 
 
 const config = {
     wrapper: "relative",
     base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0",
-    form: "form-input",
+    form: "form-select",
+    placeholder: "text-gray-400 dark:text-gray-500",
     rounded: "rounded-md",
-    placeholder: "placeholder-gray-400 dark:placeholder-gray-500",
     file: {
         base: "file:mr-1.5 file:font-medium file:text-gray-500 dark:file:text-gray-400 file:bg-transparent file:border-0 file:p-0 file:outline-none",
     },
@@ -76,8 +91,8 @@ const config = {
         "2xs": "text-xs",
         xs: "text-xs",
         sm: "text-sm",
-        md: "text-md",
-        lg: "text-lg",
+        md: "text-sm",
+        lg: "text-sm",
         xl: "text-base",
     },
     gap: {
@@ -125,10 +140,6 @@ const config = {
             outline:
                 "shadow-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400",
         },
-        red: {
-            outline:
-                "shadow-sm bg-gray-50 dark:bg-gray-800 text-red-900 dark:text-white ring-1 ring-inset ring-red-300 dark:ring-red-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400",
-        },
     },
     variant: {
         outline:
@@ -173,24 +184,27 @@ const config = {
         },
     },
     default: {
-        size: "md",
-        color: "blue",
+        size: "sm",
+        color: "white",
         variant: "outline",
-        loadingIcon: "i-heroicons-arrow-path-20-solid",
+        loadingIcon: "LoadingIcon",
+        trailingIcon: "MagnifyingGlassIcon",
     },
 };
 
+ type SelectSize = keyof typeof config.size 
+ type SelectColor = keyof typeof config.color 
+ type SelectVariant = keyof typeof config.variant 
+
 export default defineComponent({
-    components: {},
+    components: {
+        Icon,
+    },      
     inheritAttrs: false,
     props: {
         modelValue: {
-            type: [String, Number],
+            type: [String, Number, Object],
             default: "",
-        },
-        type: {
-            type: String,
-            default: "text",
         },
         id: {
             type: String,
@@ -212,20 +226,12 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
-        autofocus: {
-            type: Boolean,
-            default: false,
-        },
-        autofocusDelay: {
-            type: Number,
-            default: 100,
-        },
         icon: {
-            type: String,
+            type: String as PropType<IconName>,
             default: null,
         },
         loadingIcon: {
-            type: String,
+            type: String as PropType<CustomIconName>,
             default: () => config.default.loadingIcon,
         },
         leadingIcon: {
@@ -233,8 +239,8 @@ export default defineComponent({
             default: null,
         },
         trailingIcon: {
-            type: String,
-            default: null,
+            type: String as PropType<IconName>,
+            default: () => config.default.trailingIcon,
         },
         trailing: {
             type: Boolean,
@@ -252,22 +258,28 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        options: {
+            type: Array,
+            default: () => [],
+        },
         size: {
-            type: String as PropType<Sizes>,
-            default: config.default.size,
+            type: String as PropType<SelectSize>,
+            default: null,
             validator(value: string) {
                 return Object.keys(config.size).includes(value);
             },
         },
         color: {
-            type: String as PropType<InputColor>,
+            type: String as PropType<SelectColor>,
             default: () => config.default.color,
             validator(value: string) {
-                return [...Object.keys(config.color)].includes(value);
+                return [
+                    ...Object.keys(config.color),
+                ].includes(value);
             },
         },
         variant: {
-            type: String as PropType<InputVariant>,
+            type: String as PropType<SelectVariant>,
             default: () => config.default.variant,
             validator(value: string) {
                 return [
@@ -278,7 +290,15 @@ export default defineComponent({
                 ].includes(value);
             },
         },
-        inputClass: {
+        optionAttribute: {
+            type: String,
+            default: "label",
+        },
+        valueAttribute: {
+            type: String,
+            default: "value",
+        },
+        selectClass: {
             type: String,
             default: null,
         },
@@ -292,19 +312,11 @@ export default defineComponent({
             >,
             default: () => ({}),
         },
-        modelModifiers: {
-            type: Object as PropType<{
-                trim?: boolean;
-                lazy?: boolean;
-                number?: boolean;
-            }>,
-            default: () => ({}),
-        },
     },
-    emits: ["update:modelValue", "blur", "change"],
+    emits: ["update:modelValue", "change"],
     setup(props, { emit, slots }) {
         const { ui, attrs } = useUI(
-            "input",
+            "select",
             toRef(props, "ui"),
             config,
             toRef(props, "class")
@@ -316,83 +328,85 @@ export default defineComponent({
         });
 
         const {
-            emitFormBlur,
-            emitFormInput,
-            size: sizeFormGroup,
-            color,
+            emitFormChange,
             inputId,
+            color,
+            size: sizeFormGroup,
             name,
         } = useFormGroup(props, config);
 
-        const size = computed<Sizes>(
+        const size = computed(
             () => sizeButtonGroup.value ?? sizeFormGroup.value
         );
 
-        const modelModifiers = ref(
-            defu({}, props.modelModifiers, {
-                trim: false,
-                lazy: false,
-                number: false,
-            })
-        );
-
-        const input = ref<HTMLInputElement | null>(null);
-
-        const autoFocus = () => {
-            if (props.autofocus) {
-                input.value?.focus();
-            }
-        };
-
-        // Custom function to handle the v-model properties
-        const updateInput = (value: string) => {
-            if (modelModifiers.value.trim) {
-                value = value.trim();
-            }
-
-            if (modelModifiers.value.number || props.type === "number") {
-                value = looseToNumber(value);
-            }
-
-            emit("update:modelValue", value);
-            emitFormInput();
-        };
-
         const onInput = (event: Event) => {
-            if (!modelModifiers.value.lazy) {
-                updateInput((event.target as HTMLInputElement).value);
-            }
+            emit("update:modelValue", (event.target as HTMLInputElement).value);
         };
 
         const onChange = (event: Event) => {
-            if (props.type === "file") {
-                const value = (event.target as HTMLInputElement).files;
-                emit("change", value);
-            } else {
-                const value = (event.target as HTMLInputElement).value;
-                emit("change", value);
-                if (modelModifiers.value.lazy) {
-                    updateInput(value);
-                }
-                // Update trimmed input so that it has same behavior as native input https://github.com/vuejs/core/blob/5ea8a8a4fab4e19a71e123e4d27d051f5e927172/packages/runtime-dom/src/directives/vModel.ts#L63
-                if (modelModifiers.value.trim) {
-                    (event.target as HTMLInputElement).value = value.trim();
-                }
+            emit("change", (event.target as HTMLInputElement).value);
+            emitFormChange();
+        };
+
+        const guessOptionValue = (option: any) => {
+            return get(option, props.valueAttribute, "");
+        };
+
+        const guessOptionText = (option: any) => {
+            return get(option, props.optionAttribute, "");
+        };
+
+        const normalizeOption = (option: any) => {
+            if (["string", "number", "boolean"].includes(typeof option)) {
+                return {
+                    [props.valueAttribute]: option,
+                    [props.optionAttribute]: option,
+                };
             }
+
+            return {
+                ...option,
+                [props.valueAttribute]: guessOptionValue(option),
+                [props.optionAttribute]: guessOptionText(option),
+            };
         };
 
-        const onBlur = (event: FocusEvent) => {
-            emitFormBlur();
-            emit("blur", event);
-        };
-
-        onMounted(() => {
-            setTimeout(() => {
-                autoFocus();
-            }, props.autofocusDelay);
+        const normalizedOptions = computed(() => {
+            return props.options.map((option) => normalizeOption(option));
         });
 
-        const inputClass = computed(() => {
+        const normalizedOptionsWithPlaceholder: ComputedRef<
+            { disabled?: boolean; children: { disabled?: boolean }[] }[]
+        > = computed(() => {
+            if (!props.placeholder) {
+                return normalizedOptions.value;
+            }
+
+            return [
+                {
+                    [props.valueAttribute]: "",
+                    [props.optionAttribute]: props.placeholder,
+                    disabled: true,
+                },
+                ...normalizedOptions.value,
+            ];
+        });
+
+        const normalizedValue = computed(() => {
+            const normalizeModelValue = normalizeOption(props.modelValue);
+            const foundOption = normalizedOptionsWithPlaceholder.value.find(
+                (option) =>
+                    option[props.valueAttribute] ===
+                    normalizeModelValue[props.valueAttribute]
+            );
+            if (!foundOption) {
+                return "";
+            }
+
+            return foundOption[props.valueAttribute];
+        });
+
+        const selectClass = computed(() => {
             const variant =
                 ui.value.color?.[color.value as string]?.[
                     props.variant as string
@@ -403,17 +417,16 @@ export default defineComponent({
                     ui.value.base,
                     ui.value.form,
                     rounded.value,
-                    ui.value.placeholder,
-                    props.type === "file" && ui.value.file.base,
                     ui.value.size[size.value],
                     props.padded ? ui.value.padding[size.value] : "p-0",
-                    variant?.replaceAll("{color}", color.value ?? "gray"),
+                    variant?.replaceAll("{color}", color.value),
                     (isLeading.value || slots.leading) &&
                         ui.value.leading.padding[size.value],
                     (isTrailing.value || slots.trailing) &&
                         ui.value.trailing.padding[size.value]
                 ),
-                props.inputClass
+                props.placeholder && !props.modelValue && ui.value.placeholder,
+                props.selectClass
             );
         });
 
@@ -442,7 +455,7 @@ export default defineComponent({
             return props.leadingIcon || props.icon;
         });
 
-        const trailingIconName = computed(() => {
+        const trailingIconName = computed<IconName>(() => {
             if (props.loading && !isLeading.value) {
                 return props.loadingIcon;
             }
@@ -493,11 +506,12 @@ export default defineComponent({
             // eslint-disable-next-line vue/no-dupe-keys
             name,
             inputId,
-            input,
+            normalizedOptionsWithPlaceholder,
+            normalizedValue,
             isLeading,
             isTrailing,
             // eslint-disable-next-line vue/no-dupe-keys
-            inputClass,
+            selectClass,
             leadingIconName,
             leadingIconClass,
             leadingWrapperIconClass,
@@ -506,8 +520,13 @@ export default defineComponent({
             trailingWrapperIconClass,
             onInput,
             onChange,
-            onBlur,
         };
     },
 });
 </script>
+
+<style scoped>
+.form-select {
+    background-image: none;
+}
+</style>

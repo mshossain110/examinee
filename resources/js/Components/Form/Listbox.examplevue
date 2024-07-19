@@ -1,0 +1,673 @@
+<template>
+  <component
+    :is="searchable ? 'HCombobox' : 'HListbox'"
+    v-slot="{ open }"
+    :by="by"
+    :name="name"
+    :model-value="modelValue"
+    :multiple="multiple"
+    :disabled="disabled"
+    as="div"
+    :class="ui.wrapper"
+    @update:model-value="onUpdate"
+  >
+    <input
+      v-if="required"
+      :value="modelValue"
+      :required="required"
+      :class="ui.required"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+
+    <component
+      :is="searchable ? 'HComboboxButton' : 'HListboxButton'"
+      ref="trigger"
+      as="div"
+      role="button"
+      :class="ui.trigger"
+    >
+      <slot :open="open" :disabled="disabled" :loading="loading">
+        <button :id="inputId" :class="selectClass" :disabled="disabled" type="button" v-bind="attrs">
+          <span v-if="(isLeading && leadingIconName) || $slots.leading" :class="leadingWrapperIconClass">
+            <slot name="leading" :disabled="disabled" :loading="loading">
+              <Icon :name="leadingIconName" :class="leadingIconClass" />
+            </slot>
+          </span>
+
+          <slot name="label">
+            <span v-if="label" :class="ui.label">{{ label }}</span>
+            <span v-else :class="ui.label">{{ placeholder || '&nbsp;' }}</span>
+          </slot>
+
+          <span v-if="(isTrailing && trailingIconName) || $slots.trailing" :class="trailingWrapperIconClass">
+            <slot name="trailing" :disabled="disabled" :loading="loading">
+              <Icon :name="trailingIconName" :class="trailingIconClass" aria-hidden="true" />
+            </slot>
+          </span>
+        </button>
+      </slot>
+    </component>
+
+    <div v-if="open" ref="container" :class="[ui.container, ui.width]">
+      <Transition appear v-bind="ui.transition">
+        <div>
+          <div v-if="popper.arrow" data-popper-arrow :class="Object.values(ui.arrow)" />
+
+          <component :is="searchable ? 'HComboboxOptions' : 'HListboxOptions'" static :class="[ui.base, ui.ring, ui.rounded, ui.shadow, ui.background, ui.padding, ui.height]">
+            <HComboboxInput
+              v-if="searchable"
+              :display-value="() => query"
+              name="q"
+              :placeholder="searchablePlaceholder"
+              autofocus
+              autocomplete="off"
+              :class="ui.input"
+              @change="onQueryChange"
+            />
+            <component
+              :is="searchable ? 'HComboboxOption' : 'HListboxOption'"
+              v-for="(option, index) in filteredOptions"
+              v-slot="{ active, selected, disabled: optionDisabled }"
+              :key="index"
+              as="template"
+              :value="valueAttribute ? option[valueAttribute] : option"
+              :disabled="option.disabled"
+            >
+              <li :class="[ui.option.base, ui.option.rounded, ui.option.padding, ui.option.size, ui.option.color, active ? ui.option.active : ui.option.inactive, selected && ui.option.selected, optionDisabled && ui.option.disabled]">
+                <div :class="ui.option.container">
+                  <slot name="option" :option="option" :active="active" :selected="selected">
+                    <Icon v-if="option.icon" :name="option.icon" :class="[ui.option.icon.base, active ? ui.option.icon.active : ui.option.icon.inactive, option.iconClass]" aria-hidden="true" />
+                    <UAvatar
+                      v-else-if="option.avatar"
+                      v-bind="{ size: ui.option.avatar.size, ...option.avatar }"
+                      :class="ui.option.avatar.base"
+                      aria-hidden="true"
+                    />
+                    <span v-else-if="option.chip" :class="ui.option.chip.base" :style="{ background: `#${option.chip}` }" />
+
+                    <span class="truncate">{{ ['string', 'number'].includes(typeof option) ? option : option[optionAttribute] }}</span>
+                  </slot>
+                </div>
+
+                <span v-if="selected" :class="[ui.option.selectedIcon.wrapper, ui.option.selectedIcon.padding]">
+                  <Icon :name="selectedIcon" :class="ui.option.selectedIcon.base" aria-hidden="true" />
+                </span>
+              </li>
+            </component>
+
+            <component :is="searchable ? 'HComboboxOption' : 'HListboxOption'" v-if="creatable && createOption" v-slot="{ active, selected }" :value="createOption" as="template">
+              <li :class="[ui.option.base, ui.option.rounded, ui.option.padding, ui.option.size, ui.option.color, active ? ui.option.active : ui.option.inactive]">
+                <div :class="ui.option.container">
+                  <slot name="option-create" :option="createOption" :active="active" :selected="selected">
+                    <span :class="ui.option.create">Create "{{ createOption[optionAttribute] }}"</span>
+                  </slot>
+                </div>
+              </li>
+            </component>
+            <p v-else-if="searchable && query && !filteredOptions?.length" :class="ui.option.empty">
+              <slot name="option-empty" :query="query">
+                No results for "{{ query }}".
+              </slot>
+            </p>
+            <p v-else-if="!filteredOptions?.length" :class="ui.empty">
+              <slot name="empty" :query="query">
+                No options.
+              </slot>
+            </p>
+          </component>
+        </div>
+      </Transition>
+    </div>
+  </component>
+</template>
+
+<script lang="ts">
+import { ref, computed, toRef, watch, defineComponent } from 'vue'
+import type { PropType } from 'vue'
+import {
+  Combobox as HCombobox,
+  ComboboxButton as HComboboxButton,
+  ComboboxOptions as HComboboxOptions,
+  ComboboxOption as HComboboxOption,
+  ComboboxInput as HComboboxInput,
+  Listbox as HListbox,
+  ListboxButton as HListboxButton,
+  ListboxOptions as HListboxOptions,
+  ListboxOption as HListboxOption,
+  provideUseId
+} from '@headlessui/vue'
+import { computedAsync, useDebounceFn } from '@vueuse/core'
+import { defu } from 'defu'
+import { twMerge, twJoin } from 'tailwind-merge'
+import Icon from '@/Components/Icon.vue'
+import { useUI } from '@/Composables/useUI'
+import { usePopper } from '@/Composables/usePopper'
+import { useFormGroup } from '@/Composables/useFormGroup'
+import { get, useId, mergeConfig } from '@/Composables/utils'
+import { useInjectButtonGroup } from '@/Composables/useButtonGroup'
+import type { PopperOptions, Strategy } from '../../types'
+
+
+const config = {
+    wrapper: "relative",
+    base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0",
+    form: "form-select",
+    select: '',
+    placeholder: "text-gray-400 dark:text-gray-500",
+    rounded: "rounded-md",
+    file: {
+        base: "file:mr-1.5 file:font-medium file:text-gray-500 dark:file:text-gray-400 file:bg-transparent file:border-0 file:p-0 file:outline-none",
+    },
+    size: {
+        "2xs": "text-xs",
+        xs: "text-xs",
+        sm: "text-sm",
+        md: "text-sm",
+        lg: "text-sm",
+        xl: "text-base",
+    },
+    gap: {
+        "2xs": "gap-x-1",
+        xs: "gap-x-1.5",
+        sm: "gap-x-1.5",
+        md: "gap-x-2",
+        lg: "gap-x-2.5",
+        xl: "gap-x-2.5",
+    },
+    padding: {
+        "2xs": "px-2 py-1",
+        xs: "px-2.5 py-1.5",
+        sm: "px-2.5 py-1.5",
+        md: "px-3 py-2",
+        lg: "px-3.5 py-2.5",
+        xl: "px-3.5 py-2.5",
+    },
+    leading: {
+        padding: {
+            "2xs": "ps-7",
+            xs: "ps-8",
+            sm: "ps-9",
+            md: "ps-10",
+            lg: "ps-11",
+            xl: "ps-12",
+        },
+    },
+    trailing: {
+        padding: {
+            "2xs": "pe-7",
+            xs: "pe-8",
+            sm: "pe-9",
+            md: "pe-10",
+            lg: "pe-11",
+            xl: "pe-12",
+        },
+    },
+    color: {
+        white: {
+            outline:
+                "shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400",
+        },
+        gray: {
+            outline:
+                "shadow-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400",
+        },
+    },
+    variant: {
+        outline:
+            "shadow-sm bg-transparent text-gray-900 dark:text-white ring-1 ring-inset ring-{color}-500 dark:ring-{color}-400 focus:ring-2 focus:ring-{color}-500 dark:focus:ring-{color}-400",
+        none: "bg-transparent focus:ring-0 focus:shadow-none",
+    },
+    icon: {
+        base: "flex-shrink-0 text-gray-400 dark:text-gray-500",
+        color: "text-{color}-500 dark:text-{color}-400",
+        loading: "animate-spin",
+        size: {
+            "2xs": "h-4 w-4",
+            xs: "h-4 w-4",
+            sm: "h-5 w-5",
+            md: "h-5 w-5",
+            lg: "h-5 w-5",
+            xl: "h-6 w-6",
+        },
+        leading: {
+            wrapper: "absolute inset-y-0 start-0 flex items-center",
+            pointer: "pointer-events-none",
+            padding: {
+                "2xs": "px-2",
+                xs: "px-2.5",
+                sm: "px-2.5",
+                md: "px-3",
+                lg: "px-3.5",
+                xl: "px-3.5",
+            },
+        },
+        trailing: {
+            wrapper: "absolute inset-y-0 end-0 flex items-center",
+            pointer: "pointer-events-none",
+            padding: {
+                "2xs": "px-2",
+                xs: "px-2.5",
+                sm: "px-2.5",
+                md: "px-3",
+                lg: "px-3.5",
+                xl: "px-3.5",
+            },
+        },
+    },
+    default: {
+        size: "sm",
+        color: "white",
+        variant: "outline",
+        loadingIcon: "LoadingIcon",
+        trailingIcon: "MagnifyingGlassIcon",
+        selectedIcon: "",
+        clearSearchOnClose: true,
+        showCreateOptionWhen: ''
+    },
+};
+
+ type SelectSize = keyof typeof config.size 
+ type SelectColor = keyof typeof config.color 
+ type SelectVariant = keyof typeof config.variant 
+
+
+export default defineComponent({
+  components: {
+    HCombobox,
+    HComboboxButton,
+    HComboboxOptions,
+    HComboboxOption,
+    HComboboxInput,
+    HListbox,
+    HListboxButton,
+    HListboxOptions,
+    HListboxOption,
+    Icon,
+  },
+  inheritAttrs: false,
+  props: {
+    modelValue: {
+      type: [String, Number, Object, Array, Boolean],
+      default: ''
+    },
+    query: {
+      type: String,
+      default: null
+    },
+    by: {
+      type: String,
+      default: undefined
+    },
+    options: {
+      type: Array as PropType<{ [key: string]: any, disabled?: boolean }[] | string[]>,
+      default: () => []
+    },
+    id: {
+      type: String,
+      default: null
+    },
+    name: {
+      type: String,
+      default: null
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    icon: {
+      type: String,
+      default: null
+    },
+    loadingIcon: {
+      type: String,
+      default: () => config.default.loadingIcon
+    },
+    leadingIcon: {
+      type: String,
+      default: null
+    },
+    trailingIcon: {
+      type: String,
+      default: () => config.default.trailingIcon
+    },
+    trailing: {
+      type: Boolean,
+      default: false
+    },
+    leading: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    selectedIcon: {
+      type: String,
+      default: () => config.default.selectedIcon
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    searchable: {
+      type: [Boolean, Function] as PropType<boolean | ((query: string) => Promise<any[]> | any[])>,
+      default: false
+    },
+    searchablePlaceholder: {
+      type: String,
+      default: 'Search...'
+    },
+    searchableLazy: {
+      type: Boolean,
+      default: false
+    },
+    clearSearchOnClose: {
+      type: Boolean,
+      default: () => config.default.clearSearchOnClose
+    },
+    debounce: {
+      type: Number,
+      default: 200
+    },
+    creatable: {
+      type: Boolean,
+      default: false
+    },
+    showCreateOptionWhen: {
+      type: [String, Function] as PropType<'always' | 'empty' | ((query: string, results: any[]) => boolean)>,
+      default: () => config.default.showCreateOptionWhen
+    },
+    placeholder: {
+      type: String,
+      default: null
+    },
+    padded: {
+      type: Boolean,
+      default: true
+    },
+    size: {
+      type: String as PropType<SelectSize>,
+      default: null,
+      validator (value: string) {
+        return Object.keys(config.size).includes(value)
+      }
+    },
+    color: {
+      type: String as PropType<SelectColor>,
+      default: () => config.default.color,
+      validator (value: string) {
+        return [ ...Object.keys(config.color)].includes(value)
+      }
+    },
+    variant: {
+      type: String as PropType<SelectVariant>,
+      default: () => config.default.variant,
+      validator (value: string) {
+        return [
+          ...Object.keys(config.variant),
+          ...Object.values(config.color).flatMap(value => Object.keys(value))
+        ].includes(value)
+      }
+    },
+    optionAttribute: {
+      type: String,
+      default: 'label'
+    },
+    valueAttribute: {
+      type: String,
+      default: null
+    },
+    searchAttributes: {
+      type: Array,
+      default: null
+    },
+    popper: {
+      type: Object as PropType<PopperOptions>,
+      default: () => ({})
+    },
+    selectClass: {
+      type: String,
+      default: null
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => ''
+    },
+    ui: {
+      type: Object as PropType<Partial<typeof config> & { strategy?: Strategy }>,
+      default: () => ({})
+    },
+  },
+  emits: ['update:modelValue', 'update:query', 'open', 'close', 'change'],
+  setup (props, { emit, slots }) {
+    const { ui, attrs } = useUI('selectMenu', toRef(props, 'ui'), config, toRef(props, 'class'))
+
+    // const popper = computed<PopperOptions>(() => defu({}, props.popper, ui.value.popper as PopperOptions))
+
+    // const [trigger, container] = usePopper(popper.value)
+
+    const { size: sizeButtonGroup, rounded } = useInjectButtonGroup({ ui, props })
+    const { emitFormBlur, emitFormChange, inputId, color, size: sizeFormGroup, name } = useFormGroup(props, config)
+
+    const size = computed(() => sizeButtonGroup.value ?? sizeFormGroup.value)
+
+    const internalQuery = ref('')
+    const query = computed({
+      get () {
+        return props.query ?? internalQuery.value
+      },
+      set (value) {
+        internalQuery.value = value
+        emit('update:query', value)
+      }
+    })
+
+    const label = computed(() => {
+      if (props.multiple) {
+        if (Array.isArray(props.modelValue) && props.modelValue.length) {
+          return `${props.modelValue.length} selected`
+        } else {
+          return null
+        }
+      } else if (props.modelValue !== undefined && props.modelValue !== null) {
+        if (props.valueAttribute) {
+          const option = options.value.find(option => option[props.valueAttribute] === props.modelValue)
+          return option ? option[props.optionAttribute] : null
+        } else {
+          return ['string', 'number'].includes(typeof props.modelValue) ? props.modelValue : props.modelValue[props.optionAttribute]
+        }
+      }
+
+      return null
+    })
+
+    const selectClass = computed(() => {
+      const variant = ui.value.color?.[color.value as string]?.[props.variant as string] || ui.value.variant[props.variant]
+
+      return twMerge(twJoin(
+        ui.value.base,
+        ui.value.select,
+        rounded.value,
+        ui.value.size[size.value],
+        ui.value.gap[size.value],
+        props.padded ? ui.value.padding[size.value] : 'p-0',
+        variant?.replaceAll('{color}', color.value),
+        (isLeading.value || slots.leading) && ui.value.leading.padding[size.value],
+        (isTrailing.value || slots.trailing) && ui.value.trailing.padding[size.value]
+      ), props.placeholder && !props.modelValue && ui.value.placeholder, props.selectClass)
+    })
+
+    const isLeading = computed(() => {
+      return (props.icon && props.leading) || (props.icon && !props.trailing) || (props.loading && !props.trailing) || props.leadingIcon
+    })
+
+    const isTrailing = computed(() => {
+      return (props.icon && props.trailing) || (props.loading && props.trailing) || props.trailingIcon
+    })
+
+    const leadingIconName = computed(() => {
+      if (props.loading) {
+        return props.loadingIcon
+      }
+
+      return props.leadingIcon || props.icon
+    })
+
+    const trailingIconName = computed(() => {
+      if (props.loading && !isLeading.value) {
+        return props.loadingIcon
+      }
+
+      return props.trailingIcon || props.icon
+    })
+
+    const leadingWrapperIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.leading.wrapper,
+        ui.value.icon.leading.pointer,
+        ui.value.icon.leading.padding[size.value]
+      )
+    })
+
+    const leadingIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.base,
+        color.value && ui.value.icon.color.replaceAll('{color}', color.value),
+        ui.value.icon.size[size.value],
+        props.loading && ui.value.icon.loading
+      )
+    })
+
+    const trailingWrapperIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.trailing.wrapper,
+        ui.value.icon.trailing.pointer,
+        ui.value.icon.trailing.padding[size.value]
+      )
+    })
+
+    const trailingIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.base,
+        color.value && ui.value.icon.color.replaceAll('{color}', color.value),
+        ui.value.icon.size[size.value],
+        props.loading && !isLeading.value && ui.value.icon.loading
+      )
+    })
+
+    const debouncedSearch = props.searchable && typeof props.searchable === 'function' ? useDebounceFn(props.searchable, props.debounce) : undefined
+
+    const options = computedAsync(async () => {
+      if (debouncedSearch) {
+        return await debouncedSearch(query.value)
+      }
+
+      return props.options || []
+    }, [], {
+      lazy: props.searchableLazy
+    })
+
+    const filteredOptions = computed(() => {
+      if (!query.value || debouncedSearch) {
+        return options.value
+      }
+
+      return options.value.filter((option: any) => {
+        return (props.searchAttributes?.length ? props.searchAttributes : [props.optionAttribute]).some((searchAttribute: any) => {
+          if (['string', 'number'].includes(typeof option)) {
+            return String(option).search(new RegExp(query.value, 'i')) !== -1
+          }
+
+          const child = get(option, searchAttribute)
+
+          return child !== null && child !== undefined && String(child).search(new RegExp(query.value, 'i')) !== -1
+        })
+      })
+    })
+
+    const createOption = computed(() => {
+      if (query.value === '') {
+        return null
+      }
+      if (props.showCreateOptionWhen === 'empty' && filteredOptions.value.length) {
+        return null
+      }
+      if (props.showCreateOptionWhen === 'always') {
+        const existingOption = filteredOptions.value.find(option => ['string', 'number'].includes(typeof option) ? option === query.value : option[props.optionAttribute] === query.value)
+        if (existingOption) {
+          return null
+        }
+      }
+      if (typeof props.showCreateOptionWhen === 'function') {
+        if (!props.showCreateOptionWhen(query.value, filteredOptions.value)) {
+          return null
+        }
+      }
+      return ['string', 'number'].includes(typeof props.modelValue) ? query.value : { [props.optionAttribute]: query.value }
+    })
+
+    function clearOnClose () {
+      if (props.clearSearchOnClose) {
+        query.value = ''
+      }
+    }
+
+    // watch(container, (value) => {
+    //   if (value) {
+    //     emit('open')
+    //   } else {
+    //     clearOnClose()
+    //     emit('close')
+    //     emitFormBlur()
+    //   }
+    // })
+
+    function onUpdate (value: any) {
+      emit('update:modelValue', value)
+      emit('change', value)
+      emitFormChange()
+    }
+
+    function onQueryChange (event: any) {
+      query.value = event.target.value
+    }
+
+    provideUseId(() => useId())
+
+    return {
+      ui,
+      attrs,
+      // eslint-disable-next-line vue/no-dupe-keys
+      name,
+      inputId,
+      // eslint-disable-next-line vue/no-dupe-keys
+      // popper,
+      // trigger,
+      // container,
+      label,
+      isLeading,
+      isTrailing,
+      // eslint-disable-next-line vue/no-dupe-keys
+      selectClass,
+      leadingIconName,
+      leadingIconClass,
+      leadingWrapperIconClass,
+      trailingIconName,
+      trailingIconClass,
+      trailingWrapperIconClass,
+      filteredOptions,
+      createOption,
+      // eslint-disable-next-line vue/no-dupe-keys
+      query,
+      onUpdate,
+      onQueryChange
+    }
+  }
+})
+</script>

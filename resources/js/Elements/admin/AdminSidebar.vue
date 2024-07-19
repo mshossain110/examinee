@@ -60,8 +60,8 @@
 
 <script lang="ts">
 import { Link } from "@inertiajs/vue3";
-import useAuth from '@/Services/useAuth';
-import { useSidebarState } from '@/Services/useSidebarState'
+import useAuth from '@/Composables/useAuth';
+import { useSidebarState } from '@/Composables/useSidebarState'
 import {
   UsersIcon,
   BuildingLibraryIcon,
@@ -93,7 +93,7 @@ export default {
         { name: "Users", icon: UsersIcon,  href: route('admin.users.index'), current: route().current("admin.users.index") },
         { name: "Roles", icon: ShieldCheckIcon, href: "#", current: false },
         { name: "Permissions", icon: ShieldExclamationIcon, href: "#", current: false },
-        { name: "Server Info", icon: ServerStackIcon, href: "#", current: false },
+        { name: "Server Info", icon: ServerStackIcon, href: route('admin.server-info'), current: route().current('admin.server-info') },
         { name: "App Settings", icon: CogIcon, href: "#", current: false },
     ];
     return {

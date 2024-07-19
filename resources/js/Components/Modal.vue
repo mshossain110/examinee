@@ -30,7 +30,7 @@
   import { computed, toRef, defineComponent } from 'vue'
   import type { PropType } from 'vue'
   import { Dialog as HDialog, DialogPanel as HDialogPanel, TransitionRoot, TransitionChild, provideUseId } from '@headlessui/vue'
-  import { useUI } from '@/Services/useUI';
+  import { useUI } from '@/Composables/useUI';
   import type { Strategy } from '@/types';
 
 

@@ -12,7 +12,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useUI } from '@/Services/useUI';
+import { useUI } from '@/Composables/useUI';
 import { computed, toRef } from 'vue';
 
 const emit = defineEmits(['update:checked']);

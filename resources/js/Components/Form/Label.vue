@@ -42,8 +42,8 @@
   <script lang="ts">
   import { computed, defineComponent, provide, inject, ref, toRef } from 'vue'
   import type { Ref, PropType } from 'vue'
-  import { useUI } from '@/Services/useUI';
-  import { useId } from '@/Services/utils';
+  import { useUI } from '@/Composables/useUI';
+  import { useId } from '@/Composables/utils';
   import type { Strategy } from '@/types';
   import type { FormError, InjectedFormGroupValue, Sizes } from '@/types'
 

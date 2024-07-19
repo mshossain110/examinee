@@ -20,8 +20,7 @@
   import { computed, toRef, defineComponent } from 'vue'
   import type { PropType } from 'vue'
   import { twMerge, twJoin } from 'tailwind-merge'
-  import { useUI } from '@/Services/useUI';
-  import { mergeConfig } from '@/Services/utils';
+  import { useUI } from '@/Composables/useUI';
   import type { Strategy } from '@/types';
 
   

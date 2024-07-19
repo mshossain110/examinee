@@ -1,6 +1,6 @@
 import { computed, toValue, useAttrs } from 'vue'
 import type { Ref } from 'vue'
-import { mergeConfig, omit, get } from '@/Services/utils';
+import { mergeConfig, omit, get } from '@/Composables/utils';
 import type { Strategy } from '@/types'
 
 export const useUI = <T>(key: string, $ui?: Ref<Partial<T> & { strategy?: Strategy } | undefined>, $config?: Ref<T> | T, $wrapperClass?: Ref<string>) => {

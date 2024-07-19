@@ -603,7 +603,7 @@
 
 <script>
 import axios from 'axios';
-import useAuth from '@/Services/useAuth';
+import useAuth from '@/Composables/useAuth';
 import { ChevronRightIcon } from '@heroicons/vue/24/outline';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import RolesBadges from '@/Elements/roles/RolesBadges.vue'

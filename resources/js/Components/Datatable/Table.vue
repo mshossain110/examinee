@@ -82,10 +82,10 @@
 <script lang="ts">
 import { PropType, AriaAttributes, computed, defineComponent, toRaw, toRef } from 'vue';
 import { useVModel } from '@vueuse/core';
-import { useUI } from '@/Services/useUI';
+import { useUI } from '@/Composables/useUI';
 import { defu } from 'defu';
 import { upperFirst } from 'lodash';
-import { mergeConfig, get } from '@/Services/utils';
+import { mergeConfig, get } from '@/Composables/utils';
 import type { Strategy } from '@/types';
 
 let config = {

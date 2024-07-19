@@ -19,4 +19,5 @@ yarn-error.log
 /.vscode
 /.composer
 /.npm
+/.config
 .DS_Store

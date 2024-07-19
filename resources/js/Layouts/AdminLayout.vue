@@ -14,11 +14,11 @@
         <div class="mb-20 p-4 bg-white dark:bg-slate-800 dark:text-gray-200">
           <slot />
         </div>
-        <AdminFooter
+        <!-- <AdminFooter
           class="sticky top-[100vh] w-full"
           footer-class="border-slate-900/5 dark:border-slate-700"
           border-class=""
-        />
+        /> -->
       </div>
     </div>
   </div>
@@ -27,15 +27,15 @@
 <script>
 import AdminNavBar from '@/Elements/admin/AdminNavBar.vue';
 import AdminSidebar from '@/Elements/admin/AdminSidebar.vue';
-import AdminFooter from '@/Elements/admin/AdminFooter.vue';
-import { useSidebarState } from '@/Services/useSidebarState'
+// import AdminFooter from '@/Elements/admin/AdminFooter.vue';
+import { useSidebarState } from '@/Composables/useSidebarState'
 
 export default {
   name: 'AdminLayout',
   components: {
     AdminNavBar,
     AdminSidebar,
-    AdminFooter,
+    // AdminFooter,
   },
   props: {},
   setup() {

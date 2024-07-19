@@ -123,9 +123,9 @@ import {
   UserCircleIcon,
 } from '@heroicons/vue/24/outline';
 import { Switch, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
-import useAuth from '@/Services/useAuth';
+import useAuth from '@/Composables/useAuth';
 import { useDark, useToggle } from '@vueuse/core'
-import { useSidebarState } from '@/Services/useSidebarState'
+import { useSidebarState } from '@/Composables/useSidebarState'
 
 export default {
   name: 'AdminNavBar',

@@ -265,7 +265,7 @@
 </template>
 
 <script lang="ts">
-import { track } from '@/Services/analytics';
+import { track } from '@/Composables/analytics';
 import GithubButton from 'vue-github-button';
 // https://buttons.github.io/
 

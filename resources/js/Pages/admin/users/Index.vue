@@ -1,13 +1,14 @@
 <template>
   <AdminLayout>
     <div id="users">
+      <Card class="mb-5">
+        <h1>Users</h1>
+        <Breadcrumb :items="breadcrumb" />
+      </Card>
 
       <Card>
-        <template #header>
-          <h3>Users</h3>
-          <Breadcrumb :items="breadcrumb" />
-        </template>
-
+        <Select :options="['Varified', 'Unverified']" ></Select>
+        hello
         <DataTable v-model="selected" :rows="response.data" :columns="columns">
           <template #name-data="{ row }">
             <div class="flex">
@@ -35,8 +36,6 @@
         </DataTable>
         <Pagination :paginate="response.meta" class="justify-end" />
       </Card>
-
-
     </div>
   </AdminLayout>
 </template>
@@ -56,6 +55,7 @@ import Modal from '@/Components/Modal.vue';
 import Card from '@/Components/Card.vue';
 import { router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue';
+import Select from '@/Components/Form/Select.vue';
 
 
 export default {
@@ -73,8 +73,8 @@ export default {
     PencilIcon,
     Modal,
     Card,
-    Pagination
-
+    Pagination,
+    Select
   },
   props: {
     response: {
