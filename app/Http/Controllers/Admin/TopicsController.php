@@ -1,19 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Request;
+
+use Inertia\Inertia;
 use App\Models\Topic;
+use Illuminate\Http\Request;
 use App\Http\Requests\TopicRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\TopicResource;
 
-class TopicController extends Controller
+class TopicsController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Topic::class);
+    }
+    
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -21,48 +26,49 @@ class TopicController extends Controller
 
         $topics = Topic::query();
 
+        $topics = $topics->withCount(['courses', 'exams']);
+
         if($search) {
             $topics = $topics->where('title', 'like', "%$search%");
         }
 
-        $topics = $topics->get();
+        $topics = $topics->paginate();
         
-        $resource = JsonResource::collection($topics);
-
-        return $resource;
+        $resource = TopicResource::collection($topics);
+        return Inertia::render(
+            'admin/topics/Index', 
+            [
+                'response' => $resource
+            ]
+        );
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('admin/topics/Create');
+    }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(TopicRequest $request)
     {
         $topic = Topic::create( $request->all() );
-        
-        $resource = New JsonResource($topic);
 
-        return $resource;
-        
+        return to_route('admin.topics.edit', $topic);
     }
+
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Topic  $topic
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the specified resource.
      */
-    public function show(Topic $topic)
+    public function edit(Topic $topic)
     {
-        $resource = New JsonResource($topic);
-
-        return $resource;
+        return Inertia::render('admin/topics/Edit', [ 'topic' => new TopicResource($topic) ]);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -76,23 +82,17 @@ class TopicController extends Controller
         $topic->title = $request->title;
         $topic->description = $request->description;
         $topic->save();
-        $resource = New JsonResource($topic);
 
-        return $resource;
+        return to_route('admin.topics.edit', $topic);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Topic  $topic
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Topic $topic)
     {
-        // dd($topic);
-        $topic->question()->detach();
         $topic->delete();
 
-        return response()->json(['success' => true, 'message' => 'Topic has deleted success fully.']);
+        return to_route('admin.topics.index');
     }
 }

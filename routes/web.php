@@ -11,6 +11,7 @@ use App\Http\Controllers\LearningController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\TopicsController;
 use App\Http\Controllers\Admin\CoursesController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -36,6 +37,7 @@ Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->g
     Route::resource('users', UsersController::class);
     Route::resource('roles', RolesController::class);
     Route::resource('courses', CoursesController::class);
+    Route::resource('topics', TopicsController::class)->except(['show']);
     Route::get('/server-info', [ServerInfoController::class, 'index'])->name('server-info');
     Route::post('/oauth-revoke/{provider}', [SocialiteController::class, 'revokeSocialProvider']);
 });

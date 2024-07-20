@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\ExamController;
 use App\Http\Controllers\API\FileController;
-use App\Http\Controllers\API\TopicController;
 use App\Http\Controllers\API\CourseController;
 use App\Http\Controllers\API\LessonController;
 use App\Http\Controllers\API\SessionController;
@@ -33,7 +32,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('courses/{course}/students', [CourseController::class, 'students']);
     Route::apiResource('course', CourseController::class);
     Route::apiResource('lessons', LessonController::class);
-    Route::apiResource('topics', TopicController::class);
 
     Route::apiResource('subjects', SubjectController::class);
     Route::put('sessions/{session}/attach-exam', [SessionController::class,'attachExam']);
