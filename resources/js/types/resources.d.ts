@@ -110,7 +110,9 @@ export interface Subject {
     created_at?: string;
     updated_at?: string;
     courses?: Course[];
-    exams?: any;
+    exams?: Exam[];
+    courses_count?: number;
+    exams_count?: number;
 }
 
 export interface Exam {

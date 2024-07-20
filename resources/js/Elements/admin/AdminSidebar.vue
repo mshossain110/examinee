@@ -92,6 +92,7 @@ export default {
         { name: "Admin", icon: BuildingLibraryIcon,  href: route('admin.dashboard'), current: route().current("admin.dashboard") },
         { name: "Users", icon: UsersIcon,  href: route('admin.users.index'), current: route().current("admin.users.index") },
         { name: "Roles", icon: ShieldCheckIcon, href: route('admin.roles.index'), current: route().current("admin.roles.index") },
+        { name: "Subjects", icon: ShieldCheckIcon, href: route('admin.subjects.index'), current: route().current("admin.subjects.index") },
         { name: "Topics", icon: ShieldExclamationIcon, href: route('admin.topics.index'), current: route().current("admin.topics.index") },
         { name: "Courses", icon: ShieldExclamationIcon, href: route('admin.courses.index'), current: route().current("admin.courses.index") },
         { name: "Server Info", icon: ServerStackIcon, href: route('admin.server-info'), current: route().current('admin.server-info') },
