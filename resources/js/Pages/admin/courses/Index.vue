@@ -4,11 +4,11 @@
             <Card class="mb-5">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h1>Roles</h1>
+                        <h1>Courses</h1>
                         <Breadcrumb :items="breadcrumb" />
                     </div>
                     <div>
-                        <Button is="a" :href="route('admin.roles.create')">Create Role </Button>
+                        <Button is="a" :href="route('admin.courses.create')">Create Course </Button>
                     </div>
                 </div>
             </Card>
@@ -22,16 +22,14 @@
                     <template #actions-data="{ row }">
                         <div class="flex">
                             <Link
-                                :href="route('admin.roles.edit', row)"
-                                v-if="canModify(row.name)"
+                                :href="route('admin.courses.edit', row)"
                             >
                                 <PencilIcon class="mr-2 h-6 w-6"></PencilIcon>
                             </Link>
                             <Link
-                                @click="deleteRole(row)"
+                                @click="deleteCourse(row)"
                                 as="button"
                                 href=""
-                                v-if="canModify(row.name)"
                             >
                                 <TrashIcon class="mr-2 h-6 w-6"></TrashIcon>
                             </Link>
@@ -52,7 +50,7 @@ import {
 } from "@heroicons/vue/24/outline";
 
 import CircleSvg from "@/Components/CircleSvg.vue";
-import { LinkType, JsonResponse, Role } from "@/types";
+import { LinkType, JsonResponse, Course } from "@/types";
 import { PropType, ref } from "vue";
 import { Link } from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
@@ -67,7 +65,7 @@ import Select from "@/Components/Form/Select.vue";
 import Button from "@/Components/Button.vue";
 
 export default {
-    name: "Roles",
+    name: "Courses",
     components: {
         AdminLayout,
         Breadcrumb,
@@ -86,55 +84,57 @@ export default {
     },
     props: {
         response: {
-            type: Object as PropType<JsonResponse<Role[]>>,
+            type: Object as PropType<JsonResponse<Course[]>>,
             required: true,
-        },
-        app_roles: {
-            type: Array,
-        },
+        }
     },
     setup(props) {
-
         const selected = ref([]);
-
         const columns = [
             {
-                key: "name",
-                label: "Name",
+                key: "title",
+                label: "Title",
             },
             {
-                key: "permissions.0.name",
-                label: "permissions",
+                key: "price",
+                label: "Price",
+            },
+            {
+                key: "start_date",
+                label: "Started at",
+            },
+            {
+                key: "status",
+                label: "Status",
+            },
+            {
+                key: "created_by",
+                label: "Creator",
             },
             {
                 key: "actions",
             },
         ];
 
-        function canModify(name: string): boolean {
-            return !Array.from(props.app_roles).includes(name);
-        }
-
-        function deleteRole(role: Role) {
+        function deleteCourse(Course: Course) {
             if (confirm("Are you sure you want to delete this item?")) {
-                router.delete(route("admin.roles.destroy", role.id));
+                router.delete(route("admin.Courses.destroy", Course.id));
             }
         }
 
         return {
-            columns,
             selected,
-            canModify,
-            deleteRole,
+            columns,
+            deleteCourse,
         };
     },
     computed: {
         breadcrumb(): LinkType[] {
             return [
                 {
-                    name: "Roles",
-                    href: route("admin.roles.index"),
-                    current: route().current("admin.roles.index"),
+                    name: "Courses",
+                    href: route("admin.courses.index"),
+                    current: route().current("admin.courses.index"),
                 },
             ];
         },

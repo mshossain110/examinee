@@ -3,7 +3,7 @@ import { Head, Link, usePage } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import { computed } from "vue";
 import { Course } from "@/types";
-import { ref } from 'vue';
+import { ref } from "vue";
 import Instractor from "./Partials/Instractor.vue";
 import Pricing from "./Partials/Pricing.vue";
 
@@ -23,7 +23,7 @@ const stats = [
 ];
 
 let loading = ref(false);
-function startLearning():void {
+function startLearning(): void {
     if (!user) {
         return;
     }
@@ -269,7 +269,10 @@ function startLearning():void {
                         </dl>
                     </div>
 
-                    <template v-for="teacher in course.teachers" :key="teacher.id">
+                    <template
+                        v-for="teacher in course.teachers"
+                        :key="teacher.id"
+                    >
                         <Instractor :user="teacher" />
                     </template>
                 </div>

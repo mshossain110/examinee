@@ -30,7 +30,8 @@ class InstructorController extends Controller
         }
 
         return Inertia::render('Instructor/Courses', [
-            'courses' => GetInstratorCousesAction::getCourses($user)
+            'courses' => GetInstratorCousesAction::getCourses($user),
+            'canModify' => $request->user()->id == $user->id
         ]);
     }
 }

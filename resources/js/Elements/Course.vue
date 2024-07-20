@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Course } from "@/types";
-import { Link } from "@inertiajs/vue3";
+import Button from "@/Components/Button.vue";
 
 defineProps<{
   course: Course
@@ -26,10 +26,9 @@ defineProps<{
         </div>
         <div class="px-5 pb-2 flex justify-between items-center">
             <span class="text-gray-700 mt-2">${{ course.price }}</span>
-            <Link :href="course.permalink"
-                class="middle none center mr-2 rounded-lg bg-blue-500 py-1 px-2 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-            view
-            </Link>
+            <Button is="a" :href="course.permalink">
+                view
+            </Button>
         </div>
     </div>
 </template>
