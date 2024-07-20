@@ -2,13 +2,13 @@
     <div :class="ui.wrapper">
         <input 
             v-bind="attrs" 
-            id="default-checkbox" 
+            :id="labelId" 
             type="checkbox" 
             :value="value" 
             v-model="proxyChecked"
             :class="[ui.checkbox.base, ui.checkbox.size, ui.checkbox.color]" 
         />
-        <label for="default-checkbox" :class="[ui.label.base, ui.label.size, ui.label.color]">Default checkbox</label>
+        <label :for="labelId" :class="[ui.label.base, ui.label.size, ui.label.color]">{{ label }}</label>
     </div>
 </template>
 <script setup lang="ts">
@@ -18,7 +18,7 @@ import { computed, toRef } from 'vue';
 const emit = defineEmits(['update:checked']);
 
 const config = {
-    wrapper: 'flex items-center mb-4',
+    wrapper: 'flex items-center my-4',
     checkbox: {
         base: 'rounded focus:ring-2',
         size: 'w-4 h-4',
@@ -31,23 +31,25 @@ const config = {
     }
 };
 
-const props = defineProps < {
-    checked: boolean;
+const props = defineProps<{
+    modelValue: boolean;
     value?: any;
     label?: string; 
     ui?: any
-} > ();
+}>();
 
 const { ui, attrs } = useUI('checkbox', toRef(props, 'ui'), config)
 
 const proxyChecked = computed({
     get() {
-        return props.checked;
+        return props.modelValue;
     },
 
     set(val) {
         emit('update:checked', val);
     },
 });
+
+const labelId = props.label.replace(/\d*\s*/, '').replaceAll(' ', '_').toLowerCase()
 
 </script>

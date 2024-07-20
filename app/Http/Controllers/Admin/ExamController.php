@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Exam;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Requests\ExamRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ExamResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExamController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Exam::class);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,24 +26,33 @@ class ExamController extends Controller
         $user = $request->user();
         $courseId = $request->get('course_id');
 
-        $exams = Exam::with(['subjects','questions', 'topics']);
+        $exams = Exam::with(['subjects', 'questions', 'topics']);
 
         if ($courseId) {
             $exams = $exams->whereHas('courses', function ($q) use ($courseId) {
                 $q->where('course_id', $courseId);
             });
-        } else {
-            $exams = $exams->where('examiner', $user->id);
         }
-        
-        $exams = $exams->get();
-        
-        $resource = JsonResource::collection($exams);
 
-        return $resource;
+        $exams = $exams->paginate();
+
+        $resource = ExamResource::collection($exams);
+
+        return Inertia::render(
+            'admin/exams/Index',
+            [
+                'response' => $resource
+            ]
+        );
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('admin/exams/Create');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -63,10 +78,16 @@ class ExamController extends Controller
         $exam->subjects()->attach($subject_id);
 
 
-        return new JsonResource($exam);
+        return to_route('admin.exams.edit', $exam);
     }
 
-  
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Exam $exam)
+    {
+        return Inertia::render('admin/exams/Edit', ['exam' => new ExamResource($exam)]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -88,7 +109,7 @@ class ExamController extends Controller
             $exam->topics()->attach($topics);
         }
 
-        return new JsonResource($exam);
+        return to_route('admin.exams.edit', $exam);
     }
 
     /**
@@ -103,6 +124,7 @@ class ExamController extends Controller
         $exam->questions()->delete();
         $exam->topics()->detach();
         $exam->delete();
-        return response()->json(['success' => true, 'message'=> 'Exam Deleted successfully.']);
+
+        return to_route('admin.exams.index');
     }
 }

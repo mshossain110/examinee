@@ -8,6 +8,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\LearningController;
+use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->g
     Route::resource('courses', CoursesController::class);
     Route::resource('topics', TopicsController::class)->except(['show']);
     Route::resource('subjects', SubjectController::class)->except(['show']);
+    Route::resource('exams', ExamController::class)->except(['show']);
     Route::get('/server-info', [ServerInfoController::class, 'index'])->name('server-info');
     Route::post('/oauth-revoke/{provider}', [SocialiteController::class, 'revokeSocialProvider']);
 });

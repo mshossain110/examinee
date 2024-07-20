@@ -124,8 +124,8 @@ export interface Exam {
     pass_mark?: number;
     meta?: string;
     number_of_questions?: number;
-    random_questions?: string;
-    certification?: string;
+    random_questions?: boolean;
+    certification?: boolean;
     difficulty?: string;
     permalink?: string;
     subjects?: Subject[];

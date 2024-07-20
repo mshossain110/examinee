@@ -31,7 +31,6 @@ class Exam extends Model
         'random_questions',
         'certification',
         'difficulty',
-
     ];
 
     protected $casts = [

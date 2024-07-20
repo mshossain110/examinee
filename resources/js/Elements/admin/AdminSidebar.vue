@@ -95,6 +95,7 @@ export default {
         { name: "Subjects", icon: ShieldCheckIcon, href: route('admin.subjects.index'), current: route().current("admin.subjects.index") },
         { name: "Topics", icon: ShieldExclamationIcon, href: route('admin.topics.index'), current: route().current("admin.topics.index") },
         { name: "Courses", icon: ShieldExclamationIcon, href: route('admin.courses.index'), current: route().current("admin.courses.index") },
+        { name: "Exams", icon: ShieldExclamationIcon, href: route('admin.exams.index'), current: route().current("admin.exams.index") },
         { name: "Server Info", icon: ServerStackIcon, href: route('admin.server-info'), current: route().current('admin.server-info') },
         { name: "App Settings", icon: CogIcon, href: "#", current: false },
     ];
