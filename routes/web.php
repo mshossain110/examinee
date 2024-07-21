@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->g
     Route::resource('users', UsersController::class);
     Route::resource('roles', RolesController::class);
     Route::resource('courses', CoursesController::class);
+    Route::apiResource('courses/{course:id}/lessons', LessonController::class);
     Route::resource('topics', TopicsController::class)->except(['show']);
     Route::resource('subjects', SubjectController::class)->except(['show']);
     Route::resource('exams', ExamController::class)->except(['show']);

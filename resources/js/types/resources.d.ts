@@ -145,15 +145,16 @@ export interface Exam {
 export interface Course {
     id: number;
     title: string;
+    subtitle: string;
     slug: string;
     description?: string;
     requirements?: string;
-    status?: string;
+    status?: number;
     thumbnail?: string;
     start_date?: string;
     features?: string;
     rating?: number;
-    certified?: string;
+    certified?: boolean;
     created_at?: string;
     updated_at?: string;
     price: number;

@@ -18,12 +18,23 @@ class CoursesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+        $courses = Course::query();
+
+        if(! $user->isAdmin() ) {
+            $courses = $courses->whereHas('teachers', function($q) use($user){
+                $q->where('id', $user->id);
+            });
+        }
+
+        $courses = $courses->paginate();
+
         return Inertia::render(
             'admin/courses/Index', 
             [
-                'response' => CourseResource::collection(Course::paginate()),
+                'response' => CourseResource::collection($courses),
             ]
         );
     }
@@ -33,7 +44,7 @@ class CoursesController extends Controller
      */
     public function create()
     {
-        return Inertia::render('admin/courses/Create');
+        return Inertia::render('admin/courses/CreateCourse');
     }
 
     /**
@@ -41,29 +52,14 @@ class CoursesController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        $data = $request->only([
-            'name',
-            
-        ]);
-
-        $course = course::create($data);
+        $user = $request->user();
+        $data = $request->only(['title', 'slug', 'description', 'price', 'thumbnail', 'start_date', 'status', 'certified']);
+        $data['created_by'] = $user->id;
+        $data['updated_by'] = $user->id;
+        $course = $user->instructCourses()->create($data);
 
 
-        return Inertia::render('admin/courses/Edit', [ 'course' => new CourseResource($course) ]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Course $course)
-    {
-        return Inertia::render('admin/courses/Create', [
-            'course' => new CourseResource($course)
-        ]);
+        return to_route('admin.courses.edit', $course);
     }
 
     /**
@@ -71,7 +67,7 @@ class CoursesController extends Controller
      */
     public function edit(Course $course)
     {
-        return Inertia::render('admin/courses/Edit', [ 'course' => new CourseResource($course) ]);
+        return Inertia::render('admin/courses/CreateCourse', [ 'course' => new CourseResource($course) ]);
     }
 
     /**
@@ -79,15 +75,13 @@ class CoursesController extends Controller
      */
     public function update(Request $request, course $course)
     {
-        $validated = $request->validate([
-            'name' => 'required|string'
-        ]);
-
+        $user = $request->user();
         $data = $request->all();
+        $data['updated_by'] = $user->id;
 
-        $course = $course->update($data);
+        $course->update($data);
 
-        return Inertia::render('admin/courses/Edit', [ 'course' => new CourseResource($course) ]);
+        return to_route('admin.courses.edit', $course);
     }
 
     /**
