@@ -12,22 +12,24 @@
                             <a
                                 :href="exam?.id ? route('admin.exams.edit', exam.id) : route('admin.exams.create')"
                                 class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                                :class="[ {'bg-gray-300' : route().current( exam?.id ? 'admin.exams.edit' : 'admin.exams.create',  exam?.id)}]"
+                                :class="[ {'bg-gray-300' : route().current('admin.exams.*', exam?.id)}]"
                             >
                                 <span class="ml-3">{{ exam?.id ? 'Edit' : 'Create' }}</span>
                             </a>
                         </li>
-                        <li>
-                            <a
-                                href="#"
-                                target="_blank"
-                                class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                                <span class="flex-1 ml-3 whitespace-nowrap"
-                                    >Questions</span
+                        <template v-if="exam?.id ">
+                            <li>
+                                <a
+                                    :href="route('admin.questions.index', exam.id)"
+                                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    :class="[ {'bg-gray-300' : route().current('admin.questions.*',  exam.id)}]"
                                 >
-                            </a>
-                        </li>
+                                    <span class="flex-1 ml-3 whitespace-nowrap"
+                                        >Questions</span
+                                    >
+                                </a>
+                            </li>
+                        </template>
                     </ul>
                 </div>
             </aside>
@@ -39,10 +41,11 @@
 </template>
 
 <script setup lang="ts">
-import { Exam } from '@/types';
+import { Exam, Question } from '@/types';
 import { Link } from '@inertiajs/vue3';
 
 defineProps<{
-    exam?: Exam
+    exam?: Exam,
+    question?: Question
 }>()
 </script>

@@ -32,8 +32,15 @@ class QuestionController extends Controller
         );
     }
 
-
-
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Exam $exam)
+    {
+        return Inertia::render('admin/exams/CreateQuestion', [
+            'exam' => new ExamResource($exam)
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -56,11 +63,19 @@ class QuestionController extends Controller
             'explanation'   => $request->explanation
         ]);
        
-        $resource = New JsonResource($question);
-
-        return $resource;
+        return to_route('admin.questions.edit', [$exam, $question]);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Exam $exam, Question $question)
+    {
+        return Inertia::render('admin/exams/CreateQuestion', [
+            'exam' => new ExamResource($exam),
+            'question' => new QuestionResource($question)
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -75,7 +90,7 @@ class QuestionController extends Controller
         
         $resource = New JsonResource($question);
 
-        return $resource;
+        return to_route('admin.questions.edit', [$exam, $question]);
     }
 
     /**
@@ -84,9 +99,9 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $question)
+    public function destroy(Exam $exam, Question $question)
     {
         $question->delete();
-        return response()->json(['success' => true, 'message'=> 'Question has deleted']);
+        return to_route('admin.questions.index', [$exam]);
     }
 }

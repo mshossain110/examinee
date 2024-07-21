@@ -54,12 +54,17 @@ export interface Result {
     examinee?: User;
     exam?: any;
 }
+export interface QuestionOption {
+    option: string;
+    id?: string;
+    answer?: boolean;
+}
 export interface Question {
     id: number;
     qtype: string;
     question?: string;
-    options?: string;
-    answers?: string;
+    options?: QuestionOption[];
+    answers?: Array;
     hint?: string;
     explanation?: string;
     mark?: number;
@@ -119,15 +124,16 @@ export interface Exam {
     id: number;
     title: string;
     description?: string;
-    status?: string;
+    status?: number;
+    price?: number;
     duration?: number;
     pass_mark?: number;
-    meta?: string;
     number_of_questions?: number;
     random_questions?: boolean;
     certification?: boolean;
     difficulty?: string;
     permalink?: string;
+    meta?: any;
     subjects?: Subject[];
     courses?: Course[];
     questions?: Question[];

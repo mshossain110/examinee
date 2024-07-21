@@ -1,7 +1,7 @@
 <template>
     <Card>
         <template #header>
-            <h1>Edit Exam</h1>
+            <h1>{{ props.exam?.id ? "Update Exam" : "Create Exam" }}</h1>
         </template>
         <form @submit.prevent="submit">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
@@ -22,7 +22,22 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
                 <Label label="Status" name="status">
-                    <Input v-model="form.status" />
+                    <Select
+                        :options="[
+                            { label: 'Free', value: 1 },
+                            { label: 'Course', value: 2 },
+                            { label: 'Course &amp; Paid', value: 3 },
+                            { label: 'Paid', value: 4 },
+                        ]"
+                        v-model="form.status"
+                    ></Select>
+                </Label>
+                <Label
+                    label="Price"
+                    name="price"
+                    v-if="form.status == 3 || form.status == 4"
+                >
+                    <Input v-model="form.price" type="number" step="1" />
                 </Label>
                 <Label label="Duration" name="duration">
                     <Input
@@ -47,15 +62,38 @@
                 <Label label="Number of questions" name="number_of_questions">
                     <Input v-model="form.number_of_questions" type="number" />
                 </Label>
+                <Label
+                    label="Retake After"
+                    name="number_of_questions"
+                    :hint="`Examinee can retake the exam after ${form.meta.retake} days`"
+                >
+                    <Input v-model="form.meta.retake" type="number" />
+                </Label>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
                 <Checkbox v-model="form.certification" label="Certification" />
                 <Checkbox
                     v-model="form.random_questions"
                     label="Random question"
                 />
+                <Checkbox v-model="form.meta.show_hint" label="Show hint" />
+                <Checkbox
+                    v-model="form.meta.show_question"
+                    label="Show Question"
+                />
+                <Checkbox
+                    v-model="form.meta.show_explanation"
+                    label="Show Explanation"
+                />
+                <Checkbox
+                    v-model="form.meta.negative_mark"
+                    label="Negative Mark"
+                />
+                <Checkbox v-model="form.meta.show_answer" label="Show Answer" />
             </div>
-            <Button>Edit Exam</Button>
+            <Button>
+                {{ props.exam?.id ? "Update Exam" : "Create Exam" }}
+            </Button>
         </form>
     </Card>
 </template>
@@ -68,22 +106,31 @@ import Button from "@/Components/Button.vue";
 import Label from "@/Components/Form/Label.vue";
 import Input from "@/Components/Form/Input.vue";
 import Checkbox from "@/Components/Form/Checkbox.vue";
+import Select from "@/Components/Form/Select.vue";
 
 const props = defineProps<{
     exam?: Exam;
 }>();
 
 const form = useForm({
-    id: props.exam?.id,
     title: props.exam?.title,
     description: props.exam?.description,
     status: props.exam?.status,
+    price: props.exam?.price,
     duration: props.exam?.duration,
     pass_mark: props.exam?.pass_mark,
     number_of_questions: props.exam?.number_of_questions,
     random_questions: props.exam?.random_questions,
     certification: props.exam?.certification,
     difficulty: props.exam?.difficulty,
+    meta: {
+        retake: props.exam?.meta?.retake,
+        show_hint: props.exam?.meta?.show_hint,
+        show_question: props.exam?.meta?.show_question,
+        show_explanation: props.exam?.meta?.show_explanation,
+        negative_mark: props.exam?.meta?.negative_mark,
+        show_answer: props.exam?.meta?.show_answer,
+    },
 });
 
 function submit() {

@@ -91,8 +91,8 @@ const config = {
         "2xs": "text-xs",
         xs: "text-xs",
         sm: "text-sm",
-        md: "text-sm",
-        lg: "text-sm",
+        md: "text-md",
+        lg: "text-lg",
         xl: "text-base",
     },
     gap: {
@@ -184,11 +184,11 @@ const config = {
         },
     },
     default: {
-        size: "sm",
-        color: "white",
+        size: "md",
+        color: "blue",
         variant: "outline",
         loadingIcon: "LoadingIcon",
-        trailingIcon: "MagnifyingGlassIcon",
+        trailingIcon: "ArrowDownOnSquareIcon",
     },
 };
 
@@ -264,7 +264,7 @@ export default defineComponent({
         },
         size: {
             type: String as PropType<SelectSize>,
-            default: null,
+            default: config.default.size,
             validator(value: string) {
                 return Object.keys(config.size).includes(value);
             },
