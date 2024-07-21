@@ -27,26 +27,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('courses/my-courses', [MyCourseController::class, 'index']);
     Route::get('courses/my-courses/{course:slug}', [MyCourseController::class, 'show']);
 
-    
-
     Route::get('courses/{course}/students', [CourseController::class, 'students']);
     Route::apiResource('course', CourseController::class);
     Route::apiResource('lessons', LessonController::class);
 
-    Route::apiResource('subjects', SubjectController::class);
     Route::put('sessions/{session}/attach-exam', [SessionController::class,'attachExam']);
     Route::put('sessions/{session}/attach-lession', [SessionController::class, 'attacLession']);
     
     Route::apiResource('sessions', SessionController::class);
 
-    Route::apiResource('exams', ExamController::class);
-    Route::apiResource('questions', QuestionController::class);
     Route::get('take-exam/{exam}', [TakeExamController::class, 'show']);
     Route::post('start-exam/{exam}', [TakeExamController::class, 'start']);
     Route::post('complete-exam/{exam}', [TakeExamController::class, 'complete']);
     Route::post('answer/{exam}', [TakeExamController::class, 'answer']);
 
-    
     Route::apiResource('/files', FileController::class);
 });
 

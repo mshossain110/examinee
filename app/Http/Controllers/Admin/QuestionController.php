@@ -1,11 +1,14 @@
 <?php
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\Question;
 use App\Models\Exam;
+use Inertia\Inertia;
+use App\Models\Question;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\QuestionResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Requests\QuestionRequest as Request;
+use App\Http\Resources\ExamResource;
 
 class QuestionController extends Controller
 {
@@ -14,14 +17,19 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Exam $exam)
     {
-        $examId = $request->get('exam_id');
-        $questions = Exam::find($examId)->questions;
+        $questions = $exam->questions;
         
-        $resource = JsonResource::collection($questions);
+        $resource = QuestionResource::collection($questions);
 
-        return $resource;
+        return Inertia::render(
+            'admin/exams/Questions',
+            [
+                'exam' => new ExamResource($exam),
+                'questions' => $resource
+            ]
+        );
     }
 
 
@@ -32,11 +40,9 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Exam $exam)
     {
         $user = $request->user();
-        $eid = $request->get('exam_id');
-        $exam = Exam::findOrFail($eid);
 
         $question = $exam->questions()->create([
             'created_by'    => $user->id,
@@ -55,20 +61,6 @@ class QuestionController extends Controller
         return $resource;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Question  $question
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Question $question)
-    {
-        $resource = New JsonResource($question);
-
-        return $resource;
-    }
-
-
 
     /**
      * Update the specified resource in storage.
@@ -77,7 +69,7 @@ class QuestionController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, Exam $exam, Question $question)
     {
         $question->update( $request->all() );
         

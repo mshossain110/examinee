@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\TopicsController;
 use App\Http\Controllers\Admin\CoursesController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServerInfoController;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->g
     Route::resource('topics', TopicsController::class)->except(['show']);
     Route::resource('subjects', SubjectController::class)->except(['show']);
     Route::resource('exams', ExamController::class)->except(['show']);
+    Route::resource('exams/{exam:id}/questions', QuestionController::class)->except(['show']);
     Route::get('/server-info', [ServerInfoController::class, 'index'])->name('server-info');
     Route::post('/oauth-revoke/{provider}', [SocialiteController::class, 'revokeSocialProvider']);
 });
