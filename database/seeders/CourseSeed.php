@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
+use App\Models\Exam;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Section;
 use App\Models\Question;
-use App\Models\Exam;
 use App\Models\ExamSession;
 use App\Models\ExamSessionable;
+use Illuminate\Database\Seeder;
 
 class CourseSeed extends Seeder
 {
@@ -29,7 +30,7 @@ class CourseSeed extends Seeder
 
             $course->subjects()->attach(rand(1, 100));
             $course->topics()->attach([rand(1, 5), rand(1, 10), rand(1, 10), rand(1, 10)]);
-            $sessions = ExamSession::factory()->count(5)->create(['course_id' => $course->id]);
+            $sessions = Section::factory()->count(5)->create(['course_id' => $course->id]);
 
             Lesson::factory()->count(15)->create()->each(function ($lesson) use ($sessions, $course) {
                 $course->lessons()->save($lesson, [

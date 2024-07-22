@@ -17,7 +17,7 @@ class Section extends Model
         'title', 'description', 'course_id'
     ];
 
-    public function sections()
+    public function sectionables()
     {
         return $this->hasMany(Sectionable::class, 'section_id')->orderBy('order', 'asc');
     }

@@ -21,7 +21,7 @@ class Sectionable extends Model
         return $this->morphTo();
     }
 
-    public function section()
+    public function session()
     {
         return $this->belongsTo(Section::class, 'section_id');
     }

@@ -66,7 +66,7 @@
                 </Label>
             </div>
             <Button>
-                {{ props.course?.id ? "Update Course" : "Create Course" }}
+                {{ props.lesson?.id ? "Update Lesson" : "Create Lesson" }}
             </Button>
         </form>
     </Card>
@@ -86,7 +86,6 @@ import Icon from '@/Components/Icon.vue'
 
 
 const props = defineProps<{
-    course: Course;
     lesson?: Lesson
 }>();
 
@@ -104,9 +103,9 @@ const editslug = ref(false);
 
 function submit() {
     if (props.lesson?.id) {
-        form.put(route("admin.lessons.update", [props.course.id, props.lesson?.id]));
+        form.put(route("admin.lessons.update",  props.lesson?.id));
     } else {
-        form.post(route("admin.lessons.store", props.course.id));
+        form.post(route("admin.lessons.store"));
     }
 }
 </script>

@@ -29,7 +29,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('courses/{course}/students', [CourseController::class, 'students']);
     Route::apiResource('course', CourseController::class);
-    Route::apiResource('lessons', LessonController::class);
 
     Route::put('sessions/{session}/attach-exam', [SessionController::class,'attachExam']);
     Route::put('sessions/{session}/attach-lession', [SessionController::class, 'attacLession']);

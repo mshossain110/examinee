@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\SectionResource;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class SectionController extends Controller
 {

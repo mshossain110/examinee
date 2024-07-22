@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\User;
 use App\Models\Course;
-use App\Models\Section;
 use App\Models\Sectionable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,7 +21,7 @@ class SectionableController extends Controller
         }
 
 
-        $sections= Section::with($with)->where('course_id', $course->id)->get();
+        $sections= Sectionable::with($with)->where('course_id', $course->id)->get();
         $sections = $sections->map(function($s) use($hasVisibility) {
             $exams = $s->exams;
             $lessons = $s->lessons;
