@@ -29,7 +29,7 @@ class LessonResource extends JsonResource
             'updated_at' => $this->updated_at,
             'courses' => CourseResource::collection($this->whenLoaded('courses')),
             'students' => UserResource::collection($this->whenLoaded('students')),
-            'examSessions' => ExamSessionResource::collection($this->whenLoaded('examSessions')),
+            'sections' => SectionResource::collection($this->whenLoaded('sections')),
         ];
     }
 }

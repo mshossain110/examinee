@@ -53,7 +53,7 @@ class CoursesController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-        $data = $request->only(['title', 'slug', 'description', 'price', 'thumbnail', 'start_date', 'status', 'certified']);
+        $data = $request->only(['title', 'subtitle', 'slug', 'description', 'price', 'discount', 'thumbnail', 'start_date', 'status', 'certified']);
         $data['created_by'] = $user->id;
         $data['updated_by'] = $user->id;
         $course = $user->instructCourses()->create($data);

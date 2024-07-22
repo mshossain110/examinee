@@ -1,7 +1,7 @@
 <template>
-    <Card>
+        <Card>
         <template #header>
-            <h1>{{ props.course?.id ? "Update Course" : "Create Course" }}</h1>
+            <h1>{{ lesson?.id ? "Update Lesson" : "Create Lesson" }}</h1>
         </template>
         <form @submit.prevent="submit">
             <div class="grid grid-cols-1 gap-4 mb-2">
@@ -19,15 +19,12 @@
                     </Input>
                     
                 </Label>
-                <Label label="Subtitle" name="subtitle" size="lg">
-                    <Input v-model="form.subtitle" size="lg" />
-                </Label>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-2">
-                <Label label="Description" name="description">
+                <Label label="Short text" name="short_text">
                     <textarea
-                        v-model="form.description"
-                        name="description"
+                        v-model="form.short_text"
+                        name="short_text"
                         cols="80"
                         rows="8"
                         class="relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-md px-3 py-2 shadow-sm bg-transparent text-gray-900 dark:text-white ring-1 ring-inset ring-blue-500 dark:ring-blue-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
@@ -35,21 +32,10 @@
                 </Label>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-2">
-                <Label label="Requirements" name="requirements">
+                <Label label="Full text" name="full_text" help="This will be a full tutorial">
                     <textarea
-                        v-model="form.requirements"
-                        name="requirements"
-                        cols="80"
-                        rows="8"
-                        class="relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-md px-3 py-2 shadow-sm bg-transparent text-gray-900 dark:text-white ring-1 ring-inset ring-blue-500 dark:ring-blue-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-                    ></textarea>
-                </Label>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-2">
-                <Label label="Features" name="features">
-                    <textarea
-                        v-model="form.features"
-                        name="features"
+                        v-model="form.full_text"
+                        name="full_text"
                         cols="80"
                         rows="8"
                         class="relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-md px-3 py-2 shadow-sm bg-transparent text-gray-900 dark:text-white ring-1 ring-inset ring-blue-500 dark:ring-blue-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
@@ -60,28 +46,24 @@
                 <Label label="Status" name="status">
                     <Select
                         :options="[
-                            { label: 'Published', value: 1 },
-                            { label: 'Pending', value: 2 },
+                            { label: 'Free', value: 1 },
+                            { label: 'Subscriber', value: 2 },
+                            { label: 'Paid', value: 3 },
                         ]"
                         v-model="form.status"
                     ></Select>
                 </Label>
-                <Label
-                    label="Price"
-                    name="price"
-                >
-                    <Input v-model="form.price" type="number" />
+                <Label label="Lesson Type" name="type">
+                    <Select
+                        :options="[
+                            { label: 'Text', value: 1 },
+                            { label: 'Vedio', value: 2 },
+                            { label: 'Audio', value: 3 },
+                            { label: 'PDF', value: 4 },
+                        ]"
+                        v-model="form.type"
+                    ></Select>
                 </Label>
-                <Label
-                    label="Discount"
-                    name="discount"
-                    help="Discount will be calculate in %"
-                >
-                    <Input v-model="form.discount" type="number" step=".2" />
-                </Label>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
-                <Checkbox v-model="form.certified" label="Certified" />
             </div>
             <Button>
                 {{ props.course?.id ? "Update Course" : "Create Course" }}
@@ -93,7 +75,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useForm } from "@inertiajs/vue3";
-import { Course } from "@/types";
+import { Course, Lesson } from "@/types";
 import Card from "@/Components/Card.vue";
 import Button from "@/Components/Button.vue";
 import Label from "@/Components/Form/Label.vue";
@@ -102,32 +84,29 @@ import Checkbox from "@/Components/Form/Checkbox.vue";
 import Select from "@/Components/Form/Select.vue";
 import Icon from '@/Components/Icon.vue'
 
+
 const props = defineProps<{
-    course?: Course;
+    course: Course;
+    lesson?: Lesson
 }>();
 
 const form = useForm({
-    title: props.course?.title,
-    subtitle: props.course?.subtitle,
-    slug: props.course?.slug,
-    description: props.course?.description,
-    requirements: props.course?.requirements,
-    status: props.course?.status,
-    thumbnail: props.course?.thumbnail,
-    start_date: props.course?.start_date,
-    features: props.course?.features,
-    certified: props.course?.certified,
-    price: props.course?.price,
-    discount: props.course?.discount,
+    title: props.lesson?.title,
+    slug: props.lesson?.slug,
+    short_text: props.lesson?.short_text,
+    full_text: props.lesson?.full_text,
+    type: props.lesson?.slug,
+    object: props.lesson?.slug,
+    status: props.lesson?.slug,
 });
 
 const editslug = ref(false);
 
 function submit() {
-    if (props.course.id) {
-        form.put(route("admin.courses.update", props.course.id));
+    if (props.lesson?.id) {
+        form.put(route("admin.lessons.update", [props.course.id, props.lesson?.id]));
     } else {
-        form.post(route("admin.courses.store"));
+        form.post(route("admin.lessons.store", props.course.id));
     }
 }
 </script>

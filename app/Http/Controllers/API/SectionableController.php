@@ -4,14 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Models\User;
 use App\Models\Course;
-use App\Models\Session;
-use App\Models\Sessionable;
+use App\Models\Section;
+use App\Models\Sectionable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SessionableController extends Controller
+class SectionableController extends Controller
 {
     public function lessons(Request $request, Course $course)
     {
@@ -23,8 +23,8 @@ class SessionableController extends Controller
         }
 
 
-        $sessions= Session::with($with)->where('course_id', $course->id)->get();
-        $sessions = $sessions->map(function($s) use($hasVisibility) {
+        $sections= Section::with($with)->where('course_id', $course->id)->get();
+        $sections = $sections->map(function($s) use($hasVisibility) {
             $exams = $s->exams;
             $lessons = $s->lessons;
             if ($hasVisibility) {
@@ -38,7 +38,7 @@ class SessionableController extends Controller
             return $s;
         });
 
-        return JsonResource::collection($sessions);
+        return JsonResource::collection($sections);
 
     }
 

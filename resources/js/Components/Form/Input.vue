@@ -46,7 +46,7 @@
             :class="trailingWrapperIconClass"
         >
             <slot name="trailing" :disabled="disabled" :loading="loading">
-                <UIcon :name="trailingIconName" :class="trailingIconClass" />
+                <Icon :name="trailingIconName" :class="trailingIconClass" />
             </slot>
         </span>
     </div>
@@ -61,7 +61,8 @@ import { useUI } from "@/Composables/useUI";
 import { useFormGroup } from "@/Composables/useFormGroup";
 import { mergeConfig, looseToNumber } from "@/Composables/utils";
 import { useInjectButtonGroup } from "@/Composables/useButtonGroup";
-import type { Sizes, InputColor, InputVariant, Strategy } from "@/types";
+import type { Sizes, InputColor, InputVariant, Strategy, IconName } from "@/types";
+import Icon from "@/Components/Icon.vue";
 
 const config = {
     wrapper: "relative",
@@ -161,7 +162,7 @@ const config = {
         },
         trailing: {
             wrapper: "absolute inset-y-0 end-0 flex items-center",
-            pointer: "pointer-events-none",
+            pointer: "",
             padding: {
                 "2xs": "px-2",
                 xs: "px-2.5",
@@ -181,7 +182,9 @@ const config = {
 };
 
 export default defineComponent({
-    components: {},
+    components: {
+        Icon
+    },
     inheritAttrs: false,
     props: {
         modelValue: {
@@ -221,19 +224,19 @@ export default defineComponent({
             default: 100,
         },
         icon: {
-            type: String,
+            type: String as PropType<IconName>,
             default: null,
         },
         loadingIcon: {
-            type: String,
+            type: String as PropType<IconName>,
             default: () => config.default.loadingIcon,
         },
         leadingIcon: {
-            type: String,
+            type: String as PropType<IconName>,
             default: null,
         },
         trailingIcon: {
-            type: String,
+            type: String as PropType<IconName>,
             default: null,
         },
         trailing: {
@@ -472,7 +475,7 @@ export default defineComponent({
             return twJoin(
                 ui.value.icon.trailing.wrapper,
                 ui.value.icon.trailing.pointer,
-                ui.value.icon.trailing.padding[size.value]
+                // ui.value.icon.trailing.padding[size.value]
             );
         });
 

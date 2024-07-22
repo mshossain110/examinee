@@ -20,7 +20,7 @@ class CourseController extends Controller
      */
     public function show(Request $request, Course $course)
     {
-        $course->loadCount(['lessons', 'exams', 'examSessions', 'students']);
+        $course->loadCount(['lessons', 'exams', 'section', 'students']);
         $course->load(['subjects', 'topics', 'teachers']);
 
         return Inertia::render('Course/Course', [

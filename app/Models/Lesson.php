@@ -128,7 +128,7 @@ class Lesson extends Model
     */
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'exam_sessionables', 'sessionable_id', 'course_id')->wherePivot('sessionable_type', Lesson::class);
+        return $this->belongsToMany(Course::class, 'sectionables', 'sectionable_id', 'course_id')->wherePivot('sectionable_type', Lesson::class);
     }
 
     public function students()
@@ -136,14 +136,14 @@ class Lesson extends Model
         return $this->belongsToMany(User::class, 'lesson_student')->withTimestamps();
     }
 
-    public function examSessionable()
+    public function sectionable()
     {
-        return $this->morphOne(ExamSessionable::class, 'sessionable');
+        return $this->morphOne(Sectionable::class, 'sectionable');
     }
 
-    public function examSessions()
+    public function sections()
     {
-        return $this->morphToMany(ExamSession::class, 'sessionable');
+        return $this->morphToMany(Section::class, 'sectionable');
     }
 
     public function objectFile()

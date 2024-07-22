@@ -34,20 +34,20 @@
                             <li>
                                 <a
                                     :href="
-                                        route('admin.lessons.index', course.id)
+                                        route('admin.sections.index', course.id)
                                     "
                                     class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                     :class="[
                                         {
                                             'bg-gray-300': route().current(
-                                                'admin.lessons.*',
+                                                'admin.sections.*',
                                                 course.id
                                             ),
                                         },
                                     ]"
                                 >
                                     <span class="flex-1 ml-3 whitespace-nowrap">
-                                        Lessons
+                                        Sections
                                     </span>
                                 </a>
                             </li>

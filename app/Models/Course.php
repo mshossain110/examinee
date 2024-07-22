@@ -16,10 +16,12 @@ class Course extends Model
 
     protected $fillable = [
         'title',
+        'subtitle',
         'slug',
         'description',
         'requirements',
         'price',
+        'discount',
         'thumbnail',
         'start_date',
         'status',
@@ -104,14 +106,14 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_students')->withTimestamps()->withPivot(['rating', 'progress']);
     }
 
-    public function examSessions()
+    public function sections()
     {
-        return $this->hasMany(ExamSession::class);
+        return $this->hasMany(Section::class);
     }
 
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class, 'exam_sessionables', 'course_id', 'sessionable_id')->wherePivot('sessionable_type', Lesson::class);
+        return $this->belongsToMany(Lesson::class, 'sectionable', 'course_id', 'sectionable_id')->wherePivot('sectionable_type', Lesson::class);
     }
 
     public function publishedLessons()
@@ -121,7 +123,7 @@ class Course extends Model
 
     public function exams()
     {
-        return $this->belongsToMany(Exam::class, 'exam_sessionables', 'course_id', 'sessionable_id')->wherePivot('sessionable_type', Exam::class);
+        return $this->belongsToMany(Exam::class, 'sectionables', 'course_id', 'sectionable_id')->wherePivot('sectionable_type', Exam::class);
     }
 
     public function topics()

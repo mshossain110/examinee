@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('exam_sessionables', function (Blueprint $table) {
+        Schema::create('sectionables', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('session_id');
-            $table->morphs('sessionable');
+            $table->bigInteger('section_id');
+            $table->morphs('sectionable');
             $table->unsignedTinyInteger('order')->default(0);
             $table->bigInteger('course_id');
             $table->timestamps();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exam_sessionables');
+        Schema::dropIfExists('sectionables');
     }
 };

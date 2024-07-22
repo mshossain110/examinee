@@ -45,7 +45,7 @@ class Exam extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'exam_sessionables', 'sessionable_id', 'course_id')->wherePivot('sessionable_type', Exam::class);
+        return $this->belongsToMany(Course::class, 'sectionables', 'sectionable_id', 'course_id')->wherePivot('sectionable_type', Exam::class);
     }
 
     public function questions()
@@ -76,8 +76,8 @@ class Exam extends Model
         return $count;
     }
 
-    public function examSessionable()
+    public function sectionable()
     {
-        return $this->morphOne(ExamSessionable::class, 'sessionable');
+        return $this->morphOne(Sectionable::class, 'sectionable');
     }
 }

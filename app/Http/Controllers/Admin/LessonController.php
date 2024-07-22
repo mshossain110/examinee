@@ -65,12 +65,12 @@ class LessonController extends Controller
             $lesson->topics()->attach($topics);
         }
 
-        if ($request->session) {
-            $lesson->sessions()->attach($request->session, [
+        if ($request->section) {
+            $lesson->sections()->attach($request->section, [
                 'course_id' => $courseId,
             ]);
 
-            $lesson->load(['sessionable']);
+            $lesson->load(['sectionable']);
         }
 
         if ($request->has('object')) {
@@ -111,12 +111,12 @@ class LessonController extends Controller
             $lesson->topics()->attach($topics);
         }
 
-        if ($request->session) {
-            $lesson->sessions()->attach($request->session, [
+        if ($request->section) {
+            $lesson->sections()->attach($request->section, [
                 'course_id' => $courseId,
             ]);
 
-            $lesson->load(['sessionable']);
+            $lesson->load(['sectionable']);
         }
         
         if ($request->has('object')) {

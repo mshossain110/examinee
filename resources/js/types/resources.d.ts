@@ -34,7 +34,7 @@ export interface Topic {
     courses_count?: number;
     exams_count?: number;
 }
-export interface ExamSession {
+export interface Section {
     id: number;
     title: string;
     description: string;
@@ -158,10 +158,11 @@ export interface Course {
     created_at?: string;
     updated_at?: string;
     price: number;
+    discount: number;
     permalink: string;
     teachers?: User[];
     students?: User[];
-    examSessions?: ExamSession[];
+    examSessions?: Section[];
     lessons?: Lesson[];
     exams?: Exam[];
     topics?: Topic[];

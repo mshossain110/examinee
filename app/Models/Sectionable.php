@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ExamSessionable extends Model
+class Sectionable extends Model
 {
     use HasFactory;
     /**
@@ -16,13 +16,13 @@ class ExamSessionable extends Model
     protected $guarded = [];
 
 
-    public function sessionable()
+    public function sectionable()
     {
         return $this->morphTo();
     }
 
-    public function session()
+    public function section()
     {
-        return $this->belongsTo(ExamSession::class, 'session_id');
+        return $this->belongsTo(Section::class, 'section_id');
     }
 }
