@@ -113,7 +113,7 @@ class Course extends Model
 
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class, 'sectionable', 'course_id', 'sectionable_id')->wherePivot('sectionable_type', Lesson::class);
+        return $this->belongsToMany(Lesson::class, 'sectionables', 'course_id', 'sectionable_id')->wherePivot('sectionable_type', Lesson::class);
     }
 
     public function publishedLessons()

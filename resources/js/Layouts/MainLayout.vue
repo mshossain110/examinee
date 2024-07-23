@@ -38,6 +38,7 @@ const userNavigation = [
 
 if (user) {
     userNavigation.splice(1, 0, { name: "Courses", href: route("instructor.courses", {user: user.name}) })
+    userNavigation.splice(2, 0, { name: "My Courses", href: route("learning.courses") })
 }
 </script>
 

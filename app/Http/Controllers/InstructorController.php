@@ -18,9 +18,9 @@ class InstructorController extends Controller
      */
     public function courses(Request $request)
     {
-        if ($request->has('user'))
+        if ($request->user)
         {
-            $user = User::find($request->user);
+            $user = User::where('name', $request->user)->first();
         }else {
             $user = $request->user();
         }

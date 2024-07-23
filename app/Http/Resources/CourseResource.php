@@ -41,7 +41,7 @@ class CourseResource extends JsonResource
             'subjects' => SubjectResource::collection($this->whenLoaded('subjects')),
             'lessons_count' => $this->whenCounted('lessons'),
             'students_count' => $this->whenCounted('students'),
-            'section_count' => $this->whenCounted('section'),
+            'sections_count' => $this->whenCounted('sections'),
             'exams_count' => $this->whenCounted('exams'),
         ];
     }

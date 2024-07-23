@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Auth;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Actions\GetEnrolledCousesAction;
 
 class LearningController extends Controller
 {
@@ -15,7 +17,12 @@ class LearningController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function myCourses(Request $request)
-    {   
-        return view('learning.index');
+    {
+        $user = $request->user();
+
+        return Inertia::render('Learning/Courses', [
+            'courses' => GetEnrolledCousesAction::getCourses($user),
+            'canModify' => $request->user()->id == $user->id
+        ]);
     }
 }

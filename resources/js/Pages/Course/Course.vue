@@ -17,7 +17,7 @@ const props = defineProps<{
 
 const stats = [
     { name: "Number of student", value: props.course.students_count },
-    { name: "Number of sessions", value: props.course.exam_sessions_count },
+    { name: "Number of section", value: props.course.sections_count },
     { name: "Number of exams", value: props.course.exams_count },
     { name: "Number of lessons", value: props.course.lessons_count },
 ];

@@ -178,7 +178,7 @@ export interface Course {
     subjects?: Subject[];
     lessons_count?: number;
     students_count?: number;
-    exam_sessions_count?: number;
+    sections_count?: number;
     exams_count?: number;
 }
 
