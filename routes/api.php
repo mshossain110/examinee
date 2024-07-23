@@ -27,13 +27,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('courses/my-courses', [MyCourseController::class, 'index']);
     Route::get('courses/my-courses/{course:slug}', [MyCourseController::class, 'show']);
 
-    Route::get('courses/{course}/students', [CourseController::class, 'students']);
+    
     Route::apiResource('course', CourseController::class);
 
     Route::put('sessions/{session}/attach-exam', [SessionController::class,'attachExam']);
     Route::put('sessions/{session}/attach-lession', [SessionController::class, 'attacLession']);
-    
-    Route::apiResource('sessions', SessionController::class);
 
     Route::get('take-exam/{exam}', [TakeExamController::class, 'show']);
     Route::post('start-exam/{exam}', [TakeExamController::class, 'start']);

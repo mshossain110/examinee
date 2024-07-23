@@ -16,6 +16,15 @@ export interface User {
     enrolledCourses?: Course[];
 }
 
+export interface Student {
+    id: number;
+    name: string;
+    full_name?: string;
+    avatar?: string;
+    rating: number;
+    progress: number;
+}
+
 export interface Role {
     id: number;
     name: string;

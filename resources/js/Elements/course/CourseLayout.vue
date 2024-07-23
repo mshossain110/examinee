@@ -32,7 +32,7 @@
                         </li>
                         <template v-if="course?.id">
                             <li>
-                                <a
+                                <Link
                                     :href="
                                         route('admin.sections.index', course.id)
                                     "
@@ -49,7 +49,25 @@
                                     <span class="flex-1 ml-3 whitespace-nowrap">
                                         Sections
                                     </span>
-                                </a>
+                                </Link>
+                                <Link
+                                    :href="
+                                        route('admin.course-student', course.id)
+                                    "
+                                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    :class="[
+                                        {
+                                            'bg-gray-300': route().current(
+                                                'admin.course-student',
+                                                course.id
+                                            ),
+                                        },
+                                    ]"
+                                >
+                                    <span class="flex-1 ml-3 whitespace-nowrap">
+                                        Student
+                                    </span>
+                                </Link>
                             </li>
                         </template>
                     </ul>

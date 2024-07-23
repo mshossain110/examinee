@@ -12,15 +12,16 @@ use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\UsersController;
-use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\TopicsController;
 use App\Http\Controllers\Admin\CoursesController;
+use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServerInfoController;
+use App\Http\Controllers\Admin\CourseStudentController;
 
 
 Route::get('/', HomeController::class)->name('home');
@@ -41,6 +42,7 @@ Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->g
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('users', UsersController::class);
     Route::resource('roles', RolesController::class);
+    Route::get('courses/{course}/students', CourseStudentController::class)->name('course-student');
     Route::apiResource('courses/{course:id}/sections', SectionController::class)->except(['show', 'edit']);
     Route::resource('courses', CoursesController::class);
     Route::apiResource('courses/{course:id}/lessons', LessonController::class);
