@@ -36,6 +36,10 @@ class ExamResource extends JsonResource
             'examiner' => new UserResource($this->whenLoaded('examiner')),
             'topics' => TopicResource::collection($this->whenLoaded('topics')),
             'results' => ResultResource::collection($this->whenLoaded('results')),
+            'pivot' => $this->when($this->pivot, [
+                'sectionable_type' => $this->pivot->sectionable_type,
+                'order' => $this->pivot->order
+            ])
         ];
     }
 }

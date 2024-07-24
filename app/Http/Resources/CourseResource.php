@@ -34,7 +34,7 @@ class CourseResource extends JsonResource
             'updated_at' => $this->updated_at,
             'teachers' => UserResource::collection($this->whenLoaded('teachers')),
             'students' => UserResource::collection($this->whenLoaded('students')),
-            'section' => SectionResource::collection($this->whenLoaded('section')),
+            'sections' => SectionResource::collection($this->whenLoaded('sections')),
             'lessons' => LessonResource::collection($this->whenLoaded('lessons')),
             'exams' => ExamResource::collection($this->whenLoaded('exams')),
             'topics' => TopicResource::collection($this->whenLoaded('topics')),

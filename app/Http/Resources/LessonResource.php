@@ -14,7 +14,8 @@ class LessonResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+
+        $lesson =  [
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
@@ -31,5 +32,14 @@ class LessonResource extends JsonResource
             'students' => UserResource::collection($this->whenLoaded('students')),
             'sections' => SectionResource::collection($this->whenLoaded('sections')),
         ];
+
+        if ($this->pivot) {
+            $lesson['pivot'] = [
+                'sectionable_type' => $this->pivot->sectionable_type,
+                'order' => $this->pivot->order
+            ];
+        }
+
+        return $lesson;
     }
 }

@@ -26,9 +26,11 @@ defineProps<{
         </div>
         <div class="px-5 pb-2 flex justify-between items-center">
             <span class="text-gray-700 mt-2">${{ course.price }}</span>
-            <Button is="a" :href="course.permalink">
-                view
-            </Button>
+            <slot name="button"  :course="course">
+                <Button is="a" :href="course.permalink">
+                    view
+                </Button>
+            </slot>
         </div>
     </div>
 </template>

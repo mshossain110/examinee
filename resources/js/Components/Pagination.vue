@@ -10,6 +10,7 @@
                     { '!bg-blue-500 !text-white': page.active },
                 ]"
                 v-html="page.label"
+                preserve-state
             >
             </Link>
         </nav>

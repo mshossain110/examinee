@@ -25,4 +25,14 @@ class Sectionable extends Model
     {
         return $this->belongsTo(Section::class, 'section_id');
     }
+
+    public function resource()
+    {
+
+        dd($this->sectionable_type);
+        if ($this->sectionable_type == 'App\Models\Exam') {
+            return $this->belongsTo(Exam::class,  'sectionable_id', 'id' );
+        }
+        return $this->belongsTo(Lesson::class,  'sectionable_id', 'id' );
+    }
 }

@@ -51,6 +51,7 @@ export interface Section {
     updated_at?: string;
     exams?: Exam[];
     lessons?: Lesson[];
+    resources: Exam[] | Lesson[]
 }
 export interface Result {
     id: number;
@@ -171,7 +172,7 @@ export interface Course {
     permalink: string;
     teachers?: User[];
     students?: User[];
-    examSessions?: Section[];
+    sections?: Section[];
     lessons?: Lesson[];
     exams?: Exam[];
     topics?: Topic[];

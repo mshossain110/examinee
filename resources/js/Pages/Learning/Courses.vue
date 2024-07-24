@@ -29,7 +29,13 @@ const openCourseForm = ref(false);
                 class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6"
             >
                 <template v-for="course in courses" :key="course.id">
-                    <CourseComponent :course="course" :canModify="canModify"/>
+                    <CourseComponent :course="course" :canModify="canModify">
+                        <template #button>
+                            <Button is="a" :href="route('start.course', course.slug)">
+                                Start Learning
+                            </Button>
+                        </template>
+                    </CourseComponent>
                 </template>
             </div>
         </div>

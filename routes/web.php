@@ -33,6 +33,8 @@ Route::get('/oauth/{driver}/callback', [SocialiteController::class, 'handleSocia
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get("/learning/my-courses", [LearningController::class,  'myCourses' ])->name("learning.courses");
+    Route::get("/learning/{course:slug}", [LearningController::class,  'startCourse' ])->name("start.course");
+    Route::get("/learning/{course:slug}/{type}/{slog}", [LearningController::class,  'singleResource' ])->name("start.resource");
     Route::post('/download', [DownloadController::class, 'download']);
     Route::get('/uploads/{id}/{any?}', UploadController::class)->where('any', '.*');
     Route::post("/subscribe/{course}", [CourseController::class, 'subscribe'])->name('course.subscribe');

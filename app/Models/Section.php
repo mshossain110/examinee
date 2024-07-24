@@ -25,11 +25,11 @@ class Section extends Model
 
     public function lessons()
     {
-        return $this->morphedByMany(Lesson::class, 'sectionable')->orderBy('order', 'asc');
+        return $this->morphedByMany(Lesson::class, 'sectionable')->orderBy('order', 'asc')->withPivot(['order']);
     }
 
     public function exams()
     {
-        return $this->morphedByMany(Exam::class, 'sectionable')->orderBy('order', 'asc');
+        return $this->morphedByMany(Exam::class, 'sectionable')->orderBy('order', 'asc')->withPivot(['order']);
     }
 }
