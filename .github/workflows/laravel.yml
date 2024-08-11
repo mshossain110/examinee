@@ -19,7 +19,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
-        options: !$health-cmd="mysqladmin ping"
+        options: --$health-cmd="mysqladmin ping"
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
