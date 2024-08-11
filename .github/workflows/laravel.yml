@@ -16,10 +16,10 @@ jobs:
         image: mysql:latest
         env:
           MYSQL_DATABASE: posts-test
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: 123456
         ports:
           - 3306:3306
-        options: --$health-cmd="mysqladmin ping"
+        options: --health-cmd="mysqladmin ping"
 
     steps:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
