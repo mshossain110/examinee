@@ -34,8 +34,8 @@ class CourseSeed extends Seeder
 
             Lesson::factory()->count(15)->create()->each(function ($lesson) use ($sessions, $course) {
                 $course->lessons()->save($lesson, [
-                    'session_id' => $sessions->random()->id,
-                    'sessionable_type' => Lesson::class,
+                    'section_id' => $sessions->random()->id,
+                    'sectionable_type' => Lesson::class,
                     'order' => rand(1, 15)
                 ]);
             });
@@ -47,8 +47,8 @@ class CourseSeed extends Seeder
                 Question::factory()->count(20)->create(['exam_id' => $exam->id]);
 
                 $course->exams()->save($exam, [
-                    'session_id' => $sessions->random()->id,
-                    'sessionable_type' => Exam::class,
+                    'section_id' => $sessions->random()->id,
+                    'sectionable_type' => Exam::class,
                     'order' => rand(15, 30)
                 ]);
             });
