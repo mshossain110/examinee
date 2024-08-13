@@ -4,6 +4,15 @@ namespace App\Models;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role as ModelsRole;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $guard_name
+ * @property int $course_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
+
 class Role extends ModelsRole
 {
     const SUPERADMIN = 'superadmin';

@@ -11,6 +11,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property string $path
+ * @property string $file_name
+ * @property string $extension
+ * @property string $mime
+ * @property string $type
+ * @property string $public_path
+ * @property string $driver_data
+ * @property string $driver
+ * @property int $parent_id
+ * @property int $uploaded_by
+ * @property array $meta
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property File $children
+ * @property File $parent
+ * @property User $uploader
+ * @property Collection<Exam> $exams
+ */
+
 class File extends Model
 {
     use HashesId, FileStorage, SoftDeletes;

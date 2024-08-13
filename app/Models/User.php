@@ -12,6 +12,28 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $firstname
+ * @property string $lastname
+ * @property Carbon $email_verified_at
+ * @property string $password
+ * @property Carbon $last_loged_in
+ * @property string $avatar
+ * @property string $ip
+ * @property string $fullName
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ * @property Collection<Role> $roles
+ * @property Collection<Result> $results
+ * @property Collection<Course> $instructCourses
+ * @property Collection<Course> $enrolledCourses
+ * @property Collection<Lesson> $enrolledLessons
+ */
+
 class User extends Authenticatable
 {
     use Notifiable, HasRoles, SoftDeletes, HasApiTokens, HasFactory, Notifiable;

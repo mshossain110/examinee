@@ -10,6 +10,34 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $subtitle
+ * @property string $slug
+ * @property string $description
+ * @property string $features
+ * @property string $requirements
+ * @property string $thumbnail
+ * @property int $price
+ * @property int $discount
+ * @property int $status
+ * @property int $created_by
+ * @property int $updated_by
+ * @property bool $certified
+ * @property Carbon $start_date
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Collection<User> $teachers
+ * @property Collection<User> $students
+ * @property Collection<Sections> $sections
+ * @property Collection<Lesson> $lessons
+ * @property Collection<Lesson> $publishedLessons
+ * @property Collection<Exam> $exams
+ * @property Collection<Topic> $topics
+ * @property Collection<Subject> $subjects
+ */
+
 class Course extends Model
 {
     use SoftDeletes, Fileable, HasFactory;

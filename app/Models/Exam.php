@@ -11,6 +11,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property int $status
+ * @property int $duration
+ * @property int $price
+ * @property int $pass_mark
+ * @property array $meta
+ * @property int $number_of_questions
+ * @property bool $random_questions
+ * @property bool $certification
+ * @property bool $difficulty
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ * @property Collection<Course> $courses
+ * @property Collection<Exam> $exams
+ * @property User $examiner
+ */
+
 class Exam extends Model
 {
     use SoftDeletes, HasFactory;
@@ -23,6 +44,7 @@ class Exam extends Model
         'title',
         'description',
         'examiner',
+        'price',
         'status',
         'duration',
         'pass_mark',

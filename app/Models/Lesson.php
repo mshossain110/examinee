@@ -10,6 +10,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property string $thumbnail
+ * @property int $type
+ * @property array $object
+ * @property string $short_text
+ * @property string $full_text
+ * @property int $position
+ * @property int $status
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ * @property int $created_by
+ * @property int $updated_by
+ * @property Collection<Course> $courses
+ * @property Collection<User> $students
+ * @property Collection<Section> $sections
+ * @property Sectionable $sectionable
+ * @property File $objectFile
+ */
+
 class Lesson extends Model
 {
     use Topicable, Fileable, SoftDeletes, HasFactory;
@@ -51,7 +74,7 @@ class Lesson extends Model
         'pdf' => 4
     ];
 
-    public static $status = [
+    public static $statuses = [
         'free' => 1,
         'subscriber' => 2,
         'paid' => 3,
@@ -87,7 +110,7 @@ class Lesson extends Model
 
     public function getStatusAttribute($value)
     {
-        $key = array_search($value, self::$status);
+        $key = array_search($value, self::$statuses);
 
         if ($key) {
             return ucfirst($key);
@@ -97,7 +120,7 @@ class Lesson extends Model
     public function setStatusAttribute($value)
     {
         $value = strtolower($value);
-        $key = array_search($value, self::$status);
+        $key = array_search($value, self::$statuses);
 
         if ($key) {
             $this->attributes['status'] = $value;

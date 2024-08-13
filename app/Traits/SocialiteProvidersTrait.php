@@ -2,20 +2,21 @@
 
 namespace App\Traits;
 
-use App\Exceptions\SocialProviderDeniedException;
-use App\Models\Setting;
-use App\Models\SocialiteProvider;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Models\User;
+use App\Models\Setting;
+use Illuminate\Support\Str;
+use App\Models\SocialiteProvider;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\PersonalAccessToken;
-use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Laravel\Socialite\Facades\Socialite;
+use App\Exceptions\SocialProviderDeniedException;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Laravel\Socialite\Contracts\User as SocialiteUser;
 
 trait SocialiteProvidersTrait
 {
@@ -463,7 +464,7 @@ trait SocialiteProvidersTrait
      *
      * @param  string  $provider
      * @param  SocialiteUser  $user
-     * @return App\Models\User
+     * @return array
      */
     protected function findOrCreateUser(string $provider, $user, string $state = null): array
     {
@@ -580,17 +581,17 @@ trait SocialiteProvidersTrait
             }
 
             if (! $email) {
-                $email = 'email_missing_'.str_random(20).'@'.str_random(20).'.example.org';
+                $email = 'email_missing_'.Str::random(20).'@'.Str::random(20).'.example.org';
                 $emailValid = false;
             }
 
             $user = User::create([
                 'name'              => $name,
                 'email'             => $email,
-                'password'          => bcrypt(str_random(50)),
+                'password'          => bcrypt(Str::random(50)),
             ]);
 
-            $user->attachRole(config('roles.models.role')::whereName('User')->first());
+            // $user->attachRole(config('roles.models.role')::whereName('User')->first());
 
             if ($user->email && $emailValid) {
                 event(new Registered($user));
@@ -649,7 +650,7 @@ trait SocialiteProvidersTrait
      */
     protected function generateTempId($depth = 40)
     {
-        return str_random($depth);
+        return Str::random($depth);
     }
 
     /**

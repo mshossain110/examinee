@@ -7,6 +7,21 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property int $id
+ * @property int $examinee
+ * @property int $exam_id
+ * @property array $answers
+ * @property float $obtain_mark
+ * @property float $time_taken
+ * @property boolean $is_pass
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Collection<Course> $courses
+ * @property Exam $exam
+ * @property User $examinee
+ */
+
 class Result extends Model
 {
     use HasFactory;
@@ -15,6 +30,7 @@ class Result extends Model
 
     protected $casts = [
         'answers' => 'array',
+        'is_pass' => 'bool'
     ];
 
     public function exam()

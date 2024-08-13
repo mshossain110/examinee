@@ -8,6 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property int $id
+ * @property string $hint
+ * @property string $question
+ * @property array $options
+ * @property array $answers
+ * @property string $explanation
+ * @property int $mark
+ * @property int $nmark
+ * @property int $qtype
+ * @property int $created_by
+ * @property int $exam_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ * @property Collection<Topic> $topics
+ * @property Exam $exam
+ */
+
 class Question extends Model
 {
     use SoftDeletes, HasFactory;

@@ -6,6 +6,16 @@ use App\Models\Exam;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Collection<Course> $courses
+ * @property Collection<Exam> $exams
+ */
+
 class Topic extends Model
 {
     use HasFactory;
