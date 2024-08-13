@@ -35,7 +35,7 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: phpstan
-      run: ./vendor/bin/phpstan analyse !$memory-limit=1G
+      run: ./vendor/bin/phpstan analyse --memory-limit=1G
     - name: Create Database
       run: |
         mkdir -p database
