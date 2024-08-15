@@ -8,6 +8,7 @@ use App\Http\Resources\ExamResource;
 use App\Http\Resources\LessonResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin \App\Models\Section */
 class SectionResource extends JsonResource
 {
     /**
