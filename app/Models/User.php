@@ -21,7 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon $email_verified_at
  * @property string $password
  * @property Carbon $last_loged_in
- * @property string $avatar
+ * @property STDClass $avatar
  * @property string $ip
  * @property string $fullName
  * @property Carbon $created_at
@@ -40,7 +40,7 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'firstname', 'lastname', 'name', 'email', 'password', 'avatar'
@@ -49,12 +49,17 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
+    /**
+     * The attributes that should be append for arrays.
+     *
+     * @var array<int, string>
+     */
     protected $appends = [
         'full_name'
     ];

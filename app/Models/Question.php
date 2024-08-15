@@ -33,7 +33,7 @@ class Question extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'qtype', 'question', 'options', 'answers', 'hint', 'mark', 'nmark', 'explanation', 'created_by'

@@ -473,6 +473,7 @@ trait SocialiteProvidersTrait
         $email = null;
 
         if ($provider == 'twitter') {
+            // OK - No error
             $email = $user->email;
             $providerId = $user->id;
         } else {
@@ -540,7 +541,7 @@ trait SocialiteProvidersTrait
      *
      * @param  string  $provider
      * @param  $sUser
-     * @return App\Models\User
+     * @return \App\Models\User | null
      */
     protected function updateOrCreateUser(string $provider, $sUser, $existingUser = null): User
     {
@@ -657,8 +658,9 @@ trait SocialiteProvidersTrait
      * Cache the current state and modify the url with a random string to be the key for the return user.
      * Not all providers return the state and this will allow us to do so..
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @param  sting $url
+     * @param  sting $state
+     * @return string
      */
     protected function cacheStatePutKeyInUrl($url = null, $state = null)
     {

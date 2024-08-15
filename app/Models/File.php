@@ -66,7 +66,7 @@ class File extends Model
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'meta',
@@ -76,7 +76,7 @@ class File extends Model
     /**
      * the accessor that should append with response.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = [
         'sizes',

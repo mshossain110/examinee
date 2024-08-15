@@ -2,9 +2,10 @@
 
 namespace App\Response;
 
-use Storage;
 use Response;
 use App\Models\File;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 // use Chumper\Zipper\Zipper;
 

@@ -2,9 +2,9 @@
 
 namespace App\Response;
 
-use Storage;
-use Response;
 use App\Models\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class FileContentResponseCreator
 {

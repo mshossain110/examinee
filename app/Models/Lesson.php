@@ -63,7 +63,7 @@ class Lesson extends Model
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = ['object', 'full_text'];
 

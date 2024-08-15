@@ -27,7 +27,7 @@ class SocialiteProvider extends Model
     /**
      * The attributes that are not mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [
         'id',
@@ -36,7 +36,7 @@ class SocialiteProvider extends Model
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'access_token',
@@ -46,7 +46,7 @@ class SocialiteProvider extends Model
     /**
      * The attributes that should be mutated to dates.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $dates = [
         'created_at',
@@ -56,7 +56,7 @@ class SocialiteProvider extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'user_id',
@@ -70,7 +70,7 @@ class SocialiteProvider extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $casts = [
         'id'                => 'integer',
