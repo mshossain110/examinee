@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Result;
-use Laravel\Sanctum\HasApiTokens;
 use App\Pivots\StudentCasting;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +28,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $fullName
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Carbon $deleted_at
+ * @property ?Carbon $deleted_at
  * @property Collection<Role> $roles
  * @property Collection<Result> $results
  * @property Collection<Course> $instructCourses

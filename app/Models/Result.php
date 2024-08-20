@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Models\Exam;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -50,7 +52,7 @@ class Result extends Model
             foreach ($answer as $resultKey => $resultValue) {
                 $question = Question::where('id', $resultKey)->first();
                 if (!empty($question)) {
-                    foreach ($question->answer as $key => $value) {
+                    foreach ($question->answers as $key => $value) {
                         if ($resultValue == $value) {
                             $count = $count + $question->mark;
                         }

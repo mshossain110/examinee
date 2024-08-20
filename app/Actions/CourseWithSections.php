@@ -2,11 +2,9 @@
 namespace App\Actions;
 
 use App\Http\Resources\CourseResource;
-use App\Models\User;
 use App\Models\Course;
 use App\Models\Section;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class CourseWithSections

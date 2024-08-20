@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\Traits\HashesId;
 use App\Jobs\ResizedImage;
-use App\Models\Traits\FileStorage;
+use Illuminate\Support\Carbon;
+use App\Models\Traits\HashesId;
 use App\Observers\FileObserver;
+use App\Models\Traits\FileStorage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**

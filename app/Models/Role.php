@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role as ModelsRole;
 
