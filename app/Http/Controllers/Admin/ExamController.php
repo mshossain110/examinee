@@ -6,6 +6,7 @@ use App\Models\Exam;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Requests\ExamRequest;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ExamResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,6 +27,7 @@ class ExamController extends Controller
         $user = $request->user();
         $courseId = $request->get('course_id');
 
+        return (Exam::select(['exams.*'])->addSelect(['users' => DB::table('users')->whereColumn('users.id',  'exams.examiner')->select('email')->limit(1)])->where('exams.id', 10)->get()->toArray());
         $exams = Exam::with(['subjects', 'questions', 'topics']);
 
         if ($courseId) {
