@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea
+.vscode
+*.sublime*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Laravel
+/vendor
+/storage/*.key
+/public/hot
+/public/storage
+/public/build
+
+# Testing
+/coverage
+/.phpunit.result.cache
+
+# Documentation
+README.md
+CHANGELOG.md
+/doc
+
+# Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore

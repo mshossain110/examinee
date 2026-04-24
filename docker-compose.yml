@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # PHP-FPM Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: examinee-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - examinee-network
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=examinee_db
+      - DB_USERNAME=examinee_user
+      - DB_PASSWORD=examinee_password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - QUEUE_CONNECTION=redis
+
+  # Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: examinee-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - examinee-network
+    depends_on:
+      - app
+
+  # MySQL Service
+  db:
+    image: mysql:8.0
+    container_name: examinee-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: examinee_db
+      MYSQL_USER: examinee_user
+      MYSQL_PASSWORD: examinee_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - examinee-network
+    command: --default-authentication-plugin=mysql_native_password
+
+  # Redis Service
+  redis:
+    image: redis:alpine
+    container_name: examinee-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    networks:
+      - examinee-network
+
+  # Queue Worker Service
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: examinee-queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - examinee-network
+    depends_on:
+      - app
+      - redis
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=examinee_db
+      - DB_USERNAME=examinee_user
+      - DB_PASSWORD=examinee_password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - QUEUE_CONNECTION=redis
+    command: php artisan queue:work --tries=3 --timeout=90
+
+  # Node Service for building assets
+  node:
+    image: node:20-alpine
+    container_name: examinee-node
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - examinee-network
+    command: sh -c "npm install && npm run build"
+    profiles:
+      - build
+
+networks:
+  examinee-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
