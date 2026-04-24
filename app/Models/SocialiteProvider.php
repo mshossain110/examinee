@@ -44,16 +44,6 @@ class SocialiteProvider extends Model
     ];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<int, string>
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at',
-    ];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -80,6 +70,8 @@ class SocialiteProvider extends Model
         'access_token'      => 'string',
         'refresh_token'     => 'string',
         'avatar'            => 'string',
+        'created_at'        => 'datetime',
+        'updated_at'        => 'datetime',
     ];
 
     /**
