@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 # Set working directory
 WORKDIR /var/www/html
@@ -11,13 +11,14 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
+    libpq-dev \
     zip \
     unzip \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libwebp-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip
 
 # Install Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
@@ -36,14 +37,6 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && echo "upload_max_filesize = 50M" >> "$PHP_INI_DIR/php.ini" \
     && echo "post_max_size = 50M" >> "$PHP_INI_DIR/php.ini" \
     && echo "memory_limit = 512M" >> "$PHP_INI_DIR/php.ini"
-
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
 
 # Expose port 9000 for PHP-FPM
 EXPOSE 9000

@@ -18,9 +18,9 @@ services:
       - db
       - redis
     environment:
-      - DB_CONNECTION=mysql
+      - DB_CONNECTION=pgsql
       - DB_HOST=db
-      - DB_PORT=3306
+      - DB_PORT=5432
       - DB_DATABASE=examinee_db
       - DB_USERNAME=examinee_user
       - DB_PASSWORD=examinee_password
@@ -45,23 +45,21 @@ services:
     depends_on:
       - app
 
-  # MySQL Service
+  # PostgreSQL Service
   db:
-    image: mysql:8.0
+    image: postgres:16-alpine
     container_name: examinee-db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: examinee_db
-      MYSQL_USER: examinee_user
-      MYSQL_PASSWORD: examinee_password
-      MYSQL_ROOT_PASSWORD: root_password
+      POSTGRES_DB: examinee_db
+      POSTGRES_USER: examinee_user
+      POSTGRES_PASSWORD: examinee_password
     ports:
-      - "3307:3306"
+      - "5433:5432"
     volumes:
-      - dbdata:/var/lib/mysql
+      - dbdata:/var/lib/postgresql/data
     networks:
       - examinee-network
-    command: --default-authentication-plugin=mysql_native_password
 
   # Redis Service
   redis:
@@ -89,9 +87,9 @@ services:
       - app
       - redis
     environment:
-      - DB_CONNECTION=mysql
+      - DB_CONNECTION=pgsql
       - DB_HOST=db
-      - DB_PORT=3306
+      - DB_PORT=5432
       - DB_DATABASE=examinee_db
       - DB_USERNAME=examinee_user
       - DB_PASSWORD=examinee_password

@@ -15,7 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        // Disable foreign key checks for MySQL, skip for PostgreSQL
+        $driver = DB::connection()->getDriverName();
+        if ($driver === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        }
+        
         $this->call([
             UserSeed::class,
             RoleSeed::class,
@@ -23,5 +28,10 @@ class DatabaseSeeder extends Seeder
             TopicSeed::class,
             CourseSeed::class
         ]);
+        
+        // Re-enable foreign key checks for MySQL
+        if ($driver === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        }
     }
 }
