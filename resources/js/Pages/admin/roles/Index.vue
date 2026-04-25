@@ -19,6 +19,16 @@
                     :rows="response.data"
                     :columns="columns"
                 >
+                    <template #users_count-data="{ row }">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">
+                            {{ row.users_count }}
+                        </span>
+                    </template>
+                    <template #permissions_count-data="{ row }">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                            {{ row.permissions_count }}
+                        </span>
+                    </template>
                     <template #actions-data="{ row }">
                         <div class="flex">
                             <Link
@@ -103,8 +113,12 @@ export default {
                 label: "Name",
             },
             {
-                key: "permissions.0.name",
-                label: "permissions",
+                key: "users_count",
+                label: "Users",
+            },
+            {
+                key: "permissions_count",
+                label: "Permissions",
             },
             {
                 key: "actions",
