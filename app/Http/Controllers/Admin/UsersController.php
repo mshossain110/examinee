@@ -133,6 +133,47 @@ class UsersController extends Controller
     }
 
     /**
+     * Delete multiple users at once.
+     */
+    public function bulkDelete(Request $request)
+    {
+        $this->authorize('delete', User::class);
+
+        $request->validate([
+            'ids'   => ['required', 'array'],
+            'ids.*' => ['integer', 'exists:users,id'],
+        ]);
+
+        $authId = auth()->id();
+        User::whereIn('id', $request->ids)
+            ->where('id', '!=', $authId)
+            ->delete();
+
+        return back()->with('success', 'Selected users deleted.');
+    }
+
+    /**
+     * Sync roles for multiple users at once.
+     */
+    public function bulkSyncRoles(Request $request)
+    {
+        $this->authorize('update', User::class);
+
+        $request->validate([
+            'ids'     => ['required', 'array'],
+            'ids.*'   => ['integer', 'exists:users,id'],
+            'roles'   => ['nullable', 'array'],
+            'roles.*' => ['integer', 'exists:roles,id'],
+        ]);
+
+        User::whereIn('id', $request->ids)->each(
+            fn (User $user) => $user->syncRoles($request->roles ?? [])
+        );
+
+        return back()->with('success', 'Roles synced for selected users.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
