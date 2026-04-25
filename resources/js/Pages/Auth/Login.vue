@@ -5,7 +5,11 @@ import Label from '@/Components/Form/Label.vue';
 import Input from '@/Components/Form/Input.vue';
 import Button from '@/Components/Button.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
 import SocialiteLogins from '@/Components/SocialiteLogins.vue'
+
+const page = usePage();
+const isDevEnv = ['local', 'development'].includes((page.props as any).appEnv as string);
 
 defineProps<{
     canResetPassword?: boolean;
@@ -25,6 +29,20 @@ const submit = () => {
         },
     });
 };
+
+const demoUsers = [
+    { label: 'Admin',   email: 'admin@admin.com',   password: 'password', color: 'bg-red-100 text-red-700 hover:bg-red-200 border-red-200' },
+    { label: 'Teacher', email: 'teacher@admin.com', password: 'password', color: 'bg-blue-100 text-blue-700 hover:bg-blue-200 border-blue-200' },
+    { label: 'Student', email: 'student@admin.com', password: 'password', color: 'bg-green-100 text-green-700 hover:bg-green-200 border-green-200' },
+];
+
+function loginAs(email: string, password: string) {
+    form.email = email;
+    form.password = password;
+    form.post(route('login'), {
+        onFinish: () => form.reset('password'),
+    });
+}
 </script>
 
 <template>
@@ -86,5 +104,22 @@ const submit = () => {
             </div>
         </form>
         <SocialiteLogins />
+
+        <!-- Demo quick-login (dev / local only) -->
+        <div v-if="isDevEnv" class="mt-6 border-t border-dashed border-gray-300 pt-5">
+            <p class="text-xs text-center text-gray-400 mb-3 font-medium uppercase tracking-wide">Demo Login Shortcuts</p>
+            <div class="flex gap-2 justify-center">
+                <button
+                    v-for="demo in demoUsers"
+                    :key="demo.label"
+                    type="button"
+                    :class="['flex-1 text-xs font-semibold py-2 px-3 rounded-lg border transition-colors', demo.color]"
+                    :disabled="form.processing"
+                    @click="loginAs(demo.email, demo.password)"
+                >
+                    {{ demo.label }}
+                </button>
+            </div>
+        </div>
     </GuestLayout>
 </template>
