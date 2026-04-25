@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
+use Spatie\Permission\Models\Permission;
 
 class RolesController extends Controller
 {
@@ -34,7 +35,9 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return Inertia::render('admin/roles/Create');
+        return Inertia::render('admin/roles/Create', [
+            'permissions' => Permission::all(['id', 'name'])->toArray(),
+        ]);
     }
 
     /**
@@ -43,18 +46,19 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string'
+            'name'          => 'required|string',
+            'permissions'   => ['nullable', 'array'],
+            'permissions.*' => ['integer', 'exists:permissions,id'],
         ]);
 
-        $data = $request->only([
-            'name',
-            
-        ]);
+        $role = Role::create(['name' => $request->name]);
 
-        $role = Role::create($data);
+        if ($request->filled('permissions')) {
+            $role->syncPermissions($request->permissions);
+        }
 
-
-        return Inertia::render('admin/roles/Edit', [ 'role' => new RoleResource($role) ]);
+        return to_route('admin.roles.edit', $role)
+            ->with('success', "Role '{$role->name}' created successfully.");
     }
 
     /**
@@ -70,7 +74,10 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        return Inertia::render('admin/roles/Edit', [ 'role' => new RoleResource($role) ]);
+        return Inertia::render('admin/roles/Edit', [
+            'role'        => new RoleResource($role->load('permissions')),
+            'permissions' => Permission::all(['id', 'name'])->toArray(),
+        ]);
     }
 
     /**
@@ -78,15 +85,17 @@ class RolesController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $validated = $request->validate([
-            'name' => 'required|string'
+        $request->validate([
+            'name'          => 'required|string',
+            'permissions'   => ['nullable', 'array'],
+            'permissions.*' => ['integer', 'exists:permissions,id'],
         ]);
 
-        $data = $request->all();
+        $role->update(['name' => $request->name]);
+        $role->syncPermissions($request->permissions ?? []);
 
-        $role = $role->update($data);
-
-        return Inertia::render('admin/roles/Edit', [ 'role' => new RoleResource($role) ]);
+        return to_route('admin.roles.edit', $role)
+            ->with('success', "Role '{$role->name}' updated successfully.");
     }
 
     /**
