@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Role;
 use Inertia\Inertia;
 use App\Http\Requests\Admin\UserRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\RoleResource;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
@@ -17,14 +20,27 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render(
-            'admin/users/Index', 
-            [
-                'response' => UserResource::collection(User::with('roles')->paginate())
-            ]
-        );
+        $query = User::with('roles')
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $search = '%' . $request->search . '%';
+                $q->where(function ($q2) use ($search) {
+                    $q2->where('name', 'like', $search)
+                       ->orWhere('email', 'like', $search)
+                       ->orWhere('firstname', 'like', $search)
+                       ->orWhere('lastname', 'like', $search);
+                });
+            })
+            ->when($request->filled('role'), function ($q) use ($request) {
+                $q->whereHas('roles', fn ($q2) => $q2->where('name', $request->role));
+            });
+
+        return Inertia::render('admin/users/Index', [
+            'response' => UserResource::collection($query->paginate()->withQueryString()),
+            'roles'    => RoleResource::collection(Role::all()),
+            'filters'  => $request->only(['search', 'role']),
+        ]);
     }
 
     /**        
@@ -97,6 +113,23 @@ class UsersController extends Controller
         return Inertia::render('admin/users/Edit', [ 'user' => new UserResource($user) ]);
 
         
+    }
+
+    /**
+     * Sync roles for a user.
+     */
+    public function syncRoles(Request $request, User $user)
+    {
+        $this->authorize('update', $user);
+
+        $request->validate([
+            'roles'   => ['nullable', 'array'],
+            'roles.*' => ['integer', 'exists:roles,id'],
+        ]);
+
+        $user->syncRoles($request->roles ?? []);
+
+        return back()->with('success', "Roles updated for {$user->name}.");
     }
 
     /**
