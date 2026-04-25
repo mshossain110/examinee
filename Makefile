@@ -57,6 +57,10 @@ npm-dev: ## Run Vite in development mode
 	@echo "${BLUE}Running Vite dev server...${NC}"
 	docker compose run --rm -p 5173:5173 node npm run dev
 
+npm-watch: ## Build assets and watch for changes
+	@echo "${BLUE}Watching for asset changes...${NC}"
+	docker compose run --rm node npm run watch
+
 artisan: ## Run artisan command (usage: make artisan cmd="migrate")
 	docker compose exec app php artisan $(cmd)
 
