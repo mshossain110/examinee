@@ -19,9 +19,7 @@ class RoleResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'guard_name' => $this->guard_name,
-            'permissions' => $this->permissions->toArray(),
-            'users_count' => $this->users_count ?? 0,
-            'permissions_count' => $this->permissions_count ?? 0,
+            'permissions' => $this->permissions->toArray()
         ];
     }
 }

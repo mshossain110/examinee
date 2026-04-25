@@ -44,8 +44,6 @@ Route::middleware(['auth', 'verified'])->prefix('/dashboard')->name('admin.')->g
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('users', UsersController::class);
     Route::put('users/{user}/sync-roles', [UsersController::class, 'syncRoles'])->name('users.sync-roles');
-    Route::post('users/bulk-delete', [UsersController::class, 'bulkDelete'])->name('users.bulk-delete');
-    Route::post('users/bulk-sync-roles', [UsersController::class, 'bulkSyncRoles'])->name('users.bulk-sync-roles');
     Route::resource('roles', RolesController::class);
     Route::get('courses/{course}/students', CourseStudentController::class)->name('course-student');
     Route::apiResource('courses/{course:id}/sections', SectionController::class)->except(['show', 'edit']);
