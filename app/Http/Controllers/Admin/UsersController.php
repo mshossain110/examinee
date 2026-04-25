@@ -26,10 +26,10 @@ class UsersController extends Controller
             ->when($request->filled('search'), function ($q) use ($request) {
                 $search = '%' . $request->search . '%';
                 $q->where(function ($q2) use ($search) {
-                    $q2->where('name', 'like', $search)
-                       ->orWhere('email', 'like', $search)
-                       ->orWhere('firstname', 'like', $search)
-                       ->orWhere('lastname', 'like', $search);
+                    $q2->where('name', 'ilike', $search)
+                       ->orWhere('email', 'ilike', $search)
+                       ->orWhere('firstname', 'ilike', $search)
+                       ->orWhere('lastname', 'ilike', $search);
                 });
             })
             ->when($request->filled('role'), function ($q) use ($request) {

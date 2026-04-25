@@ -16,9 +16,8 @@ class TopicFactory extends Factory
      */
     public function definition()
     {
-        $name = ['Web Design', 'Laravel', 'Vuejs', 'Javascript', 'Java', 'Angular', 'Mobile Application', 'C#', 'C++', 'Web Application'];
         return [
-            'title' => $name[rand(0, 9)],
+            'title' => $this->faker->unique()->words(rand(2, 4), true),
             'description' => $this->faker->paragraph(),
         ];
     }

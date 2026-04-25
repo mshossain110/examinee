@@ -32,7 +32,7 @@ class SubjectController extends Controller
             ->latest();
 
         if ($search) {
-            $subjects = $subjects->where('title', 'like', "%$search%");
+            $subjects = $subjects->where('title', 'ilike', "%$search%");
         }
 
         $subjects = $subjects->paginate();
@@ -41,7 +41,10 @@ class SubjectController extends Controller
 
         return Inertia::render(
             'admin/subjects/Index',
-            ['response' => $resource]
+            [
+                'response' => $resource,
+                'filters'  => ['search' => $search ?? ''],
+            ]
         );
     }
 

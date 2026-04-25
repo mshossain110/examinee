@@ -1,6 +1,21 @@
 <template>
     <AdminLayout>
         <div id="edit-user">
+            <Card class="mb-5">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-lg">Edit Topic</h1>
+                        <Breadcrumb :items="breadcrumb" />
+                    </div>
+                    <div>
+                        <Link :href="route('admin.topics.index')" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-colors">
+                            <ArrowLeftIcon class="h-4 w-4" />
+                            Back to Topics
+                        </Link>
+                    </div>
+                </div>
+            </Card>
+
             <Card>
                 <template #header>
                     <h1>Edit Topic</h1>
@@ -24,14 +39,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, computed } from "vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Label from "@/Components/Form/Label.vue";
 import Input from "@/Components/Form/Input.vue";
-import { Topic } from "@/types";
-import { useForm } from "@inertiajs/vue3";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
+import { Topic, LinkType } from "@/types";
+import { Link, useForm } from "@inertiajs/vue3";
 import Card from "@/Components/Card.vue";
 import Button from "@/Components/Button.vue";
+import { ArrowLeftIcon } from "@heroicons/vue/24/outline";
 
 export default defineComponent({
     components: {
@@ -40,6 +57,9 @@ export default defineComponent({
         Input,
         Card,
         Button,
+        Breadcrumb,
+        Link,
+        ArrowLeftIcon,
     },
     props: {
         topic: {
@@ -58,9 +78,15 @@ export default defineComponent({
             form.put(route("admin.topics.update", props.topic.id));
         }
 
+        const breadcrumb = computed<LinkType[]>(() => [
+            { name: 'Topics', href: route('admin.topics.index'), current: false },
+            { name: props.topic.title, href: route('admin.topics.edit', props.topic.id), current: true },
+        ]);
+
         return {
             form,
             submit,
+            breadcrumb,
         };
     },
 });

@@ -14,6 +14,29 @@
             </Card>
 
             <Card>
+                <!-- Search bar -->
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="flex-1 relative sm:max-w-xs">
+                        <MagnifyingGlassIcon class="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-indigo-400 dark:text-indigo-300 pointer-events-none" />
+                        <input
+                            type="text"
+                            :value="props.filters.search"
+                            @input="onSearch"
+                            placeholder="Search subjects…"
+                            class="w-full pl-8 pr-3 py-1.5 text-xs bg-white dark:bg-gray-800 dark:text-gray-100 border border-indigo-200 dark:border-indigo-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-400 dark:placeholder-gray-500"
+                        />
+                    </div>
+                    <button
+                        v-if="props.filters.search"
+                        type="button"
+                        @click="clearSearch"
+                        class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-300 hover:text-white hover:bg-indigo-600 dark:hover:bg-indigo-500 bg-white dark:bg-gray-800 border border-indigo-300 dark:border-indigo-600 rounded-lg px-3 py-1.5 transition-colors shadow-sm"
+                    >
+                        <XMarkIcon class="h-3 w-3" />
+                        Clear
+                    </button>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead>
@@ -140,6 +163,7 @@
 import { ref, computed } from 'vue';
 import {
     TrashIcon, PencilIcon, ChevronRightIcon, ChevronDownIcon,
+    MagnifyingGlassIcon, XMarkIcon,
 } from '@heroicons/vue/24/outline';
 import * as OutlineIcons from '@heroicons/vue/24/outline';
 import { Link, router } from '@inertiajs/vue3';
@@ -150,9 +174,31 @@ import Pagination from '@/Components/Pagination.vue';
 import Button from '@/Components/Button.vue';
 import { LinkType, JsonResponse, Subject } from '@/types';
 
-const props = defineProps<{ response: JsonResponse<Subject[]> }>();
+const props = defineProps<{
+    response: JsonResponse<Subject[]>;
+    filters: { search?: string };
+}>();
 
 const allIcons = OutlineIcons as Record<string, any>;
+
+// ── Search / filter ─────────────────────────────────────────
+let searchTimer: ReturnType<typeof setTimeout>;
+function onSearch(e: Event) {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        applyFilters({ s: (e.target as HTMLInputElement).value });
+    }, 350);
+}
+function clearSearch() {
+    applyFilters({ s: '' });
+}
+function applyFilters(params: Record<string, string>) {
+    router.get(route('admin.subjects.index'), params, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+    });
+}
 
 // ── Expand / collapse ────────────────────────────────────────
 const expanded = ref<Set<number>>(new Set());

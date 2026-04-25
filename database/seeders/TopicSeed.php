@@ -14,6 +14,6 @@ class TopicSeed extends Seeder
      */
     public function run()
     {
-        Topic::factory()->count(15)->create();
+        Topic::factory()->count(50)->create();
     }
 }

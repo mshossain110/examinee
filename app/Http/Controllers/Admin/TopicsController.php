@@ -29,7 +29,7 @@ class TopicsController extends Controller
         $topics = $topics->withCount(['courses', 'exams']);
 
         if($search) {
-            $topics = $topics->where('title', 'like', "%$search%");
+            $topics = $topics->where('title', 'ilike', "%$search%");
         }
 
         $topics = $topics->paginate();
@@ -38,7 +38,8 @@ class TopicsController extends Controller
         return Inertia::render(
             'admin/topics/Index', 
             [
-                'response' => $resource
+                'response' => $resource,
+                'filters'  => ['search' => $search ?? ''],
             ]
         );
     }
@@ -94,5 +95,19 @@ class TopicsController extends Controller
         $topic->delete();
 
         return to_route('admin.topics.index');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $this->authorize('delete', Topic::class);
+
+        $request->validate([
+            'ids'   => ['required', 'array'],
+            'ids.*' => ['integer', 'exists:topics,id'],
+        ]);
+
+        Topic::whereIn('id', $request->ids)->delete();
+
+        return back()->with('success', 'Selected topics deleted.');
     }
 }
