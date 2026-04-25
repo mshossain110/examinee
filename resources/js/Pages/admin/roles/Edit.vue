@@ -3,11 +3,12 @@ import { computed, ref, watch } from "vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Label from "@/Components/Form/Label.vue";
 import Input from "@/Components/Form/Input.vue";
-import { Role } from "@/types";
-import { useForm, usePage } from "@inertiajs/vue3";
+import { Role, LinkType } from "@/types";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
 import Card from "@/Components/Card.vue";
 import Button from "@/Components/Button.vue";
-import { CheckCircleIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
+import { CheckCircleIcon, XMarkIcon, ArrowLeftIcon } from "@heroicons/vue/24/outline";
 
 interface Permission {
     id: number;
@@ -80,11 +81,31 @@ function toggleAll(perms: Permission[], checked: boolean) {
 function submit() {
     roleForm.put(route("admin.roles.update", props.role.id));
 }
+
+const breadcrumb = computed<LinkType[]>(() => [
+    { name: 'Roles', href: route('admin.roles.index'), current: false },
+    { name: props.role.name, href: route('admin.roles.edit', props.role.id), current: true },
+]);
 </script>
 
 <template>
     <AdminLayout>
         <div id="edit-role">
+            <Card class="mb-5">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-lg">Edit Role</h1>
+                        <Breadcrumb :items="breadcrumb" />
+                    </div>
+                    <div>
+                        <Link :href="route('admin.roles.index')" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition-colors">
+                            <ArrowLeftIcon class="h-4 w-4" />
+                            Back to Roles
+                        </Link>
+                    </div>
+                </div>
+            </Card>
+
             <!-- Toast notification -->
             <transition
                 enter-active-class="transition ease-out duration-300"
