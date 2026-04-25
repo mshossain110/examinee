@@ -47,6 +47,51 @@
           </button>
         </div>
 
+        <!-- Bulk action bar (visible when rows are selected) -->
+        <transition
+          enter-active-class="transition ease-out duration-200"
+          enter-from-class="opacity-0 -translate-y-2"
+          enter-to-class="opacity-100 translate-y-0"
+          leave-active-class="transition ease-in duration-150"
+          leave-from-class="opacity-100 translate-y-0"
+          leave-to-class="opacity-0 -translate-y-2"
+        >
+          <div v-if="selected.length" class="flex items-center gap-3 mb-4 px-4 py-2.5 bg-indigo-600 dark:bg-indigo-700 rounded-xl">
+            <span class="text-xs font-semibold text-white">
+              {{ selected.length }} user{{ selected.length > 1 ? 's' : '' }} selected
+            </span>
+            <div class="flex items-center gap-2 ml-auto">
+              <!-- Bulk sync roles -->
+              <button
+                type="button"
+                @click="openBulkRoleModal"
+                class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-700 bg-white hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors shadow-sm"
+              >
+                <UserGroupIcon class="h-3.5 w-3.5" />
+                Sync Roles
+              </button>
+              <!-- Bulk delete -->
+              <button
+                type="button"
+                @click="bulkDeleteUsers"
+                class="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded-lg transition-colors shadow-sm"
+              >
+                <TrashIcon class="h-3.5 w-3.5" />
+                Delete
+              </button>
+              <!-- Clear selection -->
+              <button
+                type="button"
+                @click="selected = []"
+                class="p-1.5 rounded-lg text-indigo-200 hover:text-white hover:bg-indigo-500 transition-colors"
+                title="Clear selection"
+              >
+                <XMarkIcon class="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </transition>
+
         <DataTable v-model="selected" :rows="response.data" :columns="columns">
           <template #name-data="{ row }">
             <div class="flex items-center gap-3">
@@ -120,8 +165,15 @@
             <!-- Header -->
             <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800">
               <div>
-                <h3 class="text-base font-semibold text-gray-900 dark:text-white">Manage Roles</h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ roleModal.user?.full_name }}</p>
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white">
+                  {{ roleModal.isBulk ? 'Bulk Sync Roles' : 'Manage Roles' }}
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  <template v-if="roleModal.isBulk">
+                    Applying to {{ selected.length }} selected user{{ selected.length > 1 ? 's' : '' }}
+                  </template>
+                  <template v-else>{{ roleModal.user?.full_name }}</template>
+                </p>
               </div>
               <button type="button" @click="closeRoleModal"
                 class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -162,7 +214,7 @@
               <button type="button" @click="saveRoles" :disabled="savingRoles"
                 class="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 px-4 py-2 rounded-lg transition-colors shadow-sm">
                 <ArrowPathIcon v-if="savingRoles" class="h-4 w-4 animate-spin" />
-                Save Roles
+                {{ roleModal.isBulk ? 'Apply to All' : 'Save Roles' }}
               </button>
             </div>
           </div>
@@ -234,31 +286,60 @@ function deleteUser(user: User) {
   }
 }
 
-// ── Role modal ───────────────────────────────────────────────
-const roleModal = ref<{ open: boolean; user: User | null }>({ open: false, user: null });
+// ── Role modal (single + bulk) ───────────────────────────────
+const roleModal = ref<{ open: boolean; isBulk: boolean; user: User | null }>({
+  open: false, isBulk: false, user: null,
+});
 const selectedRoleIds = ref<number[]>([]);
 const savingRoles = ref(false);
 
 function openRoleModal(user: User) {
-  roleModal.value.user = user;
+  roleModal.value = { open: true, isBulk: false, user };
   selectedRoleIds.value = (user.roles ?? []).map((r: any) => r.id as number);
-  roleModal.value.open = true;
+}
+function openBulkRoleModal() {
+  roleModal.value = { open: true, isBulk: true, user: null };
+  selectedRoleIds.value = [];
 }
 function closeRoleModal() {
-  roleModal.value.open = false;
-  roleModal.value.user = null;
+  roleModal.value = { open: false, isBulk: false, user: null };
 }
 function saveRoles() {
-  const user = roleModal.value.user;
-  if (!user) return;
   savingRoles.value = true;
-  router.put(
-    route('admin.users.sync-roles', user.id),
-    { roles: selectedRoleIds.value },
+  if (roleModal.value.isBulk) {
+    router.post(
+      route('admin.users.bulk-sync-roles'),
+      { ids: selected.value.map((u: any) => u.id), roles: selectedRoleIds.value },
+      {
+        preserveScroll: true,
+        onSuccess: () => { closeRoleModal(); selected.value = []; },
+        onFinish: () => { savingRoles.value = false; },
+      }
+    );
+  } else {
+    const user = roleModal.value.user;
+    if (!user) return;
+    router.put(
+      route('admin.users.sync-roles', user.id),
+      { roles: selectedRoleIds.value },
+      {
+        preserveScroll: true,
+        onSuccess: () => { closeRoleModal(); },
+        onFinish: () => { savingRoles.value = false; },
+      }
+    );
+  }
+}
+
+// ── Bulk delete ───────────────────────────────────────────────
+function bulkDeleteUsers() {
+  if (!confirm(`Delete ${selected.value.length} selected user(s)? This cannot be undone.`)) return;
+  router.post(
+    route('admin.users.bulk-delete'),
+    { ids: selected.value.map((u: any) => u.id) },
     {
       preserveScroll: true,
-      onSuccess: () => { closeRoleModal(); },
-      onFinish: () => { savingRoles.value = false; },
+      onSuccess: () => { selected.value = []; },
     }
   );
 }

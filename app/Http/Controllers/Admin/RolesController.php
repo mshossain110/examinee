@@ -24,7 +24,9 @@ class RolesController extends Controller
         return Inertia::render(
             'admin/roles/Index', 
             [
-                'response' => RoleResource::collection(Role::with('permissions')->paginate()),
+                'response' => RoleResource::collection(
+                    Role::with('permissions')->withCount(['users', 'permissions'])->paginate()
+                ),
                 'app_roles' => Role::appRoles()
             ]
         );

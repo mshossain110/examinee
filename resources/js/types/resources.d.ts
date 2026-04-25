@@ -122,12 +122,18 @@ export interface Subject {
     title: string;
     slug: string;
     description?: string;
+    icon?: string;
+    image?: string;
+    image_url?: string;
+    parent?: number;
     created_at?: string;
     updated_at?: string;
     courses?: Course[];
     exams?: Exam[];
     courses_count?: number;
     exams_count?: number;
+    children?: Subject[];
+    children_count?: number;
 }
 
 export interface Exam {

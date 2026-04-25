@@ -4,17 +4,73 @@ namespace Database\Seeders;
 
 use App\Models\Subject;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Seeder;
 
 class SubjectSeed extends Seeder
 {
+    /** Heroicon component names assigned to each parent category. */
+    private array $categoryIcons = [
+        'Development'          => 'CodeBracketIcon',
+        'Business'             => 'BriefcaseIcon',
+        'Finance & Accounting' => 'BanknotesIcon',
+        'IT & Software'        => 'ComputerDesktopIcon',
+        'Office Productivity'  => 'DocumentTextIcon',
+        'Personal Development' => 'LightBulbIcon',
+        'Design'               => 'PaintBrushIcon',
+        'Marketing'            => 'MegaphoneIcon',
+        'Lifestyle'            => 'SparklesIcon',
+        'Photography'          => 'CameraIcon',
+        'Health & Fitness'     => 'HeartIcon',
+        'Music'                => 'MusicalNoteIcon',
+        'Teaching & Academics' => 'AcademicCapIcon',
+    ];
+
+    /** Icon pool used when picking randomly for child subjects. */
+    private array $iconPool = [
+        'BookOpenIcon', 'BeakerIcon', 'ChartBarIcon', 'CpuChipIcon',
+        'GlobeAltIcon', 'RocketLaunchIcon', 'StarIcon', 'TrophyIcon',
+        'PuzzlePieceIcon', 'FireIcon', 'WrenchScrewdriverIcon', 'KeyIcon',
+        'SignalIcon', 'CircleStackIcon', 'CommandLineIcon', 'ShieldCheckIcon',
+        'CloudIcon', 'TableCellsIcon', 'CalculatorIcon', 'FilmIcon',
+        'LanguageIcon', 'ChatBubbleLeftRightIcon', 'CursorArrowRaysIcon',
+        'SwatchIcon', 'MicrophoneIcon', 'TicketIcon', 'FlagIcon', 'TagIcon',
+    ];
+
+    private function generateImage(): string
+    {
+        $dir = storage_path('app/public/subjects');
+        if (! is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        // Generate a simple colored SVG — no HTTP request, instant
+        $colors  = ['4f46e5', '0891b2', '059669', 'd97706', 'dc2626', '7c3aed', 'db2777', '0284c7'];
+        $bg      = $colors[array_rand($colors)];
+        $filename = Str::uuid() . '.svg';
+        $svg = <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#{$bg}" opacity="0.15"/>
+  <rect width="400" height="300" fill="none" stroke="#{$bg}" stroke-width="2" opacity="0.4"/>
+</svg>
+SVG;
+        file_put_contents("{$dir}/{$filename}", $svg);
+
+        return "subjects/{$filename}";
+    }
+
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
+        // Truncate and reset primary key sequence (PostgreSQL)
+        DB::statement('TRUNCATE TABLE subjects RESTART IDENTITY CASCADE');
+
+        // Also clear old generated images
+        Storage::disk('public')->deleteDirectory('subjects');
+
         $subjects = [
             'Development' => [
                 "Web Development",
@@ -180,15 +236,19 @@ class SubjectSeed extends Seeder
 
         foreach ($subjects as $key => $value) {
             $p = Subject::create([
-                "title" => $key,
-                'slug' => Str::slug($key)
+                'title' => $key,
+                'slug'  => Str::slug($key),
+                'icon'  => $this->categoryIcons[$key] ?? $this->iconPool[array_rand($this->iconPool)],
+                'image' => $this->generateImage(),
             ]);
 
             foreach ($value as $subject) {
                 Subject::create([
-                    "title" => $subject,
+                    'title'  => $subject,
                     'parent' => $p->id,
-                    'slug' => Str::slug($subject)
+                    'slug'   => Str::slug($subject),
+                    'icon'   => $this->iconPool[array_rand($this->iconPool)],
+                    'image'  => $this->generateImage(),
                 ]);
             }
         }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Exam;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $title
  * @property string $slug
  * @property string $description
+ * @property string|null $icon
+ * @property string|null $image
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Collection<Course> $courses
@@ -28,8 +31,18 @@ class Subject extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title', 'slug', 'description'
+        'title', 'slug', 'description', 'icon', 'image'
     ];
+
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image) {
+            return null;
+        }
+        return Storage::disk('public')->url($this->image);
+    }
 
     /**
      * Get all of the courses that are assigned this tag.
@@ -46,4 +59,13 @@ class Subject extends Model
     {
         return $this->morphedByMany(Exam::class, 'subjectables');
     }
+
+    /**
+     * Get child subjects.
+     */
+    public function children()
+    {
+        return $this->hasMany(Subject::class, 'parent');
+    }
 }
+
